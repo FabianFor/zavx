@@ -270,7 +270,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
               final invoiceProvider =
                   Provider.of<InvoiceProvider>(context, listen: false);
 
-              final invoice = await invoiceProvider.createInvoice(
+              // Crear la boleta (ya no necesitamos guardar en variable)
+              await invoiceProvider.createInvoice(
                 customerName: _customerNameController.text,
                 customerPhone: _customerPhoneController.text,
                 items: orderProvider.currentOrderItems,
@@ -280,10 +281,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
               _customerNameController.clear();
               _customerPhoneController.clear();
 
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Boleta creada exitosamente')),
-              );
+              if (mounted) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Boleta creada exitosamente')),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF4CAF50),

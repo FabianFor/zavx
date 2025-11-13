@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 import '../providers/invoice_provider.dart';
 import '../providers/business_provider.dart';
 import '../services/invoice_image_generator.dart';
-import 'package:share_plus/share_plus.dart';
 
 class InvoicesScreen extends StatelessWidget {
-  const InvoicesScreen({super.key});
+  const InvoicesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -260,20 +260,54 @@ class InvoicesScreen extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: () async {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+
                           try {
+                            print('🔄 Generando imagen...');
                             final imagePath =
                                 await InvoiceImageGenerator.generateImage(
                               invoice: invoice,
                               businessProfile: businessProvider.profile,
                             );
-                            await Share.shareXFiles(
+                            print('✅ Imagen generada: $imagePath');
+
+                            if (context.mounted) Navigator.pop(context);
+
+                            print('📤 Compartiendo imagen...');
+                            final result = await Share.shareXFiles(
                               [XFile(imagePath)],
                               text: 'Boleta #${invoice.invoiceNumber}',
                             );
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Error: $e')),
-                            );
+                            print('✅ Resultado: ${result.status}');
+
+                            if (context.mounted && result.status == ShareResultStatus.success) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('✅ Compartido exitosamente'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
+                          } catch (e, stackTrace) {
+                            print('❌ Error: $e');
+                            print('Stack: $stackTrace');
+                            
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('❌ Error: $e'),
+                                  backgroundColor: Colors.red,
+                                  duration: const Duration(seconds: 5),
+                                ),
+                              );
+                            }
                           }
                         },
                         icon: const Icon(Icons.share),
@@ -291,21 +325,48 @@ class InvoicesScreen extends StatelessWidget {
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: () async {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+
                           try {
+                            print('🔄 Descargando...');
                             final imagePath =
                                 await InvoiceImageGenerator.generateImage(
                               invoice: invoice,
                               businessProfile: businessProvider.profile,
                             );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Imagen guardada en: $imagePath'),
-                              ),
-                            );
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Error: $e')),
-                            );
+                            print('✅ Guardado: $imagePath');
+
+                            if (context.mounted) Navigator.pop(context);
+
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('✅ Guardado en:\n$imagePath'),
+                                  backgroundColor: Colors.green,
+                                  duration: const Duration(seconds: 5),
+                                ),
+                              );
+                            }
+                          } catch (e, stackTrace) {
+                            print('❌ Error: $e');
+                            print('Stack: $stackTrace');
+                            
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('❌ Error: $e'),
+                                  backgroundColor: Colors.red,
+                                  duration: const Duration(seconds: 5),
+                                ),
+                              );
+                            }
                           }
                         },
                         icon: const Icon(Icons.download),

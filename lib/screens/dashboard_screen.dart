@@ -13,7 +13,7 @@ import 'invoices_screen.dart';
 import 'profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({Key? key}) : super(key: key);
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -46,7 +46,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 }
 
 class DashboardHome extends StatelessWidget {
-  const DashboardHome({super.key});
+  const DashboardHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

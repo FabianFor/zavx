@@ -1,5 +1,5 @@
-name: mi_negocio_app
-description: Aplicación de gestión de productos y boletas para negocios
+name: mi_negocio
+description: Aplicación para gestión de productos y boletas
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,30 +9,27 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  # UI & Responsive
-  cupertino_icons: ^1.0.2
-  flutter_screenutil: ^5.9.3
-  responsive_framework: ^1.5.1
-
+  
   # State Management
   provider: ^6.1.1
-
+  
+  # UI & Responsive
+  flutter_screenutil: ^5.9.0
+  responsive_framework: ^1.1.1
+  
   # Storage
   shared_preferences: ^2.2.2
   path_provider: ^2.1.1
-
+  
   # Images
-  image_picker: ^1.0.7
-  image: ^4.1.7
-  screenshot: ^2.1.0
-
-  # Share
+  image_picker: ^1.0.4
+  
+  # Sharing
   share_plus: ^7.2.1
   
   # Utils
-  uuid: ^4.3.3
-  intl: ^0.19.0
+  uuid: ^4.2.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +38,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/images/
-    - assets/icons/
+  
+  # Si tienes assets, descomenta estas líneas:
+  # assets:
+  #   - assets/images/
+  #   - assets/icons/
