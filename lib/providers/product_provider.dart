@@ -7,23 +7,16 @@ class ProductProvider with ChangeNotifier {
   List<Product> _products = [];
   bool _isLoading = false;
   String? _error;
-  bool _isInitialized = false; // ✅ NUEVO: Control de caché
+  bool _isInitialized = false;
 
   List<Product> get products => _products;
   bool get isLoading => _isLoading;
   String? get error => _error;
   int get totalProducts => _products.length;
 
-  // ✅ Productos con stock bajo
   List<Product> get lowStockProducts => 
       _products.where((p) => p.stock <= 5).toList();
 
-  // ✅ Productos por categoría
-  List<Product> getProductsByCategory(String category) {
-    return _products.where((p) => p.category == category).toList();
-  }
-
-  // ✅ OPTIMIZADO: Solo carga una vez del disco
   Future<void> loadProducts() async {
     if (_isInitialized) {
       print('✅ Productos ya en caché, no se recarga');
@@ -38,57 +31,73 @@ class ProductProvider with ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       final String? productsJson = prefs.getString('products');
 
-      if (productsJson != null) {
+      if (productsJson != null && productsJson.isNotEmpty) {
         final List<dynamic> decodedList = json.decode(productsJson);
-        _products = decodedList.map((item) => Product.fromJson(item)).toList();
-        print('✅ ${_products.length} productos cargados');
+        _products = decodedList.map((item) => Product.fromJson(item as Map<String, dynamic>)).toList();
+        print('✅ ${_products.length} productos cargados desde disco');
       } else {
         _products = [];
-        print('ℹ️ No hay productos guardados');
+        print('ℹ️ No hay productos guardados, lista vacía');
       }
 
       _isInitialized = true;
     } catch (e) {
       _error = 'Error al cargar productos: $e';
       print('❌ $_error');
+      _products = [];
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<void> _saveProducts() async {
+  Future<bool> _saveProducts() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final String encodedData = json.encode(
         _products.map((product) => product.toJson()).toList(),
       );
-      await prefs.setString('products', encodedData);
-      print('✅ Productos guardados: ${_products.length}');
+      
+      final bool saved = await prefs.setString('products', encodedData);
+      
+      if (saved) {
+        print('✅ ${_products.length} productos guardados exitosamente');
+        
+        // Verificar que se guardó
+        final String? verification = prefs.getString('products');
+        if (verification != null) {
+          print('✅ Verificación: datos guardados correctamente');
+          return true;
+        } else {
+          print('❌ ERROR: No se pudo verificar el guardado');
+          return false;
+        }
+      } else {
+        print('❌ ERROR: SharedPreferences retornó false');
+        return false;
+      }
     } catch (e) {
-      print('❌ Error al guardar productos: $e');
+      print('❌ Error crítico al guardar productos: $e');
       _error = 'Error al guardar: $e';
       notifyListeners();
+      return false;
     }
   }
 
-  // ✅ VALIDACIÓN al agregar producto
   Future<bool> addProduct(Product product) async {
-    // Validar que no esté vacío
+    // Validaciones
     if (product.name.trim().isEmpty) {
       _error = 'El nombre del producto no puede estar vacío';
       notifyListeners();
       return false;
     }
 
-    // Validar precio
     if (product.price <= 0) {
       _error = 'El precio debe ser mayor a 0';
       notifyListeners();
       return false;
     }
 
-    // Validar stock
     if (product.stock < 0) {
       _error = 'El stock no puede ser negativo';
       notifyListeners();
@@ -96,21 +105,32 @@ class ProductProvider with ChangeNotifier {
     }
 
     try {
+      print('🔄 Agregando producto: ${product.name}');
       _products.add(product);
-      await _saveProducts();
-      _error = null;
-      notifyListeners();
-      return true;
+      
+      final bool saved = await _saveProducts();
+      
+      if (saved) {
+        _error = null;
+        notifyListeners();
+        print('✅ Producto agregado y guardado: ${product.name}');
+        return true;
+      } else {
+        // Revertir cambio si no se guardó
+        _products.removeLast();
+        _error = 'No se pudo guardar el producto';
+        notifyListeners();
+        return false;
+      }
     } catch (e) {
+      print('❌ Error al agregar producto: $e');
       _error = 'Error al agregar producto: $e';
       notifyListeners();
       return false;
     }
   }
 
-  // ✅ VALIDACIÓN al actualizar producto
   Future<bool> updateProduct(Product updatedProduct) async {
-    // Validaciones
     if (updatedProduct.name.trim().isEmpty) {
       _error = 'El nombre del producto no puede estar vacío';
       notifyListeners();
@@ -132,11 +152,22 @@ class ProductProvider with ChangeNotifier {
     try {
       final index = _products.indexWhere((p) => p.id == updatedProduct.id);
       if (index != -1) {
+        final oldProduct = _products[index];
         _products[index] = updatedProduct;
-        await _saveProducts();
-        _error = null;
-        notifyListeners();
-        return true;
+        
+        final bool saved = await _saveProducts();
+        
+        if (saved) {
+          _error = null;
+          notifyListeners();
+          return true;
+        } else {
+          // Revertir cambio
+          _products[index] = oldProduct;
+          _error = 'No se pudo guardar la actualización';
+          notifyListeners();
+          return false;
+        }
       }
       return false;
     } catch (e) {
@@ -148,34 +179,45 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> deleteProduct(String productId) async {
     try {
-      _products.removeWhere((product) => product.id == productId);
-      await _saveProducts();
-      _error = null;
-      notifyListeners();
+      final index = _products.indexWhere((p) => p.id == productId);
+      if (index != -1) {
+        final removed = _products.removeAt(index);
+        final bool saved = await _saveProducts();
+        
+        if (saved) {
+          _error = null;
+          notifyListeners();
+          print('✅ Producto eliminado: ${removed.name}');
+        } else {
+          // Revertir
+          _products.insert(index, removed);
+          _error = 'No se pudo eliminar el producto';
+          notifyListeners();
+        }
+      }
     } catch (e) {
       _error = 'Error al eliminar producto: $e';
       notifyListeners();
     }
   }
 
-  // ✅ Actualizar stock (útil para órdenes)
   Future<bool> updateStock(String productId, int newStock) async {
     try {
       final index = _products.indexWhere((p) => p.id == productId);
       if (index != -1) {
-        final updatedProduct = Product(
-          id: _products[index].id,
-          name: _products[index].name,
-          description: _products[index].description,
-          price: _products[index].price,
-          stock: newStock,
-          category: _products[index].category,
-          imagePath: _products[index].imagePath,
-        );
-        _products[index] = updatedProduct;
-        await _saveProducts();
-        notifyListeners();
-        return true;
+        final oldStock = _products[index].stock;
+        _products[index] = _products[index].copyWith(stock: newStock);
+        
+        final bool saved = await _saveProducts();
+        
+        if (saved) {
+          notifyListeners();
+          return true;
+        } else {
+          // Revertir
+          _products[index] = _products[index].copyWith(stock: oldStock);
+          return false;
+        }
       }
       return false;
     } catch (e) {
@@ -185,21 +227,32 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-  // ✅ Buscar productos
   List<Product> searchProducts(String query) {
     if (query.isEmpty) return _products;
     
     final lowerQuery = query.toLowerCase();
     return _products.where((product) {
       return product.name.toLowerCase().contains(lowerQuery) ||
-             product.description.toLowerCase().contains(lowerQuery) ||
-             product.category.toLowerCase().contains(lowerQuery);
+             product.description.toLowerCase().contains(lowerQuery);
     }).toList();
   }
 
-  // ✅ Limpiar error
+  Product? getProductById(String id) {
+    try {
+      return _products.firstWhere((p) => p.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
+
   void clearError() {
     _error = null;
     notifyListeners();
+  }
+
+  // Forzar recarga completa
+  Future<void> reload() async {
+    _isInitialized = false;
+    await loadProducts();
   }
 }

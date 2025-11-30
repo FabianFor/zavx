@@ -19,19 +19,22 @@ class DashboardScreen extends StatelessWidget {
     final productProvider = context.watch<ProductProvider>();
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final isLargeScreen = screenWidth > 600;
+    
+    // Breakpoints mejorados
+    final isVerySmall = screenWidth < 360;
+    final isLarge = screenWidth >= 900;
 
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // ✅ HEADER
+              // Header
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(
-                  vertical: isLargeScreen ? 32.h : 24.h,
-                  horizontal: isLargeScreen ? 32.w : 20.w,
+                  vertical: isVerySmall ? 20.h : (isLarge ? 40.h : 24.h),
+                  horizontal: isVerySmall ? 16.w : (isLarge ? 40.w : 20.w),
                 ),
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -53,7 +56,7 @@ class DashboardScreen extends StatelessWidget {
                                 : businessProvider.profile.businessName,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: isLargeScreen ? 28.sp : 24.sp,
+                              fontSize: isVerySmall ? 20.sp : (isLarge ? 32.sp : 24.sp),
                               fontWeight: FontWeight.bold,
                             ),
                             maxLines: 2,
@@ -64,8 +67,10 @@ class DashboardScreen extends StatelessWidget {
                             l10n.businessManagement,
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.9),
-                              fontSize: 14.sp,
+                              fontSize: isVerySmall ? 12.sp : 14.sp,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
@@ -73,8 +78,8 @@ class DashboardScreen extends StatelessWidget {
                     if (productProvider.lowStockProducts.isNotEmpty)
                       Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 8.h,
+                          horizontal: isVerySmall ? 10.w : 12.w,
+                          vertical: isVerySmall ? 6.h : 8.h,
                         ),
                         decoration: BoxDecoration(
                           color: Colors.red,
@@ -86,14 +91,14 @@ class DashboardScreen extends StatelessWidget {
                             Icon(
                               Icons.warning_amber_rounded,
                               color: Colors.white,
-                              size: 20.sp,
+                              size: isVerySmall ? 16.sp : 20.sp,
                             ),
                             SizedBox(width: 8.w),
                             Text(
                               '${productProvider.lowStockProducts.length}',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16.sp,
+                                fontSize: isVerySmall ? 14.sp : 16.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -105,107 +110,124 @@ class DashboardScreen extends StatelessWidget {
               ),
 
               Padding(
-                padding: EdgeInsets.all(isLargeScreen ? 32.w : 20.w),
+                padding: EdgeInsets.all(isVerySmall ? 16.w : (isLarge ? 40.w : 20.w)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ✅ TÍTULO
+                    // Título
                     Text(
-                      _getHomeTitleText(l10n),
+                      'Inicio',
                       style: TextStyle(
-                        fontSize: isLargeScreen ? 32.sp : 28.sp,
+                        fontSize: isVerySmall ? 24.sp : (isLarge ? 36.sp : 28.sp),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      _getHomeSubtitleText(l10n),
+                      'Gestiona rápidamente tu negocio desde aquí.',
                       style: TextStyle(
-                        fontSize: 14.sp,
+                        fontSize: isVerySmall ? 12.sp : 14.sp,
                         color: Colors.grey[600],
                       ),
                     ),
 
-                    SizedBox(height: 32.h),
+                    SizedBox(height: isVerySmall ? 24.h : 32.h),
 
-                    // ✅ ACCESOS RÁPIDOS TÍTULO
+                    // Accesos rápidos
                     Text(
-                      _getQuickAccessText(l10n),
+                      'Accesos rápidos',
                       style: TextStyle(
-                        fontSize: isLargeScreen ? 24.sp : 20.sp,
+                        fontSize: isVerySmall ? 18.sp : (isLarge ? 26.sp : 20.sp),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 16.h),
 
-                    // ✅ BOTONES EN LÍNEA (uno debajo del otro)
-                    _buildQuickAccessButton(
-                      context: context,
-                      icon: Icons.inventory_2,
-                      label: l10n.products,
-                      color: const Color(0xFF4CAF50),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const ProductsScreen()),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 16.h),
-                    
-                    _buildQuickAccessButton(
-                      context: context,
-                      icon: Icons.shopping_cart,
-                      label: l10n.orders,
-                      color: const Color(0xFF2196F3),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const OrdersScreen()),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 16.h),
-                    
-                    _buildQuickAccessButton(
-                      context: context,
-                      icon: Icons.receipt_long,
-                      label: l10n.invoices,
-                      color: const Color(0xFFFF9800),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const InvoicesScreen()),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 16.h),
-                    
-                    _buildQuickAccessButton(
-                      context: context,
-                      icon: Icons.settings,
-                      label: l10n.settings,
-                      color: const Color(0xFF607D8B),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const SettingsScreen()),
-                        );
-                      },
-                    ),
+                    // Botones en grid para tablets, lista para móviles
+                    if (isLarge)
+                      GridView.count(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 20.w,
+                        mainAxisSpacing: 20.h,
+                        childAspectRatio: 3,
+                        children: [
+                          _buildQuickAccessButton(
+                            context: context,
+                            icon: Icons.inventory_2,
+                            label: l10n.products,
+                            color: const Color(0xFF4CAF50),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProductsScreen())),
+                          ),
+                          _buildQuickAccessButton(
+                            context: context,
+                            icon: Icons.shopping_cart,
+                            label: l10n.orders,
+                            color: const Color(0xFF2196F3),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const OrdersScreen())),
+                          ),
+                          _buildQuickAccessButton(
+                            context: context,
+                            icon: Icons.receipt_long,
+                            label: l10n.invoices,
+                            color: const Color(0xFFFF9800),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const InvoicesScreen())),
+                          ),
+                          _buildQuickAccessButton(
+                            context: context,
+                            icon: Icons.settings,
+                            label: l10n.settings,
+                            color: const Color(0xFF607D8B),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
+                          ),
+                        ],
+                      )
+                    else
+                      Column(
+                        children: [
+                          _buildQuickAccessButton(
+                            context: context,
+                            icon: Icons.inventory_2,
+                            label: l10n.products,
+                            color: const Color(0xFF4CAF50),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProductsScreen())),
+                          ),
+                          SizedBox(height: 16.h),
+                          _buildQuickAccessButton(
+                            context: context,
+                            icon: Icons.shopping_cart,
+                            label: l10n.orders,
+                            color: const Color(0xFF2196F3),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const OrdersScreen())),
+                          ),
+                          SizedBox(height: 16.h),
+                          _buildQuickAccessButton(
+                            context: context,
+                            icon: Icons.receipt_long,
+                            label: l10n.invoices,
+                            color: const Color(0xFFFF9800),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const InvoicesScreen())),
+                          ),
+                          SizedBox(height: 16.h),
+                          _buildQuickAccessButton(
+                            context: context,
+                            icon: Icons.settings,
+                            label: l10n.settings,
+                            color: const Color(0xFF607D8B),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
+                          ),
+                        ],
+                      ),
 
                     SizedBox(height: 32.h),
 
-                    // ✅ ALERTA DE STOCK BAJO (si existe)
+                    // Alerta de stock bajo
                     if (productProvider.lowStockProducts.isNotEmpty) ...[
                       Text(
-                        _getLowStockTitleText(l10n),
+                        'Productos con poco stock',
                         style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: isVerySmall ? 16.sp : 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -222,43 +244,42 @@ class DashboardScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.warning_amber_rounded,
-                                    color: Colors.red, size: 24.sp),
+                                Icon(Icons.warning_amber_rounded, color: Colors.red, size: isVerySmall ? 20.sp : 24.sp),
                                 SizedBox(width: 8.w),
                                 Expanded(
                                   child: Text(
-                                    _getLowStockText(l10n),
+                                    'Productos con stock bajo',
                                     style: TextStyle(
-                                      fontSize: 16.sp,
+                                      fontSize: isVerySmall ? 14.sp : 16.sp,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.red[900],
                                     ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 12.h),
-                            ...productProvider.lowStockProducts
-                                .take(5)
-                                .map((product) {
+                            ...productProvider.lowStockProducts.take(5).map((product) {
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 8.h),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Text(
                                         product.name,
-                                        style: TextStyle(fontSize: 14.sp),
+                                        style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
+                                    SizedBox(width: 8.w),
                                     Text(
                                       '${l10n.stock}: ${product.stock}',
                                       style: TextStyle(
-                                        fontSize: 14.sp,
+                                        fontSize: isVerySmall ? 12.sp : 14.sp,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                       ),
@@ -282,7 +303,6 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  // ✅ BOTÓN HORIZONTAL (como antes)
   Widget _buildQuickAccessButton({
     required BuildContext context,
     required IconData icon,
@@ -290,25 +310,26 @@ class DashboardScreen extends StatelessWidget {
     required Color color,
     required VoidCallback onTap,
   }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isVerySmall = screenWidth < 360;
+    final isLarge = screenWidth >= 900;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12.r),
         child: Container(
-          padding: EdgeInsets.all(16.w),
+          padding: EdgeInsets.all(isVerySmall ? 14.w : 16.w),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(
-              color: color.withOpacity(0.3),
-              width: 2,
-            ),
+            border: Border.all(color: color.withOpacity(0.3), width: 2),
           ),
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.all(12.w),
+                padding: EdgeInsets.all(isVerySmall ? 10.w : 12.w),
                 decoration: BoxDecoration(
                   color: color,
                   shape: BoxShape.circle,
@@ -316,104 +337,31 @@ class DashboardScreen extends StatelessWidget {
                 child: Icon(
                   icon,
                   color: Colors.white,
-                  size: 28.sp,
+                  size: isVerySmall ? 24.sp : (isLarge ? 32.sp : 28.sp),
                 ),
               ),
-              SizedBox(width: 16.w),
+              SizedBox(width: isVerySmall ? 12.w : 16.w),
               Expanded(
                 child: Text(
                   label,
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: isVerySmall ? 14.sp : (isLarge ? 20.sp : 18.sp),
                     fontWeight: FontWeight.bold,
                     color: color,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Icon(
                 Icons.arrow_forward_ios,
                 color: color,
-                size: 20.sp,
+                size: isVerySmall ? 16.sp : 20.sp,
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  String _getHomeTitleText(AppLocalizations l10n) {
-    switch (l10n.localeName) {
-      case 'es':
-        return 'Inicio';
-      case 'en':
-        return 'Home';
-      case 'pt':
-        return 'Início';
-      case 'zh':
-        return '首页';
-      default:
-        return 'Home';
-    }
-  }
-
-  String _getHomeSubtitleText(AppLocalizations l10n) {
-    switch (l10n.localeName) {
-      case 'es':
-        return 'Gestiona rápidamente tu negocio desde aquí.';
-      case 'en':
-        return 'Manage your business quickly from here.';
-      case 'pt':
-        return 'Gerencie seu negócio rapidamente daqui.';
-      case 'zh':
-        return '从这里快速管理您的业务。';
-      default:
-        return 'Manage your business quickly from here.';
-    }
-  }
-
-  String _getQuickAccessText(AppLocalizations l10n) {
-    switch (l10n.localeName) {
-      case 'es':
-        return 'Accesos rápidos';
-      case 'en':
-        return 'Quick access';
-      case 'pt':
-        return 'Acesso rápido';
-      case 'zh':
-        return '快速访问';
-      default:
-        return 'Quick access';
-    }
-  }
-
-  String _getLowStockTitleText(AppLocalizations l10n) {
-    switch (l10n.localeName) {
-      case 'es':
-        return 'Productos con poco stock';
-      case 'en':
-        return 'Low stock products';
-      case 'pt':
-        return 'Produtos com pouco estoque';
-      case 'zh':
-        return '库存不足的产品';
-      default:
-        return 'Low stock products';
-    }
-  }
-
-  String _getLowStockText(AppLocalizations l10n) {
-    switch (l10n.localeName) {
-      case 'es':
-        return 'Productos con stock bajo';
-      case 'en':
-        return 'Low stock products';
-      case 'pt':
-        return 'Produtos com estoque baixo';
-      case 'zh':
-        return '库存不足的产品';
-      default:
-        return 'Low stock products';
-    }
   }
 }

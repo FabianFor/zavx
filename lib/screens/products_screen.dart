@@ -19,112 +19,85 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   String _searchQuery = '';
-  String _selectedCategory = 'all';
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final productProvider = context.watch<ProductProvider>();
     final screenWidth = MediaQuery.of(context).size.width;
-    final isLargeScreen = screenWidth > 600;
+    
+    // Breakpoints
+    final isVerySmall = screenWidth < 360;
+    final isLarge = screenWidth >= 900;
 
     if (productProvider.isLoading) {
       return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: Center(child: CircularProgressIndicator()),
       );
     }
 
     if (productProvider.error != null) {
       return Scaffold(
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error_outline, size: 64.sp, color: Colors.red),
-              SizedBox(height: 16.h),
-              Text(
-                productProvider.error!,
-                style: TextStyle(fontSize: 16.sp),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 24.h),
-              ElevatedButton.icon(
-                onPressed: () {
-                  productProvider.clearError();
-                  productProvider.loadProducts();
-                },
-                icon: const Icon(Icons.refresh),
-                label: const Text('Reintentar'),
-              ),
-            ],
+          child: Padding(
+            padding: EdgeInsets.all(24.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, size: 64.sp, color: Colors.red),
+                SizedBox(height: 16.h),
+                Text(
+                  productProvider.error!,
+                  style: TextStyle(fontSize: 16.sp),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 24.h),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    productProvider.clearError();
+                    productProvider.reload();
+                  },
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Reintentar'),
+                ),
+              ],
+            ),
           ),
         ),
       );
     }
 
-    List<Product> filteredProducts = productProvider.products;
-    
-    if (_searchQuery.isNotEmpty) {
-      filteredProducts = productProvider.searchProducts(_searchQuery);
-    }
-    
-    if (_selectedCategory != 'all') {
-      filteredProducts = filteredProducts
-          .where((p) => p.category == _selectedCategory)
-          .toList();
-    }
+    List<Product> filteredProducts = _searchQuery.isEmpty
+        ? productProvider.products
+        : productProvider.searchProducts(_searchQuery);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.products, style: TextStyle(fontSize: 18.sp)),
+        title: Text(
+          l10n.products,
+          style: TextStyle(
+            fontSize: isVerySmall ? 16.sp : (isLarge ? 22.sp : 18.sp),
+          ),
+        ),
         backgroundColor: const Color(0xFF2196F3),
         foregroundColor: Colors.white,
-        actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.filter_list),
-            onSelected: (value) {
-              setState(() {
-                _selectedCategory = value;
-              });
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'all',
-                child: Text('Todas las categorías'),
-              ),
-              PopupMenuItem(value: 'food', child: Text(l10n.food)),
-              PopupMenuItem(value: 'drinks', child: Text(l10n.drinks)),
-              PopupMenuItem(value: 'desserts', child: Text(l10n.desserts)),
-              PopupMenuItem(value: 'others', child: Text(l10n.others)),
-            ],
-          ),
-        ],
       ),
       body: Column(
         children: [
+          // Barra de búsqueda
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.all(isLarge ? 20.w : 16.w),
             color: Colors.white,
             child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
+              onChanged: (value) => setState(() => _searchQuery = value),
               decoration: InputDecoration(
                 hintText: 'Buscar productos...',
-                hintStyle: TextStyle(fontSize: 14.sp),
-                prefixIcon: Icon(Icons.search, size: 20.sp),
+                hintStyle: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+                prefixIcon: Icon(Icons.search, size: isVerySmall ? 18.sp : 20.sp),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
-                        icon: Icon(Icons.clear, size: 20.sp),
-                        onPressed: () {
-                          setState(() {
-                            _searchQuery = '';
-                          });
-                        },
+                        icon: Icon(Icons.clear, size: isVerySmall ? 18.sp : 20.sp),
+                        onPressed: () => setState(() => _searchQuery = ''),
                       )
                     : null,
                 border: OutlineInputBorder(
@@ -134,32 +107,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 fillColor: Colors.grey[100],
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 16.w,
-                  vertical: 12.h,
+                  vertical: isVerySmall ? 10.h : 12.h,
                 ),
               ),
-              style: TextStyle(fontSize: 14.sp),
+              style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
             ),
           ),
 
-          if (_selectedCategory != 'all')
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              color: Colors.blue[50],
-              child: Row(
-                children: [
-                  Chip(
-                    label: Text(_getCategoryName(_selectedCategory, l10n)),
-                    deleteIcon: Icon(Icons.close, size: 18.sp),
-                    onDeleted: () {
-                      setState(() {
-                        _selectedCategory = 'all';
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-
+          // Lista de productos
           Expanded(
             child: filteredProducts.isEmpty
                 ? Center(
@@ -167,30 +122,34 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          _searchQuery.isNotEmpty || _selectedCategory != 'all'
+                          _searchQuery.isNotEmpty
                               ? Icons.search_off
                               : Icons.inventory_2_outlined,
-                          size: 80.sp,
+                          size: isVerySmall ? 60.sp : 80.sp,
                           color: Colors.grey,
                         ),
                         SizedBox(height: 16.h),
                         Text(
-                          _searchQuery.isNotEmpty || _selectedCategory != 'all'
+                          _searchQuery.isNotEmpty
                               ? 'No se encontraron productos'
                               : l10n.noProducts,
-                          style: TextStyle(fontSize: 18.sp, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: isVerySmall ? 14.sp : 18.sp,
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
                   )
-                : isLargeScreen
+                : isLarge
                     ? GridView.builder(
-                        padding: EdgeInsets.all(16.w),
+                        padding: EdgeInsets.all(20.w),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: screenWidth > 1200 ? 3 : 2,
-                          childAspectRatio: 3,
-                          crossAxisSpacing: 16.w,
-                          mainAxisSpacing: 16.h,
+                          crossAxisCount: screenWidth > 1200 ? 4 : 3,
+                          childAspectRatio: 3.5,
+                          crossAxisSpacing: 20.w,
+                          mainAxisSpacing: 20.h,
                         ),
                         itemCount: filteredProducts.length,
                         itemBuilder: (context, index) {
@@ -198,7 +157,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         },
                       )
                     : ListView.builder(
-                        padding: EdgeInsets.all(16.w),
+                        padding: EdgeInsets.all(isLarge ? 20.w : 16.w),
                         itemCount: filteredProducts.length,
                         itemBuilder: (context, index) {
                           return ProductCard(product: filteredProducts[index]);
@@ -215,26 +174,19 @@ class _ProductsScreenState extends State<ProductsScreen> {
           );
         },
         backgroundColor: const Color(0xFF4CAF50),
-        icon: const Icon(Icons.add),
-        label: Text(l10n.add),
+        icon: Icon(Icons.add, size: isVerySmall ? 20.sp : 24.sp),
+        label: Text(
+          l10n.add,
+          style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+        ),
       ),
     );
   }
-
-  String _getCategoryName(String category, AppLocalizations l10n) {
-    switch (category) {
-      case 'food': return l10n.food;
-      case 'drinks': return l10n.drinks;
-      case 'desserts': return l10n.desserts;
-      case 'others': return l10n.others;
-      default: return category;
-    }
-  }
 }
 
-// ============================================================================
-// DIÁLOGO PARA AGREGAR/EDITAR PRODUCTO
-// ============================================================================
+// =============================================================================
+// DIÁLOGO PARA AGREGAR/EDITAR PRODUCTO - SIN CATEGORÍAS
+// =============================================================================
 
 class AddProductDialog extends StatefulWidget {
   final Product? product;
@@ -251,7 +203,6 @@ class _AddProductDialogState extends State<AddProductDialog> {
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
   final _stockController = TextEditingController();
-  String _selectedCategory = 'food';
   String _imagePath = '';
   bool _isSubmitting = false;
 
@@ -263,7 +214,6 @@ class _AddProductDialogState extends State<AddProductDialog> {
       _descriptionController.text = widget.product!.description;
       _priceController.text = widget.product!.price.toString();
       _stockController.text = widget.product!.stock.toString();
-      _selectedCategory = widget.product!.category;
       _imagePath = widget.product!.imagePath;
     }
   }
@@ -279,23 +229,19 @@ class _AddProductDialogState extends State<AddProductDialog> {
 
   Future<void> _pickImage() async {
     try {
-      // ✅ 1. PEDIR PERMISOS PRIMERO
+      print('🔄 Iniciando selección de imagen...');
+      
+      // 1. Pedir permisos (ya no molesta si ya están dados)
       final hasPermission = await AppPermissionHandler.requestStoragePermission(context);
       
       if (!hasPermission) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('⚠️ Necesitas dar permisos para elegir una imagen'),
-              backgroundColor: Colors.orange,
-              duration: Duration(seconds: 2),
-            ),
-          );
-        }
+        print('⚠️ Permisos denegados');
         return;
       }
 
-      // ✅ 2. ABRIR GALERÍA
+      print('✅ Permisos OK, abriendo galería...');
+
+      // 2. Abrir galería
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(
         source: ImageSource.gallery,
@@ -304,27 +250,34 @@ class _AddProductDialogState extends State<AddProductDialog> {
         imageQuality: 85,
       );
 
-      // ✅ 3. GUARDAR RUTA
-      if (image != null && mounted) {
-        setState(() {
-          _imagePath = image.path;
-        });
+      // 3. Guardar ruta
+      if (image != null) {
+        print('✅ Imagen seleccionada: ${image.path}');
         
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('✅ Imagen seleccionada correctamente'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 1),
-          ),
-        );
+        if (mounted) {
+          setState(() {
+            _imagePath = image.path;
+          });
+          
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('✅ Imagen seleccionada correctamente'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+      } else {
+        print('ℹ️ Usuario canceló la selección');
       }
     } catch (e) {
       print('❌ Error al seleccionar imagen: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('❌ Error al seleccionar imagen: $e'),
+            content: Text('❌ Error: ${e.toString()}'),
             backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -336,9 +289,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
       return;
     }
 
-    setState(() {
-      _isSubmitting = true;
-    });
+    setState(() => _isSubmitting = true);
 
     try {
       final productProvider = context.read<ProductProvider>();
@@ -349,9 +300,10 @@ class _AddProductDialogState extends State<AddProductDialog> {
         description: _descriptionController.text.trim(),
         price: double.parse(_priceController.text),
         stock: int.parse(_stockController.text),
-        category: _selectedCategory,
         imagePath: _imagePath,
       );
+
+      print('🔄 Guardando producto: ${product.name}');
 
       bool success;
       if (widget.product == null) {
@@ -361,9 +313,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
       }
 
       if (mounted) {
-        setState(() {
-          _isSubmitting = false;
-        });
+        setState(() => _isSubmitting = false);
 
         if (success) {
           Navigator.pop(context);
@@ -382,6 +332,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
             SnackBar(
               content: Text(productProvider.error ?? '❌ Error desconocido'),
               backgroundColor: Colors.red,
+              duration: const Duration(seconds: 3),
             ),
           );
         }
@@ -389,14 +340,13 @@ class _AddProductDialogState extends State<AddProductDialog> {
     } catch (e) {
       print('❌ Error al guardar producto: $e');
       if (mounted) {
-        setState(() {
-          _isSubmitting = false;
-        });
+        setState(() => _isSubmitting = false);
         
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('❌ Error: $e'),
             backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -409,22 +359,22 @@ class _AddProductDialogState extends State<AddProductDialog> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final isLargeScreen = screenWidth > 600;
+    final isVerySmall = screenWidth < 360;
 
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
       child: Container(
-        width: isLargeScreen ? 600.w : screenWidth * 0.9,
+        width: isLargeScreen ? 600.w : screenWidth * 0.92,
         constraints: BoxConstraints(
-          maxHeight: screenHeight * 0.85,
+          maxHeight: screenHeight * 0.88,
+          minHeight: 400.h,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Header
             Container(
-              padding: EdgeInsets.all(20.w),
+              padding: EdgeInsets.all(isLargeScreen ? 24.w : (isVerySmall ? 16.w : 20.w)),
               decoration: BoxDecoration(
                 color: const Color(0xFF2196F3),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
@@ -432,17 +382,25 @@ class _AddProductDialogState extends State<AddProductDialog> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.product == null ? 'Agregar Producto' : 'Editar Producto',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  Expanded(
+                    child: Text(
+                      widget.product == null ? 'Agregar Producto' : 'Editar Producto',
+                      style: TextStyle(
+                        fontSize: isVerySmall ? 16.sp : (isLargeScreen ? 22.sp : 20.sp),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: isVerySmall ? 20.sp : 24.sp,
+                    ),
                   ),
                 ],
               ),
@@ -451,7 +409,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
             // Form (scrolleable)
             Flexible(
               child: SingleChildScrollView(
-                padding: EdgeInsets.all(20.w),
+                padding: EdgeInsets.all(isLargeScreen ? 24.w : (isVerySmall ? 16.w : 20.w)),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -463,17 +421,21 @@ class _AddProductDialogState extends State<AddProductDialog> {
                         controller: _nameController,
                         decoration: InputDecoration(
                           labelText: l10n.name,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
+                          labelStyle: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                          prefixIcon: Icon(Icons.label, size: isVerySmall ? 18.sp : 20.sp),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: isVerySmall ? 12.h : 14.h,
                           ),
-                          prefixIcon: const Icon(Icons.label),
                         ),
+                        style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'El nombre es obligatorio';
                           }
                           if (value.trim().length < 2) {
-                            return 'El nombre debe tener al menos 2 caracteres';
+                            return 'Mínimo 2 caracteres';
                           }
                           return null;
                         },
@@ -486,11 +448,15 @@ class _AddProductDialogState extends State<AddProductDialog> {
                         controller: _descriptionController,
                         decoration: InputDecoration(
                           labelText: l10n.description,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
+                          labelStyle: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                          prefixIcon: Icon(Icons.description, size: isVerySmall ? 18.sp : 20.sp),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: isVerySmall ? 12.h : 14.h,
                           ),
-                          prefixIcon: const Icon(Icons.description),
                         ),
+                        style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
                         maxLines: 3,
                         textCapitalization: TextCapitalization.sentences,
                       ),
@@ -501,11 +467,15 @@ class _AddProductDialogState extends State<AddProductDialog> {
                         controller: _priceController,
                         decoration: InputDecoration(
                           labelText: l10n.price,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
+                          labelStyle: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                          prefixIcon: Icon(Icons.attach_money, size: isVerySmall ? 18.sp : 20.sp),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: isVerySmall ? 12.h : 14.h,
                           ),
-                          prefixIcon: const Icon(Icons.attach_money),
                         ),
+                        style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -513,7 +483,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                           }
                           final price = double.tryParse(value);
                           if (price == null || price <= 0) {
-                            return 'Ingrese un precio válido mayor a 0';
+                            return 'Precio inválido';
                           }
                           return null;
                         },
@@ -525,11 +495,15 @@ class _AddProductDialogState extends State<AddProductDialog> {
                         controller: _stockController,
                         decoration: InputDecoration(
                           labelText: l10n.stock,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
+                          labelStyle: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                          prefixIcon: Icon(Icons.inventory, size: isVerySmall ? 18.sp : 20.sp),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: isVerySmall ? 12.h : 14.h,
                           ),
-                          prefixIcon: const Icon(Icons.inventory),
                         ),
+                        style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -537,33 +511,9 @@ class _AddProductDialogState extends State<AddProductDialog> {
                           }
                           final stock = int.tryParse(value);
                           if (stock == null || stock < 0) {
-                            return 'Ingrese un stock válido (0 o mayor)';
+                            return 'Stock inválido';
                           }
                           return null;
-                        },
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // Categoría
-                      DropdownButtonFormField<String>(
-                        value: _selectedCategory,
-                        decoration: InputDecoration(
-                          labelText: l10n.category,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          prefixIcon: const Icon(Icons.category),
-                        ),
-                        items: [
-                          DropdownMenuItem(value: 'food', child: Text(l10n.food)),
-                          DropdownMenuItem(value: 'drinks', child: Text(l10n.drinks)),
-                          DropdownMenuItem(value: 'desserts', child: Text(l10n.desserts)),
-                          DropdownMenuItem(value: 'others', child: Text(l10n.others)),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedCategory = value!;
-                          });
                         },
                       ),
                       SizedBox(height: 20.h),
@@ -574,8 +524,8 @@ class _AddProductDialogState extends State<AddProductDialog> {
                           child: Stack(
                             children: [
                               Container(
-                                width: 150.w,
-                                height: 150.w,
+                                width: isVerySmall ? 120.w : 150.w,
+                                height: isVerySmall ? 120.w : 150.w,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12.r),
                                   image: DecorationImage(
@@ -588,16 +538,14 @@ class _AddProductDialogState extends State<AddProductDialog> {
                                 top: 5,
                                 right: 5,
                                 child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _imagePath = '';
-                                    });
-                                  },
+                                  onPressed: () => setState(() => _imagePath = ''),
                                   icon: const Icon(Icons.close),
                                   style: IconButton.styleFrom(
                                     backgroundColor: Colors.red,
                                     foregroundColor: Colors.white,
+                                    padding: EdgeInsets.all(8.w),
                                   ),
+                                  iconSize: isVerySmall ? 16.sp : 20.sp,
                                 ),
                               ),
                             ],
@@ -605,16 +553,17 @@ class _AddProductDialogState extends State<AddProductDialog> {
                         ),
                       if (_imagePath.isNotEmpty) SizedBox(height: 16.h),
 
-                      // Botón para agregar/cambiar imagen
+                      // Botón para agregar imagen
                       OutlinedButton.icon(
                         onPressed: _pickImage,
-                        icon: const Icon(Icons.image),
-                        label: Text(_imagePath.isEmpty ? 'Agregar imagen' : 'Cambiar imagen'),
+                        icon: Icon(Icons.image, size: isVerySmall ? 18.sp : 20.sp),
+                        label: Text(
+                          _imagePath.isEmpty ? 'Agregar imagen' : 'Cambiar imagen',
+                          style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+                        ),
                         style: OutlinedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 50.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
+                          minimumSize: Size(double.infinity, isVerySmall ? 44.h : 50.h),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                         ),
                       ),
                     ],
@@ -625,19 +574,20 @@ class _AddProductDialogState extends State<AddProductDialog> {
 
             // Botones de acción
             Padding(
-              padding: EdgeInsets.all(20.w),
+              padding: EdgeInsets.all(isLargeScreen ? 24.w : (isVerySmall ? 16.w : 20.w)),
               child: Row(
                 children: [
                   Expanded(
                     child: OutlinedButton(
                       onPressed: _isSubmitting ? null : () => Navigator.pop(context),
                       style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
+                        padding: EdgeInsets.symmetric(vertical: isVerySmall ? 14.h : 16.h),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                       ),
-                      child: Text(l10n.cancel),
+                      child: Text(
+                        l10n.cancel,
+                        style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+                      ),
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -646,10 +596,8 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       onPressed: _isSubmitting ? null : _saveProduct,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF4CAF50),
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
+                        padding: EdgeInsets.symmetric(vertical: isVerySmall ? 14.h : 16.h),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                       ),
                       child: _isSubmitting
                           ? SizedBox(
@@ -660,7 +608,10 @@ class _AddProductDialogState extends State<AddProductDialog> {
                                 strokeWidth: 2,
                               ),
                             )
-                          : Text(l10n.save),
+                          : Text(
+                              l10n.save,
+                              style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+                            ),
                     ),
                   ),
                 ],
