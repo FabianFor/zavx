@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import '../l10n/app_localizations.dart';
+import '../core/utils/theme_helper.dart';
 import '../providers/business_provider.dart';
 import '../services/permission_handler.dart';
 
@@ -53,7 +54,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _pickLogo() async {
     try {
-      // ✅ PEDIR PERMISOS PRIMERO
       final hasPermission = await AppPermissionHandler.requestStoragePermission(context);
       
       if (!hasPermission) {
@@ -69,7 +69,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return;
       }
 
-      // ✅ ABRIR GALERÍA
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(
         source: ImageSource.gallery,
@@ -142,14 +141,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = ThemeHelper(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isLargeScreen = screenWidth > 600;
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackground,
       appBar: AppBar(
         title: Text(l10n.businessProfile, style: TextStyle(fontSize: 18.sp)),
-        backgroundColor: const Color(0xFF2196F3),
-        foregroundColor: Colors.white,
+        backgroundColor: theme.appBarBackground,
+        foregroundColor: theme.appBarForeground,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(isLargeScreen ? 32.w : 20.w),
@@ -169,9 +170,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 150.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.grey[200],
+                          color: theme.surfaceColor,
                           border: Border.all(
-                            color: const Color(0xFF2196F3),
+                            color: theme.primary,
                             width: 3,
                           ),
                         ),
@@ -184,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     return Icon(
                                       Icons.store,
                                       size: 60.sp,
-                                      color: Colors.grey[400],
+                                      color: theme.iconColorLight,
                                     );
                                   },
                                 ),
@@ -192,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             : Icon(
                                 Icons.store,
                                 size: 60.sp,
-                                color: Colors.grey[400],
+                                color: theme.iconColorLight,
                               ),
                       ),
                       Positioned(
@@ -200,8 +201,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         right: 0,
                         child: Container(
                           padding: EdgeInsets.all(8.w),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF2196F3),
+                          decoration: BoxDecoration(
+                            color: theme.primary,
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
@@ -221,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   'Toca para cambiar el logo',
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: Colors.grey[600],
+                    color: theme.textSecondary,
                   ),
                 ),
               ),
@@ -230,12 +231,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Nombre del negocio
               TextFormField(
                 controller: _businessNameController,
+                style: TextStyle(color: theme.textPrimary),
                 decoration: InputDecoration(
                   labelText: l10n.businessName,
+                  labelStyle: TextStyle(color: theme.textSecondary),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  prefixIcon: const Icon(Icons.store),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: theme.borderColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: theme.primary, width: 2),
+                  ),
+                  prefixIcon: Icon(Icons.store, color: theme.iconColor),
+                  filled: true,
+                  fillColor: theme.inputFillColor,
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -250,12 +263,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Dirección
               TextFormField(
                 controller: _addressController,
+                style: TextStyle(color: theme.textPrimary),
                 decoration: InputDecoration(
                   labelText: l10n.address,
+                  labelStyle: TextStyle(color: theme.textSecondary),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  prefixIcon: const Icon(Icons.location_on),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: theme.borderColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: theme.primary, width: 2),
+                  ),
+                  prefixIcon: Icon(Icons.location_on, color: theme.iconColor),
+                  filled: true,
+                  fillColor: theme.inputFillColor,
                 ),
                 maxLines: 2,
                 textCapitalization: TextCapitalization.sentences,
@@ -265,12 +290,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Teléfono
               TextFormField(
                 controller: _phoneController,
+                style: TextStyle(color: theme.textPrimary),
                 decoration: InputDecoration(
                   labelText: l10n.phone,
+                  labelStyle: TextStyle(color: theme.textSecondary),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  prefixIcon: const Icon(Icons.phone),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: theme.borderColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: theme.primary, width: 2),
+                  ),
+                  prefixIcon: Icon(Icons.phone, color: theme.iconColor),
+                  filled: true,
+                  fillColor: theme.inputFillColor,
                 ),
                 keyboardType: TextInputType.phone,
               ),
@@ -279,12 +316,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Email
               TextFormField(
                 controller: _emailController,
+                style: TextStyle(color: theme.textPrimary),
                 decoration: InputDecoration(
                   labelText: l10n.email,
+                  labelStyle: TextStyle(color: theme.textSecondary),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  prefixIcon: const Icon(Icons.email),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: theme.borderColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: theme.primary, width: 2),
+                  ),
+                  prefixIcon: Icon(Icons.email, color: theme.iconColor),
+                  filled: true,
+                  fillColor: theme.inputFillColor,
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -305,7 +354,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: ElevatedButton(
                   onPressed: _isSubmitting ? null : _saveProfile,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4CAF50),
+                    backgroundColor: theme.buttonPrimary,
+                    foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),

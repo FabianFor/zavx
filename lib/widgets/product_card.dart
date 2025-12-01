@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
+import '../core/utils/theme_helper.dart';
 import '../models/product.dart';
 import '../providers/product_provider.dart';
 import '../providers/settings_provider.dart';
@@ -16,17 +17,19 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = ThemeHelper(context);
     final settingsProvider = context.read<SettingsProvider>();
     final screenWidth = MediaQuery.of(context).size.width;
     
-    // Breakpoints
     final isVerySmall = screenWidth < 360;
     final isLarge = screenWidth >= 900;
 
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
+      color: theme.cardBackground,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      elevation: 2,
+      elevation: theme.isDark ? 4 : 2,
+      shadowColor: Colors.black.withOpacity(theme.isDark ? 0.3 : 0.1),
       child: InkWell(
         onTap: () => _showProductDetails(context),
         borderRadius: BorderRadius.circular(12.r),
@@ -41,7 +44,7 @@ class ProductCard extends StatelessWidget {
                   width: isVerySmall ? 70.w : (isLarge ? 100.w : 80.w),
                   height: isVerySmall ? 70.w : (isLarge ? 100.w : 80.w),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: theme.surfaceColor,
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: product.imagePath.isNotEmpty
@@ -55,7 +58,7 @@ class ProductCard extends StatelessWidget {
                               return Icon(
                                 Icons.broken_image,
                                 size: isVerySmall ? 30.sp : 40.sp,
-                                color: Colors.grey,
+                                color: theme.iconColorLight,
                               );
                             },
                           ),
@@ -63,7 +66,7 @@ class ProductCard extends StatelessWidget {
                       : Icon(
                           Icons.inventory_2,
                           size: isVerySmall ? 30.sp : 40.sp,
-                          color: Colors.grey,
+                          color: theme.iconColorLight,
                         ),
                 ),
               ),
@@ -74,24 +77,23 @@ class ProductCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Nombre - PROTEGIDO
                     Text(
                       product.name,
                       style: TextStyle(
                         fontSize: isVerySmall ? 14.sp : (isLarge ? 18.sp : 16.sp),
                         fontWeight: FontWeight.bold,
+                        color: theme.textPrimary,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 6.h),
                     
-                    // Stock - PROTEGIDO
                     Text(
                       '${l10n.stock}: ${product.stock}',
                       style: TextStyle(
                         fontSize: isVerySmall ? 11.sp : 12.sp,
-                        color: product.stock <= 5 ? Colors.red : Colors.grey[600],
+                        color: product.stock <= 5 ? theme.error : theme.textSecondary,
                         fontWeight: product.stock <= 5 ? FontWeight.bold : FontWeight.normal,
                       ),
                       maxLines: 1,
@@ -106,7 +108,6 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Precio - PROTEGIDO
                   Container(
                     constraints: BoxConstraints(maxWidth: isVerySmall ? 80.w : 100.w),
                     child: Text(
@@ -114,7 +115,7 @@ class ProductCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: isVerySmall ? 14.sp : (isLarge ? 20.sp : 18.sp),
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF4CAF50),
+                        color: theme.success,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -123,26 +124,23 @@ class ProductCard extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   
-                  // Botones de acción
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Botón editar
                       IconButton(
                         onPressed: () => _editProduct(context),
                         icon: const Icon(Icons.edit),
-                        color: const Color(0xFF2196F3),
+                        color: theme.primary,
                         iconSize: isVerySmall ? 18.sp : 20.sp,
                         padding: EdgeInsets.all(isVerySmall ? 6.w : 8.w),
                         constraints: const BoxConstraints(),
                         tooltip: l10n.edit,
                       ),
                       SizedBox(width: 4.w),
-                      // Botón eliminar
                       IconButton(
                         onPressed: () => _confirmDelete(context),
                         icon: const Icon(Icons.delete),
-                        color: Colors.red,
+                        color: theme.error,
                         iconSize: isVerySmall ? 18.sp : 20.sp,
                         padding: EdgeInsets.all(isVerySmall ? 6.w : 8.w),
                         constraints: const BoxConstraints(),
@@ -161,6 +159,7 @@ class ProductCard extends StatelessWidget {
 
   void _showProductDetails(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = ThemeHelper(context);
     final settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -173,30 +172,27 @@ class ProductCard extends StatelessWidget {
       builder: (context) => Container(
         height: screenHeight * 0.85,
         decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: theme.cardBackground,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
         ),
         child: Column(
           children: [
-            // Indicador de arrastre
             Container(
               margin: EdgeInsets.only(top: 12.h),
               width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: theme.iconColorLight,
                 borderRadius: BorderRadius.circular(2.r),
               ),
             ),
             
-            // Contenido
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(isVerySmall ? 16.w : 20.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Imagen con Hero
                     if (product.imagePath.isNotEmpty)
                       Center(
                         child: Hero(
@@ -205,7 +201,7 @@ class ProductCard extends StatelessWidget {
                             width: isVerySmall ? 160.w : 200.w,
                             height: isVerySmall ? 160.w : 200.w,
                             decoration: BoxDecoration(
-                              color: Colors.grey[200],
+                              color: theme.surfaceColor,
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: ClipRRect(
@@ -217,7 +213,7 @@ class ProductCard extends StatelessWidget {
                                   return Icon(
                                     Icons.broken_image,
                                     size: isVerySmall ? 60.sp : 80.sp,
-                                    color: Colors.grey,
+                                    color: theme.iconColorLight,
                                   );
                                 },
                               ),
@@ -227,23 +223,23 @@ class ProductCard extends StatelessWidget {
                       ),
                     SizedBox(height: 24.h),
 
-                    // Nombre
                     Text(
                       product.name,
                       style: TextStyle(
                         fontSize: isVerySmall ? 20.sp : 24.sp,
                         fontWeight: FontWeight.bold,
+                        color: theme.textPrimary,
                       ),
                     ),
                     SizedBox(height: 16.h),
 
-                    // Descripción
                     if (product.description.isNotEmpty) ...[
                       Text(
                         l10n.description,
                         style: TextStyle(
                           fontSize: isVerySmall ? 14.sp : 16.sp,
                           fontWeight: FontWeight.bold,
+                          color: theme.textPrimary,
                         ),
                       ),
                       SizedBox(height: 8.h),
@@ -251,17 +247,16 @@ class ProductCard extends StatelessWidget {
                         product.description,
                         style: TextStyle(
                           fontSize: isVerySmall ? 13.sp : 14.sp,
-                          color: Colors.grey[700],
+                          color: theme.textSecondary,
                         ),
                       ),
                       SizedBox(height: 24.h),
                     ],
 
-                    // Detalles
                     Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: theme.surfaceColor,
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Column(
@@ -271,15 +266,15 @@ class ProductCard extends StatelessWidget {
                             icon: Icons.attach_money,
                             label: l10n.price,
                             value: settingsProvider.formatPrice(product.price),
-                            valueColor: const Color(0xFF4CAF50),
+                            valueColor: theme.success,
                           ),
-                          Divider(height: 24.h),
+                          Divider(height: 24.h, color: theme.dividerColor),
                           _buildDetailRow(
                             context,
                             icon: Icons.inventory_2,
                             label: l10n.stock,
                             value: '${product.stock} unidades',
-                            valueColor: product.stock <= 5 ? Colors.red : Colors.black87,
+                            valueColor: product.stock <= 5 ? theme.error : theme.textPrimary,
                           ),
                         ],
                       ),
@@ -289,7 +284,6 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             
-            // Botones de acción
             Padding(
               padding: EdgeInsets.all(isVerySmall ? 16.w : 20.w),
               child: Row(
@@ -306,7 +300,8 @@ class ProductCard extends StatelessWidget {
                         style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
                       ),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color(0xFF2196F3),
+                        foregroundColor: theme.primary,
+                        side: BorderSide(color: theme.borderColor),
                         padding: EdgeInsets.symmetric(vertical: isVerySmall ? 14.h : 16.h),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                       ),
@@ -325,7 +320,7 @@ class ProductCard extends StatelessWidget {
                         style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: theme.error,
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(vertical: isVerySmall ? 14.h : 16.h),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
@@ -348,19 +343,20 @@ class ProductCard extends StatelessWidget {
     required String value,
     Color? valueColor,
   }) {
+    final theme = ThemeHelper(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isVerySmall = screenWidth < 360;
 
     return Row(
       children: [
-        Icon(icon, size: isVerySmall ? 20.sp : 24.sp, color: Colors.grey[600]),
+        Icon(icon, size: isVerySmall ? 20.sp : 24.sp, color: theme.iconColor),
         SizedBox(width: 12.w),
         Expanded(
           child: Text(
             label,
             style: TextStyle(
               fontSize: isVerySmall ? 12.sp : 14.sp,
-              color: Colors.grey[600],
+              color: theme.textSecondary,
             ),
           ),
         ),
@@ -370,7 +366,7 @@ class ProductCard extends StatelessWidget {
             style: TextStyle(
               fontSize: isVerySmall ? 14.sp : 16.sp,
               fontWeight: FontWeight.bold,
-              color: valueColor ?? Colors.black87,
+              color: valueColor ?? theme.textPrimary,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -390,21 +386,26 @@ class ProductCard extends StatelessWidget {
 
   void _confirmDelete(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = ThemeHelper(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isVerySmall = screenWidth < 360;
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: theme.cardBackground,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
         title: Row(
           children: [
-            Icon(Icons.warning_amber_rounded, color: Colors.orange, size: isVerySmall ? 20.sp : 24.sp),
+            Icon(Icons.warning_amber_rounded, color: theme.warning, size: isVerySmall ? 20.sp : 24.sp),
             SizedBox(width: 12.w),
             Expanded(
               child: Text(
                 l10n.confirmDelete,
-                style: TextStyle(fontSize: isVerySmall ? 16.sp : 18.sp),
+                style: TextStyle(
+                  fontSize: isVerySmall ? 16.sp : 18.sp,
+                  color: theme.textPrimary,
+                ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -417,26 +418,29 @@ class ProductCard extends StatelessWidget {
           children: [
             Text(
               '¿Estás seguro de eliminar este producto?',
-              style: TextStyle(fontSize: isVerySmall ? 13.sp : 16.sp),
+              style: TextStyle(
+                fontSize: isVerySmall ? 13.sp : 16.sp,
+                color: theme.textPrimary,
+              ),
             ),
             SizedBox(height: 12.h),
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: theme.errorWithOpacity(0.1),
                 borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: Colors.red.withOpacity(0.3)),
+                border: Border.all(color: theme.errorWithOpacity(0.3)),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: Colors.red, size: isVerySmall ? 16.sp : 20.sp),
+                  Icon(Icons.info_outline, color: theme.error, size: isVerySmall ? 16.sp : 20.sp),
                   SizedBox(width: 8.w),
                   Expanded(
                     child: Text(
                       l10n.cannotUndo,
                       style: TextStyle(
                         fontSize: isVerySmall ? 11.sp : 12.sp,
-                        color: Colors.red[700],
+                        color: theme.error,
                       ),
                     ),
                   ),
@@ -449,6 +453,7 @@ class ProductCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: isVerySmall ? 12.sp : 14.sp,
                 fontWeight: FontWeight.bold,
+                color: theme.textPrimary,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -460,7 +465,10 @@ class ProductCard extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             child: Text(
               l10n.cancel,
-              style: TextStyle(fontSize: isVerySmall ? 12.sp : 14.sp),
+              style: TextStyle(
+                fontSize: isVerySmall ? 12.sp : 14.sp,
+                color: theme.textSecondary,
+              ),
             ),
           ),
           ElevatedButton(
@@ -482,7 +490,7 @@ class ProductCard extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: theme.error,
               foregroundColor: Colors.white,
             ),
             child: Text(

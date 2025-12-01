@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
+import '../core/utils/theme_helper.dart';
 import '../providers/settings_provider.dart';
 import 'profile_screen.dart';
 
@@ -10,53 +12,55 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = ThemeHelper(context);
     final settingsProvider = context.watch<SettingsProvider>();
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth > 600;
     final isLargeTablet = screenWidth > 900;
     
-    // Ancho máximo para tablets
     final double maxWidth = isLargeTablet ? 900 : (isTablet ? 700 : double.infinity);
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackground,
       appBar: AppBar(
         title: Text(l10n.settings),
-        backgroundColor: isDark ? null : const Color(0xFF2196F3),
-        foregroundColor: Colors.white,
+        backgroundColor: theme.appBarBackground,
+        foregroundColor: theme.appBarForeground,
       ),
       body: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: maxWidth),
           child: ListView(
-            padding: EdgeInsets.all(isTablet ? 24 : 16),
+            padding: EdgeInsets.all(isTablet ? 24.w : 16.w),
             children: [
               // MODO OSCURO
               _buildSettingCard(
                 context: context,
+                theme: theme,
                 icon: settingsProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                iconColor: const Color(0xFF2196F3),
+                iconColor: theme.primary,
                 title: _getDarkModeText(l10n),
                 subtitle: _getDarkModeSubtitleText(l10n),
                 trailing: Switch(
                   value: settingsProvider.isDarkMode,
                   onChanged: (value) => settingsProvider.toggleDarkMode(),
-                  activeColor: const Color(0xFF2196F3),
+                  activeColor: theme.primary,
                 ),
                 isTablet: isTablet,
               ),
               
-              SizedBox(height: isTablet ? 20 : 16),
+              SizedBox(height: isTablet ? 20.h : 16.h),
 
               // PERFIL DEL NEGOCIO
               _buildSettingCard(
                 context: context,
+                theme: theme,
                 icon: Icons.store,
-                iconColor: const Color(0xFF2196F3),
+                iconColor: theme.primary,
                 title: l10n.businessProfile,
                 subtitle: _getBusinessProfileSubtitleText(l10n),
-                trailing: const Icon(Icons.chevron_right),
+                trailing: Icon(Icons.chevron_right, color: theme.iconColor),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ProfileScreen()),
@@ -64,35 +68,37 @@ class SettingsScreen extends StatelessWidget {
                 isTablet: isTablet,
               ),
 
-              SizedBox(height: isTablet ? 20 : 16),
+              SizedBox(height: isTablet ? 20.h : 16.h),
 
               // IDIOMA
               _buildSettingCard(
                 context: context,
+                theme: theme,
                 icon: Icons.language,
-                iconColor: const Color(0xFF4CAF50),
+                iconColor: theme.success,
                 title: l10n.language,
                 subtitle: '${settingsProvider.currentLanguageFlag} ${settingsProvider.currentLanguageName}',
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => _showLanguageDialog(context, isTablet),
+                trailing: Icon(Icons.chevron_right, color: theme.iconColor),
+                onTap: () => _showLanguageDialog(context, isTablet, theme),
                 isTablet: isTablet,
               ),
 
-              SizedBox(height: isTablet ? 20 : 16),
+              SizedBox(height: isTablet ? 20.h : 16.h),
 
               // MONEDA
               _buildSettingCard(
                 context: context,
+                theme: theme,
                 icon: Icons.attach_money,
                 iconColor: const Color(0xFF9C27B0),
                 title: l10n.currency,
                 subtitle: '${settingsProvider.currentCurrencyFlag} ${settingsProvider.currentCurrencyName}',
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => _showCurrencyDialog(context, isTablet),
+                trailing: Icon(Icons.chevron_right, color: theme.iconColor),
+                onTap: () => _showCurrencyDialog(context, isTablet, theme),
                 isTablet: isTablet,
               ),
 
-              SizedBox(height: isTablet ? 48 : 32),
+              SizedBox(height: isTablet ? 48.h : 32.h),
 
               // INFO DE LA APP
               Center(
@@ -101,17 +107,17 @@ class SettingsScreen extends StatelessWidget {
                     Text(
                       'MiNegocio',
                       style: TextStyle(
-                        fontSize: isTablet ? 22 : 18,
+                        fontSize: isTablet ? 22.sp : 18.sp,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
+                        color: theme.textSecondary,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     Text(
                       'Versión 1.0.0',
                       style: TextStyle(
-                        fontSize: isTablet ? 16 : 14,
-                        color: Colors.grey[500],
+                        fontSize: isTablet ? 16.sp : 14.sp,
+                        color: theme.textHint,
                       ),
                     ),
                   ],
@@ -126,6 +132,7 @@ class SettingsScreen extends StatelessWidget {
 
   Widget _buildSettingCard({
     required BuildContext context,
+    required ThemeHelper theme,
     required IconData icon,
     required Color iconColor,
     required String title,
@@ -134,19 +141,21 @@ class SettingsScreen extends StatelessWidget {
     VoidCallback? onTap,
     required bool isTablet,
   }) {
-    final fontSize = isTablet ? 18.0 : 16.0;
-    final subtitleSize = isTablet ? 15.0 : 13.0;
-    final iconSize = isTablet ? 32.0 : 28.0;
-    final padding = isTablet ? 20.0 : 16.0;
+    final fontSize = isTablet ? 18.0.sp : 16.0.sp;
+    final subtitleSize = isTablet ? 15.0.sp : 13.0.sp;
+    final iconSize = isTablet ? 32.0.sp : 28.0.sp;
+    final padding = isTablet ? 20.0.w : 16.0.w;
 
     return Card(
-      elevation: 2,
+      elevation: theme.isDark ? 4 : 2,
+      color: theme.cardBackground,
+      shadowColor: Colors.black.withOpacity(theme.isDark ? 0.3 : 0.1),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: padding,
@@ -155,10 +164,10 @@ class SettingsScreen extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.all(isTablet ? 14 : 12),
+                padding: EdgeInsets.all(isTablet ? 14.w : 12.w),
                 decoration: BoxDecoration(
                   color: iconColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Icon(
                   icon,
@@ -166,7 +175,7 @@ class SettingsScreen extends StatelessWidget {
                   size: iconSize,
                 ),
               ),
-              SizedBox(width: isTablet ? 20 : 16),
+              SizedBox(width: isTablet ? 20.w : 16.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,20 +185,21 @@ class SettingsScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: fontSize,
                         fontWeight: FontWeight.w600,
+                        color: theme.textPrimary,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 4.h),
                     Text(
                       subtitle,
                       style: TextStyle(
                         fontSize: subtitleSize,
-                        color: Colors.grey[600],
+                        color: theme.textSecondary,
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: 12),
+              SizedBox(width: 12.w),
               trailing,
             ],
           ),
@@ -198,7 +208,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _showLanguageDialog(BuildContext context, bool isTablet) {
+  void _showLanguageDialog(BuildContext context, bool isTablet, ThemeHelper theme) {
     final l10n = AppLocalizations.of(context)!;
     final settingsProvider = context.read<SettingsProvider>();
     final screenHeight = MediaQuery.of(context).size.height;
@@ -206,12 +216,13 @@ class SettingsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => Dialog(
+        backgroundColor: theme.cardBackground,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
         ),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: isTablet ? 500 : 400,
+            maxWidth: isTablet ? 500.w : 400.w,
             maxHeight: screenHeight * 0.7,
           ),
           child: Column(
@@ -219,11 +230,11 @@ class SettingsScreen extends StatelessWidget {
             children: [
               // Header
               Container(
-                padding: EdgeInsets.all(isTablet ? 24 : 20),
+                padding: EdgeInsets.all(isTablet ? 24.w : 20.w),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2196F3),
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(20),
+                  color: theme.primary,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20.r),
                   ),
                 ),
                 child: Row(
@@ -231,14 +242,14 @@ class SettingsScreen extends StatelessWidget {
                     Icon(
                       Icons.language,
                       color: Colors.white,
-                      size: isTablet ? 28 : 24,
+                      size: isTablet ? 28.sp : 24.sp,
                     ),
-                    SizedBox(width: isTablet ? 16 : 12),
+                    SizedBox(width: isTablet ? 16.w : 12.w),
                     Expanded(
                       child: Text(
                         l10n.selectLanguage,
                         style: TextStyle(
-                          fontSize: isTablet ? 22 : 20,
+                          fontSize: isTablet ? 22.sp : 20.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -247,7 +258,7 @@ class SettingsScreen extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.close, color: Colors.white),
                       onPressed: () => Navigator.pop(context),
-                      iconSize: isTablet ? 26 : 24,
+                      iconSize: isTablet ? 26.sp : 24.sp,
                     ),
                   ],
                 ),
@@ -257,7 +268,7 @@ class SettingsScreen extends StatelessWidget {
               Flexible(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
                   itemCount: SettingsProvider.supportedLanguages.length,
                   itemBuilder: (context, index) {
                     final entry = SettingsProvider.supportedLanguages.entries.elementAt(index);
@@ -265,31 +276,32 @@ class SettingsScreen extends StatelessWidget {
                     
                     return ListTile(
                       contentPadding: EdgeInsets.symmetric(
-                        horizontal: isTablet ? 28 : 24,
-                        vertical: isTablet ? 12 : 8,
+                        horizontal: isTablet ? 28.w : 24.w,
+                        vertical: isTablet ? 12.h : 8.h,
                       ),
                       leading: Text(
                         entry.value['flag']!,
-                        style: TextStyle(fontSize: isTablet ? 32 : 28),
+                        style: TextStyle(fontSize: isTablet ? 32.sp : 28.sp),
                       ),
                       title: Text(
                         entry.value['name']!,
                         style: TextStyle(
-                          fontSize: isTablet ? 18 : 16,
+                          fontSize: isTablet ? 18.sp : 16.sp,
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: theme.textPrimary,
                         ),
                       ),
                       trailing: isSelected 
                           ? Icon(
                               Icons.check_circle,
-                              color: const Color(0xFF2196F3),
-                              size: isTablet ? 28 : 24,
+                              color: theme.primary,
+                              size: isTablet ? 28.sp : 24.sp,
                             )
                           : null,
                       selected: isSelected,
-                      selectedTileColor: const Color(0xFF2196F3).withOpacity(0.1),
+                      selectedTileColor: theme.primaryWithOpacity(0.1),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       onTap: () {
                         settingsProvider.setLanguage(entry.key);
@@ -306,7 +318,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _showCurrencyDialog(BuildContext context, bool isTablet) {
+  void _showCurrencyDialog(BuildContext context, bool isTablet, ThemeHelper theme) {
     final l10n = AppLocalizations.of(context)!;
     final settingsProvider = context.read<SettingsProvider>();
     final screenHeight = MediaQuery.of(context).size.height;
@@ -314,12 +326,13 @@ class SettingsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => Dialog(
+        backgroundColor: theme.cardBackground,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
         ),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: isTablet ? 600 : 450,
+            maxWidth: isTablet ? 600.w : 450.w,
             maxHeight: screenHeight * 0.8,
           ),
           child: Column(
@@ -327,11 +340,11 @@ class SettingsScreen extends StatelessWidget {
             children: [
               // Header
               Container(
-                padding: EdgeInsets.all(isTablet ? 24 : 20),
+                padding: EdgeInsets.all(isTablet ? 24.w : 20.w),
                 decoration: BoxDecoration(
                   color: const Color(0xFF9C27B0),
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(20),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20.r),
                   ),
                 ),
                 child: Row(
@@ -339,14 +352,14 @@ class SettingsScreen extends StatelessWidget {
                     Icon(
                       Icons.attach_money,
                       color: Colors.white,
-                      size: isTablet ? 28 : 24,
+                      size: isTablet ? 28.sp : 24.sp,
                     ),
-                    SizedBox(width: isTablet ? 16 : 12),
+                    SizedBox(width: isTablet ? 16.w : 12.w),
                     Expanded(
                       child: Text(
                         l10n.selectCurrency,
                         style: TextStyle(
-                          fontSize: isTablet ? 22 : 20,
+                          fontSize: isTablet ? 22.sp : 20.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -355,7 +368,7 @@ class SettingsScreen extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.close, color: Colors.white),
                       onPressed: () => Navigator.pop(context),
-                      iconSize: isTablet ? 26 : 24,
+                      iconSize: isTablet ? 26.sp : 24.sp,
                     ),
                   ],
                 ),
@@ -365,7 +378,7 @@ class SettingsScreen extends StatelessWidget {
               Flexible(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
                   itemCount: SettingsProvider.supportedCurrencies.length,
                   itemBuilder: (context, index) {
                     final entry = SettingsProvider.supportedCurrencies.entries.elementAt(index);
@@ -373,38 +386,39 @@ class SettingsScreen extends StatelessWidget {
                     
                     return ListTile(
                       contentPadding: EdgeInsets.symmetric(
-                        horizontal: isTablet ? 28 : 24,
-                        vertical: isTablet ? 12 : 8,
+                        horizontal: isTablet ? 28.w : 24.w,
+                        vertical: isTablet ? 12.h : 8.h,
                       ),
                       leading: Text(
                         entry.value['flag']!,
-                        style: TextStyle(fontSize: isTablet ? 32 : 28),
+                        style: TextStyle(fontSize: isTablet ? 32.sp : 28.sp),
                       ),
                       title: Text(
                         entry.value['name']!,
                         style: TextStyle(
-                          fontSize: isTablet ? 18 : 16,
+                          fontSize: isTablet ? 18.sp : 16.sp,
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: theme.textPrimary,
                         ),
                       ),
                       subtitle: Text(
                         entry.value['symbol']!,
                         style: TextStyle(
-                          fontSize: isTablet ? 16 : 14,
-                          color: Colors.grey[600],
+                          fontSize: isTablet ? 16.sp : 14.sp,
+                          color: theme.textSecondary,
                         ),
                       ),
                       trailing: isSelected 
                           ? Icon(
                               Icons.check_circle,
                               color: const Color(0xFF9C27B0),
-                              size: isTablet ? 28 : 24,
+                              size: isTablet ? 28.sp : 24.sp,
                             )
                           : null,
                       selected: isSelected,
                       selectedTileColor: const Color(0xFF9C27B0).withOpacity(0.1),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       onTap: () {
                         settingsProvider.setCurrency(entry.key);

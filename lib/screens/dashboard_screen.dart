@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
-import '../core/constants/app_colors.dart';
-import '../core/constants/app_spacing.dart';
-import '../core/constants/app_typography.dart';
+import '../core/utils/theme_helper.dart';
 import '../providers/business_provider.dart';
 import '../providers/product_provider.dart';
 import 'products_screen.dart';
@@ -18,16 +16,18 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = ThemeHelper(context);
     final businessProvider = context.watch<BusinessProvider>();
     final productProvider = context.watch<ProductProvider>();
     
-    // Responsive: más padding en tablets
+    // Responsive
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth >= 600;
     final horizontalPadding = isTablet ? 32.w : 20.w;
     final verticalSpacing = isTablet ? 20.h : 16.h;
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackground,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -39,9 +39,11 @@ class DashboardScreen extends StatelessWidget {
                   horizontal: horizontalPadding,
                   vertical: isTablet ? 28.h : 24.h,
                 ),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: AppColors.primaryGradient,
+                    colors: theme.isDark 
+                        ? [theme.primary.withOpacity(0.7), theme.primaryDark.withOpacity(0.7)]
+                        : [theme.primary, theme.primaryDark],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -53,22 +55,25 @@ class DashboardScreen extends StatelessWidget {
                       businessProvider.profile.businessName.isEmpty
                           ? 'MiNegocio'
                           : businessProvider.profile.businessName,
-                      style: AppTypography.h2.copyWith(
-                        color: AppColors.textLight,
+                      style: TextStyle(
+                        fontSize: isTablet ? 28.sp : 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                     SizedBox(height: 6.h),
                     Text(
                       l10n.businessManagement,
-                      style: AppTypography.bodyMedium.copyWith(
-                        color: AppColors.textLight.withOpacity(0.9),
+                      style: TextStyle(
+                        fontSize: isTablet ? 16.sp : 14.sp,
+                        color: Colors.white.withOpacity(0.9),
                       ),
                     ),
                   ],
                 ),
               ),
 
-              // Contenido principal - SOLO ACCESOS RÁPIDOS
+              // Contenido principal
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: horizontalPadding,
@@ -80,18 +85,21 @@ class DashboardScreen extends StatelessWidget {
                     // Título "Accesos Rápidos"
                     Text(
                       'Accesos Rápidos',
-                      style: AppTypography.h4.copyWith(
+                      style: TextStyle(
                         fontSize: isTablet ? 20.sp : 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: theme.textPrimary,
                       ),
                     ),
                     SizedBox(height: isTablet ? 20.h : 16.h),
 
-                    // Opciones en fila vertical con MÁS ESPACIO
+                    // Opciones en fila vertical
                     _QuickAccessTile(
                       label: l10n.products,
                       icon: Icons.inventory_2,
-                      color: AppColors.cardProductsColor,
+                      color: theme.success,
                       isTablet: isTablet,
+                      theme: theme,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -104,8 +112,9 @@ class DashboardScreen extends StatelessWidget {
                     _QuickAccessTile(
                       label: l10n.orders,
                       icon: Icons.shopping_cart,
-                      color: AppColors.cardOrdersColor,
+                      color: theme.primary,
                       isTablet: isTablet,
+                      theme: theme,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -118,8 +127,9 @@ class DashboardScreen extends StatelessWidget {
                     _QuickAccessTile(
                       label: l10n.invoices,
                       icon: Icons.receipt_long,
-                      color: AppColors.cardInvoicesColor,
+                      color: theme.warning,
                       isTablet: isTablet,
+                      theme: theme,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -132,8 +142,9 @@ class DashboardScreen extends StatelessWidget {
                     _QuickAccessTile(
                       label: l10n.settings,
                       icon: Icons.settings,
-                      color: AppColors.info,
+                      color: theme.info,
                       isTablet: isTablet,
+                      theme: theme,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -142,7 +153,7 @@ class DashboardScreen extends StatelessWidget {
                       },
                     ),
 
-                    // Alerta de stock bajo (opcional, al final)
+                    // Alerta de stock bajo
                     if (productProvider.lowStockProducts.isNotEmpty) ...[
                       SizedBox(height: isTablet ? 40.h : 32.h),
                       _buildLowStockAlert(
@@ -150,6 +161,7 @@ class DashboardScreen extends StatelessWidget {
                         productProvider,
                         l10n,
                         isTablet,
+                        theme,
                       ),
                     ],
                   ],
@@ -167,14 +179,15 @@ class DashboardScreen extends StatelessWidget {
     ProductProvider productProvider,
     AppLocalizations l10n,
     bool isTablet,
+    ThemeHelper theme,
   ) {
     return Container(
       padding: EdgeInsets.all(isTablet ? 20.w : 16.w),
       decoration: BoxDecoration(
-        color: AppColors.errorWithOpacity(0.1),
+        color: theme.errorWithOpacity(0.1),
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-          color: AppColors.errorWithOpacity(0.3),
+          color: theme.errorWithOpacity(0.3),
           width: 1.5,
         ),
       ),
@@ -185,16 +198,17 @@ class DashboardScreen extends StatelessWidget {
             children: [
               Icon(
                 Icons.warning_amber_rounded,
-                color: AppColors.error,
+                color: theme.error,
                 size: isTablet ? 26.sp : 24.sp,
               ),
               SizedBox(width: 12.w),
               Expanded(
                 child: Text(
                   'Productos con stock bajo',
-                  style: AppTypography.h5.copyWith(
-                    color: AppColors.errorDark,
+                  style: TextStyle(
                     fontSize: isTablet ? 17.sp : 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: theme.error,
                   ),
                 ),
               ),
@@ -210,8 +224,9 @@ class DashboardScreen extends StatelessWidget {
                   Expanded(
                     child: Text(
                       product.name,
-                      style: AppTypography.bodyMedium.copyWith(
+                      style: TextStyle(
                         fontSize: isTablet ? 15.sp : 14.sp,
+                        color: theme.textPrimary,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -220,10 +235,10 @@ class DashboardScreen extends StatelessWidget {
                   SizedBox(width: 12.w),
                   Text(
                     '${l10n.stock}: ${product.stock}',
-                    style: AppTypography.bodyMedium.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.error,
+                    style: TextStyle(
                       fontSize: isTablet ? 15.sp : 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: theme.error,
                     ),
                   ),
                 ],
@@ -236,12 +251,12 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-// Widget para cada opción de acceso rápido - CON MÁS ESPACIO
 class _QuickAccessTile extends StatelessWidget {
   final String label;
   final IconData icon;
   final Color color;
   final bool isTablet;
+  final ThemeHelper theme;
   final VoidCallback onTap;
 
   const _QuickAccessTile({
@@ -249,22 +264,25 @@ class _QuickAccessTile extends StatelessWidget {
     required this.icon,
     required this.color,
     required this.isTablet,
+    required this.theme,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: color.withOpacity(0.12),
+      color: theme.cardBackground,
       borderRadius: BorderRadius.circular(16.r),
+      elevation: theme.isDark ? 4 : 2,
+      shadowColor: Colors.black.withOpacity(theme.isDark ? 0.3 : 0.1),
       child: InkWell(
         borderRadius: BorderRadius.circular(16.r),
         onTap: onTap,
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(
-            vertical: isTablet ? 22.h : 18.h, // MÁS PADDING VERTICAL
-            horizontal: isTablet ? 24.w : 18.w, // MÁS PADDING HORIZONTAL
+            vertical: isTablet ? 22.h : 18.h,
+            horizontal: isTablet ? 24.w : 18.w,
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.r),
@@ -277,7 +295,7 @@ class _QuickAccessTile extends StatelessWidget {
             children: [
               // Icono circular
               Container(
-                width: isTablet ? 50.w : 44.w, // MÁS GRANDE EN TABLET
+                width: isTablet ? 50.w : 44.w,
                 height: isTablet ? 50.w : 44.w,
                 decoration: BoxDecoration(
                   color: color,
@@ -289,15 +307,16 @@ class _QuickAccessTile extends StatelessWidget {
                   size: isTablet ? 28.sp : 24.sp,
                 ),
               ),
-              SizedBox(width: isTablet ? 20.w : 16.w), // MÁS ESPACIO
+              SizedBox(width: isTablet ? 20.w : 16.w),
               
               // Texto
               Expanded(
                 child: Text(
                   label,
-                  style: AppTypography.h5.copyWith(
-                    color: color,
-                    fontSize: isTablet ? 18.sp : 16.sp, // MÁS GRANDE EN TABLET
+                  style: TextStyle(
+                    fontSize: isTablet ? 18.sp : 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: theme.textPrimary,
                   ),
                 ),
               ),
@@ -305,7 +324,7 @@ class _QuickAccessTile extends StatelessWidget {
               // Flecha
               Icon(
                 Icons.arrow_forward_ios,
-                color: color,
+                color: theme.iconColor,
                 size: isTablet ? 24.sp : 20.sp,
               ),
             ],
