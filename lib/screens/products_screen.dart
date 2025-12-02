@@ -11,7 +11,6 @@ import '../providers/product_provider.dart';
 import '../widgets/product_card.dart';
 import '../services/permission_handler.dart';
 
-
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
 
@@ -31,6 +30,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     
     final isVerySmall = screenWidth < 360;
     final isLarge = screenWidth >= 900;
+    final isTablet = screenWidth > 600;
 
     if (productProvider.isLoading) {
       return Scaffold(
@@ -83,14 +83,23 @@ class _ProductsScreenState extends State<ProductsScreen> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackground,
       appBar: AppBar(
+        backgroundColor: theme.appBarBackground,
+        foregroundColor: theme.appBarForeground,
+        elevation: 2,
+        toolbarHeight: 56.h, // ✅ ALTURA FIJA Y CONSISTENTE
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, size: 24.sp),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           l10n.products,
           style: TextStyle(
-            fontSize: isVerySmall ? 16.sp : (isLarge ? 22.sp : 18.sp),
+            fontSize: isTablet ? 20.sp : 18.sp, // ✅ TAMAÑO PROPORCIONAL
+            fontWeight: FontWeight.w600,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
-        backgroundColor: theme.appBarBackground,
-        foregroundColor: theme.appBarForeground,
       ),
       body: Column(
         children: [
@@ -217,7 +226,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 }
 
-// ✅ DIÁLOGO COMPLETAMENTE CORREGIDO - SIN TEXTO CORTADO Y MÁS LIMPIO
+// ✅ DIÁLOGO COMPLETAMENTE CORREGIDO
 class AddProductDialog extends StatefulWidget {
   final Product? product;
 
@@ -405,9 +414,10 @@ class _AddProductDialogState extends State<AddProductDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ✅ HEADER CON TÍTULO Y BOTÓN CERRAR - SIN TRUNCAMIENTO
+            // ✅ HEADER CONSISTENTE CON ALTURA FIJA
             Container(
-              padding: EdgeInsets.all(20.w),
+              height: 56.h, // ✅ MISMA ALTURA QUE AppBar
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               decoration: BoxDecoration(
                 color: theme.primary,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
@@ -424,10 +434,12 @@ class _AddProductDialogState extends State<AddProductDialog> {
                     child: Text(
                       widget.product == null ? l10n.addProduct : l10n.editProduct,
                       style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
+                        fontSize: isTablet ? 20.sp : 18.sp, // ✅ MISMO TAMAÑO QUE AppBar
+                        fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   IconButton(
@@ -448,7 +460,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // ✅ SECCIÓN DE IMAGEN - MÁS GRANDE Y VISIBLE
+                      // ✅ SECCIÓN DE IMAGEN
                       Center(
                         child: GestureDetector(
                           onTap: _pickImage,
@@ -516,7 +528,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       ),
                       SizedBox(height: 24.h),
 
-                      // ✅ CAMPO NOMBRE
+                      // CAMPO NOMBRE
                       TextFormField(
                         controller: _nameController,
                         style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
@@ -549,7 +561,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       ),
                       SizedBox(height: 16.h),
 
-                      // ✅ CAMPO DESCRIPCIÓN
+                      // CAMPO DESCRIPCIÓN
                       TextFormField(
                         controller: _descriptionController,
                         style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
@@ -574,7 +586,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       ),
                       SizedBox(height: 16.h),
 
-                      // ✅ FILA DE PRECIO Y STOCK
+                      // FILA DE PRECIO Y STOCK
                       Row(
                         children: [
                           Expanded(
@@ -648,7 +660,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       ),
                       SizedBox(height: 24.h),
 
-                      // ✅ BOTONES
+                      // BOTONES
                       Row(
                         children: [
                           Expanded(

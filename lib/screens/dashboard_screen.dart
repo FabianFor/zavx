@@ -53,7 +53,7 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     Text(
                       businessProvider.profile.businessName.isEmpty
-                          ? 'MiNegocio'
+                          ? 'Mi Negocio'  // ✅ ÚNICO CAMBIO: Agregado espacio
                           : businessProvider.profile.businessName,
                       style: TextStyle(
                         fontSize: isTablet ? 28.sp : 24.sp,
