@@ -46,6 +46,22 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
     super.dispose();
   }
 
+  // ✅ MÉTODO OPTIMIZADO PARA BÚSQUEDA CON DEBOUNCE
+  void _onSearchChanged(String value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    
+    _debounce = Timer(
+      const Duration(milliseconds: 300), // ✅ Reducido para mejor respuesta
+      () {
+        if (mounted) {
+          setState(() {
+            _productSearchQuery = value;
+          });
+        }
+      },
+    );
+  }
+
   void _addToCart(String productId) {
     setState(() {
       _cart[productId] = (_cart[productId] ?? 0) + 1;
@@ -248,6 +264,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
       final orderProvider = context.read<OrderProvider>();
       final invoiceProvider = context.read<InvoiceProvider>();
 
+      // Validar stock antes de crear orden
       for (var entry in _cart.entries) {
         final product = productProvider.getProductById(entry.key);
         if (product == null || product.stock < entry.value) {
@@ -264,6 +281,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
         }
       }
 
+      // Crear items de la orden
       final items = <OrderItem>[];
       for (var entry in _cart.entries) {
         final product = productProvider.getProductById(entry.key);
@@ -295,7 +313,6 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
         createdAt: DateTime.now(),
       );
 
-      // ✅ CORREGIDO: Agregados subtotal y tax
       final invoice = Invoice(
         id: const Uuid().v4(),
         invoiceNumber: invoiceProvider.invoices.length + 1,
@@ -312,6 +329,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
       final invoiceSuccess = await invoiceProvider.addInvoice(invoice);
 
       if (orderSuccess && invoiceSuccess) {
+        // Actualizar stock de productos
         for (var entry in _cart.entries) {
           final product = productProvider.getProductById(entry.key);
           if (product != null) {
@@ -381,8 +399,6 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = ThemeHelper(context);
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackground,
@@ -410,14 +426,20 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildCreateOrderTab(isTablet, l10n, theme),
+          _buildCreateOrderTab(),
           const InvoicesScreenContent(),
         ],
       ),
     );
   }
 
-  Widget _buildCreateOrderTab(bool isTablet, AppLocalizations l10n, ThemeHelper theme) {
+  // ✅✅✅ MÉTODO COMPLETO OPTIMIZADO _buildCreateOrderTab ✅✅✅
+  Widget _buildCreateOrderTab() {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = ThemeHelper(context);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    
     final productProvider = context.watch<ProductProvider>();
     final settingsProvider = context.watch<SettingsProvider>();
 
@@ -427,17 +449,11 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
 
     return Column(
       children: [
+        // ✅ CAMPO DE BÚSQUEDA OPTIMIZADO
         Padding(
           padding: EdgeInsets.all(16.w),
           child: TextField(
-            onChanged: (value) {
-              if (_debounce?.isActive ?? false) _debounce!.cancel();
-              _debounce = Timer(Duration(milliseconds: ValidationLimits.debounceMilliseconds), () {
-                setState(() {
-                  _productSearchQuery = value;
-                });
-              });
-            },
+            onChanged: _onSearchChanged, // ✅ Usa método con debounce
             style: TextStyle(color: theme.textPrimary, fontSize: 14.sp),
             decoration: InputDecoration(
               hintText: l10n.searchProducts,
@@ -469,6 +485,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
           ),
         ),
 
+        // ✅ BOTÓN VER CARRITO
         if (_cart.isNotEmpty)
           Container(
             margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -489,17 +506,25 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
           ),
         if (_cart.isNotEmpty) SizedBox(height: 12.h),
 
+        // ✅✅✅ LISTVIEW OPTIMIZADO DE PRODUCTOS ✅✅✅
         Expanded(
           child: filteredProducts.isEmpty
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.inventory_2_outlined, size: isTablet ? 70.sp : 80.sp, color: theme.iconColorLight),
+                      Icon(
+                        Icons.inventory_2_outlined, 
+                        size: isTablet ? 70.sp : 80.sp, 
+                        color: theme.iconColorLight
+                      ),
                       SizedBox(height: 16.h),
                       Text(
                         l10n.noProductsAvailable,
-                        style: TextStyle(fontSize: isTablet ? 16.sp : 18.sp, color: theme.textSecondary),
+                        style: TextStyle(
+                          fontSize: isTablet ? 16.sp : 18.sp, 
+                          color: theme.textSecondary
+                        ),
                       ),
                     ],
                   ),
@@ -507,6 +532,11 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
               : ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   itemCount: filteredProducts.length,
+                  // ✅ OPTIMIZACIONES DE RENDIMIENTO
+                  cacheExtent: 500, // Precarga 500px fuera de pantalla
+                  addAutomaticKeepAlives: false, // No mantiene items fuera de pantalla
+                  addRepaintBoundaries: true, // Optimiza repintado
+                  physics: const BouncingScrollPhysics(), // Scroll más fluido
                   itemBuilder: (context, index) {
                     final product = filteredProducts[index];
                     final inCart = _cart[product.id] ?? 0;
@@ -519,6 +549,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                         padding: EdgeInsets.all(isTablet ? 10.w : 12.w),
                         child: Row(
                           children: [
+                            // ✅ IMAGEN OPTIMIZADA CON CACHE
                             Container(
                               width: isTablet ? 60.w : 70.w,
                               height: isTablet ? 60.w : 70.w,
@@ -532,16 +563,26 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                                       child: Image.file(
                                         File(product.imagePath),
                                         fit: BoxFit.cover,
-                                        cacheWidth: 210,
+                                        cacheWidth: 210, // ✅ Optimiza memoria
+                                        cacheHeight: 210, // ✅ Optimiza memoria
                                         errorBuilder: (context, error, stackTrace) {
-                                          return Icon(Icons.broken_image, size: 30.sp, color: theme.iconColorLight);
+                                          return Icon(
+                                            Icons.broken_image, 
+                                            size: 30.sp, 
+                                            color: theme.iconColorLight
+                                          );
                                         },
                                       ),
                                     )
-                                  : Icon(Icons.inventory_2, color: theme.iconColorLight, size: 30.sp),
+                                  : Icon(
+                                      Icons.inventory_2, 
+                                      color: theme.iconColorLight, 
+                                      size: 30.sp
+                                    ),
                             ),
                             SizedBox(width: 12.w),
 
+                            // ✅ INFORMACIÓN DEL PRODUCTO
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -569,13 +610,16 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                                     '${l10n.stock}: ${product.stock}',
                                     style: TextStyle(
                                       fontSize: 12.sp,
-                                      color: product.stock <= 5 ? theme.error : theme.textSecondary,
+                                      color: product.stock <= 5 
+                                        ? theme.error 
+                                        : theme.textSecondary,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
 
+                            // ✅ CONTROLES DE CANTIDAD
                             if (inCart > 0)
                               Container(
                                 decoration: BoxDecoration(
@@ -600,7 +644,9 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: inCart < product.stock ? () => _addToCart(product.id) : null,
+                                      onPressed: inCart < product.stock 
+                                        ? () => _addToCart(product.id) 
+                                        : null,
                                       icon: const Icon(Icons.add),
                                       color: theme.primary,
                                       iconSize: 20.sp,
@@ -611,14 +657,24 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                               )
                             else
                               ElevatedButton.icon(
-                                onPressed: product.stock > 0 ? () => _addToCart(product.id) : null,
+                                onPressed: product.stock > 0 
+                                  ? () => _addToCart(product.id) 
+                                  : null,
                                 icon: Icon(Icons.add_shopping_cart, size: 18.sp),
-                                label: Text(l10n.add, style: TextStyle(fontSize: 14.sp)),
+                                label: Text(
+                                  l10n.add, 
+                                  style: TextStyle(fontSize: 14.sp)
+                                ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: theme.primary,
                                   foregroundColor: Colors.white,
-                                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12.w, 
+                                    vertical: 10.h
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.r)
+                                  ),
                                 ),
                               ),
                           ],
@@ -629,6 +685,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                 ),
         ),
 
+        // ✅ BARRA DE TOTAL Y BOTONES
         if (_cart.isNotEmpty)
           Container(
             padding: EdgeInsets.all(16.w),
@@ -675,7 +732,9 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                           foregroundColor: theme.error,
                           side: BorderSide(color: theme.error),
                           padding: EdgeInsets.symmetric(vertical: 14.h),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.r)
+                          ),
                         ),
                       ),
                     ),
@@ -685,12 +744,17 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                       child: ElevatedButton.icon(
                         onPressed: _showCustomerDialog,
                         icon: Icon(Icons.check_circle, size: 18.sp),
-                        label: Text(l10n.createOrder, style: TextStyle(fontSize: 14.sp)),
+                        label: Text(
+                          l10n.createOrder, 
+                          style: TextStyle(fontSize: 14.sp)
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: theme.success,
                           foregroundColor: Colors.white,
                           padding: EdgeInsets.symmetric(vertical: 14.h),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.r)
+                          ),
                         ),
                       ),
                     ),
@@ -703,7 +767,13 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
     );
   }
 
-  void _showCartPreview(ProductProvider productProvider, SettingsProvider settingsProvider, AppLocalizations l10n, ThemeHelper theme) {
+  // ✅ MÉTODO OPTIMIZADO PARA PREVIEW DEL CARRITO
+  void _showCartPreview(
+    ProductProvider productProvider, 
+    SettingsProvider settingsProvider, 
+    AppLocalizations l10n, 
+    ThemeHelper theme
+  ) {
     final isTablet = MediaQuery.of(context).size.width > 600;
     
     showModalBottomSheet(
@@ -787,7 +857,10 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                                 SizedBox(height: 4.h),
                                 Text(
                                   '${settingsProvider.formatPrice(product.price)} x $quantity',
-                                  style: TextStyle(fontSize: 14.sp, color: theme.textSecondary),
+                                  style: TextStyle(
+                                    fontSize: 14.sp, 
+                                    color: theme.textSecondary
+                                  ),
                                 ),
                               ],
                             ),

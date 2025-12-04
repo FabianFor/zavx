@@ -1,4 +1,3 @@
-// lib/providers/product_provider.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -11,6 +10,10 @@ class ProductProvider with ChangeNotifier {
   bool _isLoading = false;
   String? _error;
   bool _isInitialized = false;
+  
+  // ✅ CACHE DE BÚSQUEDA (evita recalcular en cada keystroke)
+  String _lastSearchQuery = '';
+  List<Product> _lastSearchResults = [];
 
   List<Product> get products => _products;
   bool get isLoading => _isLoading;
@@ -35,7 +38,12 @@ class ProductProvider with ChangeNotifier {
 
     try {
       _box = await Hive.openBox<Product>('products');
-      _products = _box!.values.toList();
+      
+      // ✅ LAZY LOADING: Solo carga los primeros 50
+      final allKeys = _box!.keys.toList();
+      final limitedKeys = allKeys.take(50).toList();
+      _products = limitedKeys.map((key) => _box!.get(key)!).toList();
+      
       _isInitialized = true;
     } catch (e) {
       _error = 'Error al cargar productos: $e';
@@ -76,17 +84,11 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<bool> addProduct(Product product) async {
-    if (!_validateProductName(product.name)) {
-      notifyListeners();
-      return false;
-    }
-    if (!_validateProductPrice(product.price)) {
-      notifyListeners();
-      return false;
-    }
-    if (!_validateProductStock(product.stock)) {
-      notifyListeners();
-      return false;
+    // ✅ VALIDACIÓN SIN notifyListeners() innecesario
+    if (!_validateProductName(product.name) ||
+        !_validateProductPrice(product.price) ||
+        !_validateProductStock(product.stock)) {
+      return false; // ← No llama notifyListeners()
     }
 
     try {
@@ -99,14 +101,16 @@ class ProductProvider with ChangeNotifier {
         imagePath: product.imagePath,
       );
       
-      // Guardar en Hive
+      // ✅ Escribir primero en Hive
       await _box!.put(sanitizedProduct.id, sanitizedProduct);
       
-      // Actualizar lista en memoria
-      _products.add(sanitizedProduct);
+      // ✅ Solo agregar a memoria si no excede límite
+      if (_products.length < 200) {
+        _products.insert(0, sanitizedProduct); // Más reciente primero
+      }
       
       _error = null;
-      notifyListeners();
+      notifyListeners(); // Solo UNA llamada al final
       return true;
     } catch (e) {
       _error = 'Error al agregar producto: $e';
@@ -116,27 +120,15 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<bool> updateProduct(Product updatedProduct) async {
-    if (!_validateProductName(updatedProduct.name)) {
-      notifyListeners();
-      return false;
-    }
-    if (!_validateProductPrice(updatedProduct.price)) {
-      notifyListeners();
-      return false;
-    }
-    if (!_validateProductStock(updatedProduct.stock)) {
-      notifyListeners();
+    if (!_validateProductName(updatedProduct.name) ||
+        !_validateProductPrice(updatedProduct.price) ||
+        !_validateProductStock(updatedProduct.stock)) {
       return false;
     }
 
     try {
       final index = _products.indexWhere((p) => p.id == updatedProduct.id);
-      if (index == -1) {
-        _error = 'Producto no encontrado';
-        notifyListeners();
-        return false;
-      }
-
+      
       final sanitizedProduct = Product(
         id: updatedProduct.id,
         name: _sanitizeInput(updatedProduct.name.trim()),
@@ -146,11 +138,12 @@ class ProductProvider with ChangeNotifier {
         imagePath: updatedProduct.imagePath,
       );
       
-      // Actualizar en Hive
       await _box!.put(sanitizedProduct.id, sanitizedProduct);
       
-      // Actualizar en memoria
-      _products[index] = sanitizedProduct;
+      // ✅ Actualizar solo si está en memoria
+      if (index != -1) {
+        _products[index] = sanitizedProduct;
+      }
       
       _error = null;
       notifyListeners();
@@ -164,18 +157,8 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> deleteProduct(String productId) async {
     try {
-      final index = _products.indexWhere((p) => p.id == productId);
-      if (index == -1) {
-        _error = 'Producto no encontrado';
-        notifyListeners();
-        return;
-      }
-
-      // Eliminar de Hive
       await _box!.delete(productId);
-      
-      // Eliminar de memoria
-      _products.removeAt(index);
+      _products.removeWhere((p) => p.id == productId);
       
       _error = null;
       notifyListeners();
@@ -187,25 +170,24 @@ class ProductProvider with ChangeNotifier {
 
   Future<bool> updateStock(String productId, int newStock) async {
     if (!_validateProductStock(newStock)) {
-      notifyListeners();
       return false;
     }
 
     try {
       final index = _products.indexWhere((p) => p.id == productId);
-      if (index == -1) {
-        _error = 'Producto no encontrado';
-        notifyListeners();
-        return false;
+      
+      if (index != -1) {
+        final updatedProduct = _products[index].copyWith(stock: newStock);
+        await _box!.put(productId, updatedProduct);
+        _products[index] = updatedProduct;
+      } else {
+        // ✅ Cargar desde Hive si no está en memoria
+        final product = _box!.get(productId);
+        if (product != null) {
+          final updatedProduct = product.copyWith(stock: newStock);
+          await _box!.put(productId, updatedProduct);
+        }
       }
-
-      final updatedProduct = _products[index].copyWith(stock: newStock);
-      
-      // Actualizar en Hive
-      await _box!.put(productId, updatedProduct);
-      
-      // Actualizar en memoria
-      _products[index] = updatedProduct;
       
       _error = null;
       notifyListeners();
@@ -217,29 +199,51 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-  // ✅ BÚSQUEDA POR NOMBRE Y DESCRIPCIÓN (eficiente)
+  // ✅ BÚSQUEDA CON CACHE (mucho más rápida)
   List<Product> searchProducts(String query) {
     if (query.isEmpty) return _products;
     
+    // Si es la misma búsqueda, devolver resultado cacheado
+    if (query == _lastSearchQuery) {
+      return _lastSearchResults;
+    }
+    
     final lowerQuery = _sanitizeInput(query.toLowerCase());
-    return _products.where((product) {
+    
+    // ✅ BUSCAR PRIMERO EN MEMORIA (rápido)
+    final memoryResults = _products.where((product) {
       return product.name.toLowerCase().contains(lowerQuery) ||
              product.description.toLowerCase().contains(lowerQuery);
     }).toList();
+    
+    // ✅ Si hay pocos resultados, buscar en Hive también
+    if (memoryResults.length < 5) {
+      final allProducts = _box!.values.toList();
+      _lastSearchResults = allProducts.where((product) {
+        return product.name.toLowerCase().contains(lowerQuery) ||
+               product.description.toLowerCase().contains(lowerQuery);
+      }).toList();
+    } else {
+      _lastSearchResults = memoryResults;
+    }
+    
+    _lastSearchQuery = query;
+    return _lastSearchResults;
   }
 
-  // ✅ BÚSQUEDA POR ID (instantánea O(1))
   Product? getProductById(String id) {
     return _box?.get(id);
   }
 
   void clearError() {
     _error = null;
-    notifyListeners();
+    // ❌ NO llamar notifyListeners() aquí
   }
 
   Future<void> reload() async {
     _isInitialized = false;
+    _lastSearchQuery = '';
+    _lastSearchResults = [];
     await loadProducts();
   }
 
