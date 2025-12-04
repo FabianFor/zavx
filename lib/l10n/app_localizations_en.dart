@@ -472,4 +472,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get totalLabel => 'Total:';
+
+  @override
+  String get minStockCharacters => 'Minimum stock is 0';
+
+  @override
+  String get maxStockValue => 'Maximum stock is 999999';
+
+  @override
+  String get validStockRequired => 'Enter a valid stock';
+
+  @override
+  String get minPriceValue => 'Minimum price is 0.01';
+
+  @override
+  String get maxPriceValue => 'Maximum price is 99999999';
+
+  @override
+  String get validPriceRequired => 'Enter a valid price';
+
+  @override
+  String get customerNameMinLength => 'Name must be at least 2 characters';
+
+  @override
+  String get customerNameMaxLength => 'Name is too long';
+
+  @override
+  String get phoneNumberInvalid => 'Invalid phone number';
+
+  @override
+  String get phoneMinLength => 'Phone must be at least 7 digits';
 }

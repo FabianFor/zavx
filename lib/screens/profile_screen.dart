@@ -30,20 +30,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     final businessProvider = context.read<BusinessProvider>();
     
-    // ✅ CORREGIDO: Manejo seguro de null
+    // ✅ CORREGIDO: Usar propiedades correctas de BusinessProfile
     _businessNameController = TextEditingController(
-      text: businessProvider.profile?.businessName ?? '',
+      text: businessProvider.profile?.name ?? '',
     );
     _addressController = TextEditingController(
-      text: businessProvider.profile?.businessAddress ?? '',
+      text: businessProvider.profile?.address ?? '',
     );
     _phoneController = TextEditingController(
-      text: businessProvider.profile?.businessPhone ?? '',
+      text: businessProvider.profile?.phone ?? '',
     );
     _emailController = TextEditingController(
-      text: businessProvider.profile?.businessEmail ?? '',
+      text: businessProvider.profile?.email ?? '',
     );
-    _logoPath = businessProvider.profile?.businessLogo ?? '';
+    _logoPath = businessProvider.profile?.logoPath ?? '';
   }
 
   @override
@@ -94,7 +94,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
     } catch (e) {
-      print('❌ Error al seleccionar logo: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -117,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final businessProvider = context.read<BusinessProvider>();
 
-    // ✅ CORREGIDO: Crear nuevo BusinessProfile
+    // ✅ CORREGIDO: Crear BusinessProfile con los campos correctos
     final updatedProfile = BusinessProfile(
       name: _businessNameController.text.trim(),
       address: _addressController.text.trim(),
@@ -173,7 +172,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Logo del negocio
               Center(
                 child: GestureDetector(
                   onTap: _pickLogo,
@@ -233,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 8.h),
               Center(
                 child: Text(
-                  'Toca para cambiar el logo',
+                  l10n.tapToChangeLogo,
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: theme.textSecondary,
@@ -242,7 +240,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 32.h),
 
-              // Nombre del negocio
               TextFormField(
                 controller: _businessNameController,
                 style: TextStyle(color: theme.textPrimary),
@@ -266,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'El nombre del negocio es obligatorio';
+                    return l10n.businessNameRequired;
                   }
                   return null;
                 },
@@ -274,7 +271,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // Dirección
               TextFormField(
                 controller: _addressController,
                 style: TextStyle(color: theme.textPrimary),
@@ -301,7 +297,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // Teléfono
               TextFormField(
                 controller: _phoneController,
                 style: TextStyle(color: theme.textPrimary),
@@ -327,7 +322,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // Email
               TextFormField(
                 controller: _emailController,
                 style: TextStyle(color: theme.textPrimary),
@@ -354,7 +348,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   if (value != null && value.isNotEmpty) {
                     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                     if (!emailRegex.hasMatch(value)) {
-                      return 'Ingrese un email válido';
+                      return l10n.invalidEmail;
                     }
                   }
                   return null;
@@ -362,7 +356,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 32.h),
 
-              // Botón guardar
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

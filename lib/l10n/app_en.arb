@@ -222,5 +222,15 @@
       }
     }
   },
-  "totalLabel": "Total:"
+  "totalLabel": "Total:",
+  "minStockCharacters": "Minimum stock is 0",
+  "maxStockValue": "Maximum stock is 999999",
+  "validStockRequired": "Enter a valid stock",
+  "minPriceValue": "Minimum price is 0.01",
+  "maxPriceValue": "Maximum price is 99999999",
+  "validPriceRequired": "Enter a valid price",
+  "customerNameMinLength": "Name must be at least 2 characters",
+  "customerNameMaxLength": "Name is too long",
+  "phoneNumberInvalid": "Invalid phone number",
+  "phoneMinLength": "Phone must be at least 7 digits"
 }

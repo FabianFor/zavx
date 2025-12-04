@@ -475,4 +475,34 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get totalLabel => 'Total:';
+
+  @override
+  String get minStockCharacters => 'O estoque mínimo é 0';
+
+  @override
+  String get maxStockValue => 'O estoque máximo é 999999';
+
+  @override
+  String get validStockRequired => 'Insira um estoque válido';
+
+  @override
+  String get minPriceValue => 'O preço mínimo é 0,01';
+
+  @override
+  String get maxPriceValue => 'O preço máximo é 99999999';
+
+  @override
+  String get validPriceRequired => 'Insira um preço válido';
+
+  @override
+  String get customerNameMinLength => 'O nome deve ter pelo menos 2 caracteres';
+
+  @override
+  String get customerNameMaxLength => 'O nome é muito longo';
+
+  @override
+  String get phoneNumberInvalid => 'Número de telefone inválido';
+
+  @override
+  String get phoneMinLength => 'O telefone deve ter pelo menos 7 dígitos';
 }

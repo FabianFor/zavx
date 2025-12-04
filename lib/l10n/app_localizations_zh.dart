@@ -468,4 +468,34 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get totalLabel => '总计：';
+
+  @override
+  String get minStockCharacters => '最小库存为0';
+
+  @override
+  String get maxStockValue => '最大库存为999999';
+
+  @override
+  String get validStockRequired => '请输入有效库存';
+
+  @override
+  String get minPriceValue => '最低价格为0.01';
+
+  @override
+  String get maxPriceValue => '最高价格为99999999';
+
+  @override
+  String get validPriceRequired => '请输入有效价格';
+
+  @override
+  String get customerNameMinLength => '姓名至少需要2个字符';
+
+  @override
+  String get customerNameMaxLength => '姓名过长';
+
+  @override
+  String get phoneNumberInvalid => '无效的电话号码';
+
+  @override
+  String get phoneMinLength => '电话至少需要7位数字';
 }

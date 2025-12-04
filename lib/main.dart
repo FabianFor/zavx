@@ -19,10 +19,8 @@ import 'models/business_profile.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // ✅ INICIALIZAR HIVE
   await Hive.initFlutter();
   
-  // ✅ REGISTRAR ADAPTADORES
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(OrderAdapter());
   Hive.registerAdapter(OrderItemAdapter());
@@ -40,7 +38,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SettingsProvider()..loadSettings()),
-        ChangeNotifierProvider(create: (_) => BusinessProvider()),
+        ChangeNotifierProvider(create: (_) => BusinessProvider()..loadProfile()), // ✅ CORREGIDO
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
         ChangeNotifierProvider(create: (_) => InvoiceProvider()),

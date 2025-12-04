@@ -222,5 +222,15 @@
       }
     }
   },
-  "totalLabel": "总计："
+  "totalLabel": "总计：",
+  "minStockCharacters": "最小库存为0",
+  "maxStockValue": "最大库存为999999",
+  "validStockRequired": "请输入有效库存",
+  "minPriceValue": "最低价格为0.01",
+  "maxPriceValue": "最高价格为99999999",
+  "validPriceRequired": "请输入有效价格",
+  "customerNameMinLength": "姓名至少需要2个字符",
+  "customerNameMaxLength": "姓名过长",
+  "phoneNumberInvalid": "无效的电话号码",
+  "phoneMinLength": "电话至少需要7位数字"
 }

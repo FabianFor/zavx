@@ -977,6 +977,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Total:'**
   String get totalLabel;
+
+  /// No description provided for @minStockCharacters.
+  ///
+  /// In es, this message translates to:
+  /// **'El stock mínimo es 0'**
+  String get minStockCharacters;
+
+  /// No description provided for @maxStockValue.
+  ///
+  /// In es, this message translates to:
+  /// **'El stock máximo es 999999'**
+  String get maxStockValue;
+
+  /// No description provided for @validStockRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Ingrese un stock válido'**
+  String get validStockRequired;
+
+  /// No description provided for @minPriceValue.
+  ///
+  /// In es, this message translates to:
+  /// **'El precio mínimo es 0.01'**
+  String get minPriceValue;
+
+  /// No description provided for @maxPriceValue.
+  ///
+  /// In es, this message translates to:
+  /// **'El precio máximo es 99999999'**
+  String get maxPriceValue;
+
+  /// No description provided for @validPriceRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'Ingrese un precio válido'**
+  String get validPriceRequired;
+
+  /// No description provided for @customerNameMinLength.
+  ///
+  /// In es, this message translates to:
+  /// **'El nombre debe tener al menos 2 caracteres'**
+  String get customerNameMinLength;
+
+  /// No description provided for @customerNameMaxLength.
+  ///
+  /// In es, this message translates to:
+  /// **'El nombre es demasiado largo'**
+  String get customerNameMaxLength;
+
+  /// No description provided for @phoneNumberInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'Número de teléfono inválido'**
+  String get phoneNumberInvalid;
+
+  /// No description provided for @phoneMinLength.
+  ///
+  /// In es, this message translates to:
+  /// **'El teléfono debe tener al menos 7 dígitos'**
+  String get phoneMinLength;
 }
 
 class _AppLocalizationsDelegate
