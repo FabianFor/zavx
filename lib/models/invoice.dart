@@ -1,43 +1,70 @@
+import 'package:hive/hive.dart';
 import 'order.dart';
 
+part 'invoice.g.dart';
+
+@HiveType(typeId: 3)
 class Invoice {
-  String id;
-  int invoiceNumber;
-  String customerName;
-  String customerPhone;
-  List<OrderItem> items;
-  DateTime createdAt;
-  double total;
+  @HiveField(0)
+  final String id;
+  
+  @HiveField(1)
+  final int invoiceNumber;
+  
+  @HiveField(2)
+  final String customerName;
+  
+  @HiveField(3)
+  final String customerPhone;
+  
+  @HiveField(4)
+  final List<OrderItem> items;
+  
+  @HiveField(5)
+  final double subtotal;
+  
+  @HiveField(6)
+  final double tax;
+  
+  @HiveField(7)
+  final double total;
+  
+  @HiveField(8)
+  final DateTime createdAt;
 
   Invoice({
     required this.id,
     required this.invoiceNumber,
     required this.customerName,
-    this.customerPhone = '',
+    required this.customerPhone,
     required this.items,
-    required this.createdAt,
+    required this.subtotal,
+    required this.tax,
     required this.total,
+    required this.createdAt,
   });
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'invoiceNumber': invoiceNumber,
-        'customerName': customerName,
-        'customerPhone': customerPhone,
-        'items': items.map((i) => i.toJson()).toList(),
-        'createdAt': createdAt.toIso8601String(),
-        'total': total,
-      };
-
-  factory Invoice.fromJson(Map<String, dynamic> json) {
+  Invoice copyWith({
+    String? id,
+    int? invoiceNumber,
+    String? customerName,
+    String? customerPhone,
+    List<OrderItem>? items,
+    double? subtotal,
+    double? tax,
+    double? total,
+    DateTime? createdAt,
+  }) {
     return Invoice(
-      id: json['id'],
-      invoiceNumber: json['invoiceNumber'],
-      customerName: json['customerName'],
-      customerPhone: json['customerPhone'] ?? '',
-      items: (json['items'] as List).map((i) => OrderItem.fromJson(i)).toList(),
-      createdAt: DateTime.parse(json['createdAt']),
-      total: json['total'].toDouble(),
+      id: id ?? this.id,
+      invoiceNumber: invoiceNumber ?? this.invoiceNumber,
+      customerName: customerName ?? this.customerName,
+      customerPhone: customerPhone ?? this.customerPhone,
+      items: items ?? this.items,
+      subtotal: subtotal ?? this.subtotal,
+      tax: tax ?? this.tax,
+      total: total ?? this.total,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }

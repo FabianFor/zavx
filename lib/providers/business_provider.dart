@@ -1,61 +1,94 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/business_profile.dart';
 
 class BusinessProvider with ChangeNotifier {
-  BusinessProfile _profile = BusinessProfile(
-    businessName: 'Mi Negocio',
-    address: '',
-    phone: '',
-    email: '',
-    logoPath: '',
-  );
+  Box<BusinessProfile>? _box;
+  BusinessProfile? _profile;
+  bool _isLoading = false;
+  String? _error;
+  bool _isInitialized = false;
 
-  BusinessProfile get profile => _profile;
+  BusinessProfile? get profile => _profile;
+  bool get isLoading => _isLoading;
+  String? get error => _error;
+  bool get hasProfile => _profile != null;
+
+  @override
+  void dispose() {
+    _box?.close();
+    super.dispose();
+  }
 
   Future<void> loadProfile() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? profileJson = prefs.getString('business_profile');
+    if (_isInitialized) return;
 
-      if (profileJson != null && profileJson.isNotEmpty) {
-        final Map<String, dynamic> profileMap = json.decode(profileJson);
-        _profile = BusinessProfile.fromJson(profileMap);
-        print('✅ Perfil del negocio cargado');
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _box = await Hive.openBox<BusinessProfile>('business_profile');
+      
+      // ✅ CORRECCIÓN: Obtener el perfil correctamente
+      if (_box!.isNotEmpty) {
+        _profile = _box!.get('profile');
       } else {
-        print('✅ No hay perfil guardado, usando valores por defecto');
+        _profile = null;
       }
-      notifyListeners();
+      
+      _isInitialized = true;
     } catch (e) {
-      print('❌ Error al cargar perfil: $e');
+      _error = 'Error al cargar perfil: $e';
+      _profile = null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
-  Future<void> updateProfile({
-    required String businessName,
-    required String address,
-    required String phone,
-    required String email,
-    required String logoPath,
-  }) async {
+  Future<bool> saveProfile(BusinessProfile profile) async {
     try {
-      _profile = BusinessProfile(
-        businessName: businessName,
-        address: address,
-        phone: phone,
-        email: email,
-        logoPath: logoPath,
-      );
+      await _box!.put('profile', profile);
+      _profile = profile;
+      _error = null;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = 'Error al guardar perfil: $e';
+      notifyListeners();
+      return false;
+    }
+  }
 
-      final prefs = await SharedPreferences.getInstance();
-      final String encodedData = json.encode(_profile.toJson());
-      await prefs.setString('business_profile', encodedData);
-      
-      print('✅ Perfil del negocio actualizado');
+  Future<bool> updateProfile(BusinessProfile updatedProfile) async {
+    try {
+      await _box!.put('profile', updatedProfile);
+      _profile = updatedProfile;
+      _error = null;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = 'Error al actualizar perfil: $e';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<void> deleteProfile() async {
+    try {
+      await _box!.delete('profile');
+      _profile = null;
+      _error = null;
       notifyListeners();
     } catch (e) {
-      print('❌ Error al actualizar perfil: $e');
+      _error = 'Error al eliminar perfil: $e';
+      notifyListeners();
     }
+  }
+
+  void clearError() {
+    _error = null;
+    notifyListeners();
   }
 }

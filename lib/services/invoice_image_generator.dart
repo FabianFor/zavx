@@ -101,7 +101,7 @@ class InvoiceImageGenerator {
       try {
         overlayEntry?.remove();
       } catch (e) {
-        AppLogger.warning('Error al remover overlay (no crítico)', e);
+        AppLogger.warning('Error al remover overlay (no crítico)');
       }
     }
   }
@@ -135,6 +135,7 @@ class InvoiceContent extends StatelessWidget {
         Center(
           child: Column(
             children: [
+              // ✅ CORREGIDO: Usar businessProfile.logoPath
               if (businessProfile.logoPath.isNotEmpty)
                 Container(
                   width: 70,
@@ -172,10 +173,10 @@ class InvoiceContent extends StatelessWidget {
         
         const SizedBox(height: 30),
         
-        // Nombre de empresa
+        // ✅ CORREGIDO: Usar businessProfile.name
         Text(
-          businessProfile.businessName.isNotEmpty 
-              ? businessProfile.businessName 
+          businessProfile.name.isNotEmpty 
+              ? businessProfile.name 
               : l10n.businessNameLabel,
           style: const TextStyle(
             fontSize: 32, 
@@ -186,7 +187,7 @@ class InvoiceContent extends StatelessWidget {
         
         const SizedBox(height: 12),
         
-        // Dirección con icono
+        // ✅ CORREGIDO: Usar businessProfile.address
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -207,7 +208,7 @@ class InvoiceContent extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         
-        // Teléfono con icono
+        // ✅ CORREGIDO: Usar businessProfile.phone
         Row(
           children: [
             const Icon(Icons.phone, size: 16, color: Colors.black87),
@@ -225,7 +226,7 @@ class InvoiceContent extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         
-        // Correo con icono
+        // ✅ CORREGIDO: Usar businessProfile.email
         Row(
           children: [
             const Icon(Icons.email, size: 16, color: Colors.black87),
@@ -305,7 +306,7 @@ class InvoiceContent extends StatelessWidget {
                   child: Text(
                     item.productName,
                     style: const TextStyle(
-                      color: ui.Color.fromARGB(255, 0, 0, 0),
+                      color: Colors.black,
                       fontSize: 14,
                     ),
                   ),
@@ -315,7 +316,7 @@ class InvoiceContent extends StatelessWidget {
                   child: Text(
                     settingsProvider.formatPrice(item.price),
                     style: const TextStyle(
-                      color: ui.Color.fromARGB(255, 0, 0, 0),
+                      color: Colors.black,
                       fontSize: 14,
                     ),
                     textAlign: TextAlign.center,
@@ -326,7 +327,7 @@ class InvoiceContent extends StatelessWidget {
                   child: Text(
                     settingsProvider.formatPrice(item.total),
                     style: const TextStyle(
-                      color: ui.Color.fromARGB(255, 0, 0, 0),
+                      color: Colors.black,
                       fontSize: 14,
                     ),
                     textAlign: TextAlign.center,

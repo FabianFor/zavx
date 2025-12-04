@@ -1,16 +1,16 @@
+// lib/providers/product_provider.dart
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/product.dart';
 import '../core/constants/validation_limits.dart';
 
 class ProductProvider with ChangeNotifier {
+  Box<Product>? _box;
   List<Product> _products = [];
   bool _isLoading = false;
   String? _error;
   bool _isInitialized = false;
-  Completer<bool>? _saveCompleter;
 
   List<Product> get products => _products;
   bool get isLoading => _isLoading;
@@ -22,8 +22,7 @@ class ProductProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    _saveCompleter?.complete(false);
-    _saveCompleter = null;
+    _box?.close();
     super.dispose();
   }
 
@@ -35,49 +34,15 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? productsJson = prefs.getString('products');
-
-      if (productsJson != null && productsJson.isNotEmpty) {
-        final List<dynamic> decodedList = json.decode(productsJson);
-        _products = decodedList
-            .map((item) => Product.fromJson(item as Map<String, dynamic>))
-            .toList();
-      } else {
-        _products = [];
-      }
-
+      _box = await Hive.openBox<Product>('products');
+      _products = _box!.values.toList();
       _isInitialized = true;
     } catch (e) {
-      _error = 'Error al cargar productos';
+      _error = 'Error al cargar productos: $e';
       _products = [];
     } finally {
       _isLoading = false;
       notifyListeners();
-    }
-  }
-
-  Future<bool> _saveProducts() async {
-    if (_saveCompleter != null && !_saveCompleter!.isCompleted) {
-      return await _saveCompleter!.future;
-    }
-
-    _saveCompleter = Completer<bool>();
-    
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String encodedData = json.encode(
-        _products.map((product) => product.toJson()).toList(),
-      );
-      
-      final bool saved = await prefs.setString('products', encodedData);
-      _saveCompleter!.complete(saved);
-      return saved;
-    } catch (e) {
-      _error = 'Error al guardar productos';
-      _saveCompleter!.complete(false);
-      notifyListeners();
-      return false;
     }
   }
 
@@ -134,23 +99,17 @@ class ProductProvider with ChangeNotifier {
         imagePath: product.imagePath,
       );
       
+      // Guardar en Hive
+      await _box!.put(sanitizedProduct.id, sanitizedProduct);
+      
+      // Actualizar lista en memoria
       _products.add(sanitizedProduct);
       
-      final bool saved = await _saveProducts();
-      
-      if (saved) {
-        _error = null;
-        notifyListeners();
-        return true;
-      } else {
-        _products.removeLast();
-        _error = 'No se pudo guardar el producto';
-        notifyListeners();
-        return false;
-      }
+      _error = null;
+      notifyListeners();
+      return true;
     } catch (e) {
-      _products.removeLast();
-      _error = 'Error al agregar producto';
+      _error = 'Error al agregar producto: $e';
       notifyListeners();
       return false;
     }
@@ -178,8 +137,6 @@ class ProductProvider with ChangeNotifier {
         return false;
       }
 
-      final oldProduct = _products[index];
-      
       final sanitizedProduct = Product(
         id: updatedProduct.id,
         name: _sanitizeInput(updatedProduct.name.trim()),
@@ -189,22 +146,17 @@ class ProductProvider with ChangeNotifier {
         imagePath: updatedProduct.imagePath,
       );
       
+      // Actualizar en Hive
+      await _box!.put(sanitizedProduct.id, sanitizedProduct);
+      
+      // Actualizar en memoria
       _products[index] = sanitizedProduct;
       
-      final bool saved = await _saveProducts();
-      
-      if (saved) {
-        _error = null;
-        notifyListeners();
-        return true;
-      } else {
-        _products[index] = oldProduct;
-        _error = 'No se pudo guardar la actualización';
-        notifyListeners();
-        return false;
-      }
+      _error = null;
+      notifyListeners();
+      return true;
     } catch (e) {
-      _error = 'Error al actualizar producto';
+      _error = 'Error al actualizar producto: $e';
       notifyListeners();
       return false;
     }
@@ -219,20 +171,16 @@ class ProductProvider with ChangeNotifier {
         return;
       }
 
-      final removed = _products.removeAt(index);
+      // Eliminar de Hive
+      await _box!.delete(productId);
       
-      final bool saved = await _saveProducts();
+      // Eliminar de memoria
+      _products.removeAt(index);
       
-      if (saved) {
-        _error = null;
-        notifyListeners();
-      } else {
-        _products.insert(index, removed);
-        _error = 'No se pudo eliminar el producto';
-        notifyListeners();
-      }
+      _error = null;
+      notifyListeners();
     } catch (e) {
-      _error = 'Error al eliminar producto';
+      _error = 'Error al eliminar producto: $e';
       notifyListeners();
     }
   }
@@ -251,28 +199,25 @@ class ProductProvider with ChangeNotifier {
         return false;
       }
 
-      final oldStock = _products[index].stock;
+      final updatedProduct = _products[index].copyWith(stock: newStock);
       
-      _products[index] = _products[index].copyWith(stock: newStock);
+      // Actualizar en Hive
+      await _box!.put(productId, updatedProduct);
       
-      final bool saved = await _saveProducts();
+      // Actualizar en memoria
+      _products[index] = updatedProduct;
       
-      if (saved) {
-        _error = null;
-        notifyListeners();
-        return true;
-      } else {
-        _products[index] = _products[index].copyWith(stock: oldStock);
-        notifyListeners();
-        return false;
-      }
+      _error = null;
+      notifyListeners();
+      return true;
     } catch (e) {
-      _error = 'Error al actualizar stock';
+      _error = 'Error al actualizar stock: $e';
       notifyListeners();
       return false;
     }
   }
 
+  // ✅ BÚSQUEDA POR NOMBRE Y DESCRIPCIÓN (eficiente)
   List<Product> searchProducts(String query) {
     if (query.isEmpty) return _products;
     
@@ -283,12 +228,9 @@ class ProductProvider with ChangeNotifier {
     }).toList();
   }
 
+  // ✅ BÚSQUEDA POR ID (instantánea O(1))
   Product? getProductById(String id) {
-    try {
-      return _products.firstWhere((p) => p.id == id);
-    } catch (e) {
-      return null;
-    }
+    return _box?.get(id);
   }
 
   void clearError() {

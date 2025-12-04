@@ -1,10 +1,11 @@
-import 'dart:convert';
+// lib/providers/order_provider.dart
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/order.dart';
 import '../core/constants/validation_limits.dart';
 
 class OrderProvider with ChangeNotifier {
+  Box<Order>? _box;
   List<Order> _orders = [];
   bool _isLoading = false;
   String? _error;
@@ -27,6 +28,12 @@ class OrderProvider with ChangeNotifier {
         .fold(0.0, (sum, order) => sum + order.total);
   }
 
+  @override
+  void dispose() {
+    _box?.close();
+    super.dispose();
+  }
+
   Future<void> loadOrders() async {
     if (_isInitialized) return;
 
@@ -35,34 +42,13 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? ordersJson = prefs.getString('orders');
-
-      if (ordersJson != null) {
-        final List<dynamic> decodedList = json.decode(ordersJson);
-        _orders = decodedList.map((item) => Order.fromJson(item)).toList();
-      } else {
-        _orders = [];
-      }
-
+      _box = await Hive.openBox<Order>('orders');
+      _orders = _box!.values.toList();
       _isInitialized = true;
     } catch (e) {
-      _error = 'Error al cargar órdenes';
+      _error = 'Error al cargar órdenes: $e';
     } finally {
       _isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  Future<void> _saveOrders() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String encodedData = json.encode(
-        _orders.map((order) => order.toJson()).toList(),
-      );
-      await prefs.setString('orders', encodedData);
-    } catch (e) {
-      _error = 'Error al guardar órdenes';
       notifyListeners();
     }
   }
@@ -88,13 +74,17 @@ class OrderProvider with ChangeNotifier {
     }
 
     try {
+      // Guardar en Hive
+      await _box!.put(order.id, order);
+      
+      // Insertar al inicio de la lista
       _orders.insert(0, order);
-      await _saveOrders();
+      
       _error = null;
       notifyListeners();
       return true;
     } catch (e) {
-      _error = 'Error al agregar orden';
+      _error = 'Error al agregar orden: $e';
       notifyListeners();
       return false;
     }
@@ -103,26 +93,25 @@ class OrderProvider with ChangeNotifier {
   Future<bool> updateOrderStatus(String orderId, String newStatus) async {
     try {
       final index = _orders.indexWhere((o) => o.id == orderId);
-      if (index != -1) {
-        _orders[index] = Order(
-          id: _orders[index].id,
-          orderNumber: _orders[index].orderNumber,
-          customerName: _orders[index].customerName,
-          customerPhone: _orders[index].customerPhone,
-          items: _orders[index].items,
-          subtotal: _orders[index].subtotal,
-          tax: _orders[index].tax,
-          total: _orders[index].total,
-          status: newStatus,
-          createdAt: _orders[index].createdAt,
-        );
-        await _saveOrders();
+      if (index == -1) {
+        _error = 'Orden no encontrada';
         notifyListeners();
-        return true;
+        return false;
       }
-      return false;
+
+      final updatedOrder = _orders[index].copyWith(status: newStatus);
+      
+      // Actualizar en Hive
+      await _box!.put(orderId, updatedOrder);
+      
+      // Actualizar en memoria
+      _orders[index] = updatedOrder;
+      
+      _error = null;
+      notifyListeners();
+      return true;
     } catch (e) {
-      _error = 'Error al actualizar estado';
+      _error = 'Error al actualizar estado: $e';
       notifyListeners();
       return false;
     }
@@ -130,16 +119,28 @@ class OrderProvider with ChangeNotifier {
 
   Future<void> deleteOrder(String orderId) async {
     try {
-      _orders.removeWhere((order) => order.id == orderId);
-      await _saveOrders();
+      final index = _orders.indexWhere((o) => o.id == orderId);
+      if (index == -1) {
+        _error = 'Orden no encontrada';
+        notifyListeners();
+        return;
+      }
+
+      // Eliminar de Hive
+      await _box!.delete(orderId);
+      
+      // Eliminar de memoria
+      _orders.removeAt(index);
+      
       _error = null;
       notifyListeners();
     } catch (e) {
-      _error = 'Error al eliminar orden';
+      _error = 'Error al eliminar orden: $e';
       notifyListeners();
     }
   }
 
+  // ✅ BÚSQUEDA POR NOMBRE, NÚMERO Y TELÉFONO
   List<Order> searchOrders(String query) {
     if (query.isEmpty) return _orders;
     
@@ -149,6 +150,11 @@ class OrderProvider with ChangeNotifier {
              order.orderNumber.toString().contains(query) ||
              order.customerPhone.contains(query);
     }).toList();
+  }
+
+  // ✅ BÚSQUEDA POR ID (instantánea)
+  Order? getOrderById(String id) {
+    return _box?.get(id);
   }
 
   void clearError() {

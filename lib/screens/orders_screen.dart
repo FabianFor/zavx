@@ -295,14 +295,17 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
         createdAt: DateTime.now(),
       );
 
+      // ✅ CORREGIDO: Agregados subtotal y tax
       final invoice = Invoice(
         id: const Uuid().v4(),
         invoiceNumber: invoiceProvider.invoices.length + 1,
         customerName: _customerNameController.text.trim(),
         customerPhone: _customerPhoneController.text.trim(),
         items: items,
-        createdAt: DateTime.now(),
+        subtotal: subtotal,
+        tax: tax,
         total: total,
+        createdAt: DateTime.now(),
       );
 
       final orderSuccess = await orderProvider.addOrder(order);

@@ -1,15 +1,38 @@
+import 'package:hive/hive.dart';
 import '../core/utils/app_logger.dart';
 
+part 'order.g.dart';
+
+@HiveType(typeId: 1)
 class Order {
+  @HiveField(0)
   final String id;
+  
+  @HiveField(1)
   final int orderNumber;
+  
+  @HiveField(2)
   final String customerName;
+  
+  @HiveField(3)
   final String customerPhone;
+  
+  @HiveField(4)
   final List<OrderItem> items;
+  
+  @HiveField(5)
   final double subtotal;
+  
+  @HiveField(6)
   final double tax;
+  
+  @HiveField(7)
   final double total;
+  
+  @HiveField(8)
   final String status;
+  
+  @HiveField(9)
   final DateTime createdAt;
 
   Order({
@@ -24,23 +47,18 @@ class Order {
     required this.status,
     required this.createdAt,
   }) {
-    // ✅ VALIDACIÓN DE INTEGRIDAD: Verificar que los cálculos son correctos
     _validateIntegrity();
   }
 
-  /// ✅ Valida que los totales sean correctos
   void _validateIntegrity() {
-    // Calcular subtotal esperado
     final calculatedSubtotal = items.fold(0.0, (sum, item) => sum + item.total);
     
-    // Verificar con tolerancia de 0.01 por redondeos
     if ((calculatedSubtotal - subtotal).abs() > 0.01) {
       AppLogger.warning(
         'INCONSISTENCIA: Subtotal esperado: $calculatedSubtotal, actual: $subtotal'
       );
     }
     
-    // Verificar total
     final expectedTotal = subtotal + tax;
     if ((expectedTotal - total).abs() > 0.01) {
       AppLogger.warning(
@@ -48,7 +66,6 @@ class Order {
       );
     }
     
-    // Verificar items válidos
     for (final item in items) {
       if (item.quantity <= 0) {
         AppLogger.error('ITEM INVÁLIDO: Cantidad debe ser > 0');
@@ -67,49 +84,6 @@ class Order {
     }
   }
 
-  // ✅ Convertir a JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'orderNumber': orderNumber,
-      'customerName': customerName,
-      'customerPhone': customerPhone,
-      'items': items.map((item) => item.toJson()).toList(),
-      'subtotal': subtotal,
-      'tax': tax,
-      'total': total,
-      'status': status,
-      'createdAt': createdAt.toIso8601String(),
-    };
-  }
-
-  // ✅ Crear desde JSON con validación
-  factory Order.fromJson(Map<String, dynamic> json) {
-    try {
-      return Order(
-        id: json['id'] ?? '',
-        orderNumber: json['orderNumber'] ?? 0,
-        customerName: json['customerName'] ?? '',
-        customerPhone: json['customerPhone'] ?? '',
-        items: (json['items'] as List<dynamic>?)
-                ?.map((item) => OrderItem.fromJson(item))
-                .toList() ??
-            [],
-        subtotal: (json['subtotal'] ?? 0).toDouble(),
-        tax: (json['tax'] ?? 0).toDouble(),
-        total: (json['total'] ?? 0).toDouble(),
-        status: json['status'] ?? 'pending',
-        createdAt: json['createdAt'] != null
-            ? DateTime.parse(json['createdAt'])
-            : DateTime.now(),
-      );
-    } catch (e, stackTrace) {
-      AppLogger.error('Error al crear Order desde JSON', e, stackTrace);
-      rethrow;
-    }
-  }
-
-  // ✅ Copiar con cambios
   Order copyWith({
     String? id,
     int? orderNumber,
@@ -137,12 +111,21 @@ class Order {
   }
 }
 
-// ✅ Clase OrderItem con validación
+@HiveType(typeId: 2)
 class OrderItem {
+  @HiveField(0)
   final String productId;
+  
+  @HiveField(1)
   final String productName;
+  
+  @HiveField(2)
   final int quantity;
+  
+  @HiveField(3)
   final double price;
+  
+  @HiveField(4)
   final double total;
 
   OrderItem({
@@ -152,7 +135,6 @@ class OrderItem {
     required this.price,
     required this.total,
   }) {
-    // ✅ VALIDACIONES
     if (quantity <= 0) {
       throw ArgumentError('Quantity must be > 0');
     }
@@ -160,37 +142,11 @@ class OrderItem {
       throw ArgumentError('Price cannot be negative');
     }
     
-    // Validar total (con tolerancia de redondeo)
     final expectedTotal = price * quantity;
     if ((expectedTotal - total).abs() > 0.01) {
       AppLogger.warning(
         'OrderItem total mismatch: expected $expectedTotal, got $total'
       );
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'productId': productId,
-      'productName': productName,
-      'quantity': quantity,
-      'price': price,
-      'total': total,
-    };
-  }
-
-  factory OrderItem.fromJson(Map<String, dynamic> json) {
-    try {
-      return OrderItem(
-        productId: json['productId'] ?? '',
-        productName: json['productName'] ?? '',
-        quantity: json['quantity'] ?? 0,
-        price: (json['price'] ?? 0).toDouble(),
-        total: (json['total'] ?? 0).toDouble(),
-      );
-    } catch (e, stackTrace) {
-      AppLogger.error('Error al crear OrderItem desde JSON', e, stackTrace);
-      rethrow;
     }
   }
 

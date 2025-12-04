@@ -5,13 +5,37 @@ import '../l10n/app_localizations.dart';
 import '../core/utils/theme_helper.dart';
 import '../providers/business_provider.dart';
 import '../providers/product_provider.dart';
+import '../providers/order_provider.dart';
+import '../providers/invoice_provider.dart';
 import 'products_screen.dart';
 import 'orders_screen.dart';
 import 'invoices_screen.dart';
 import 'settings_screen.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _loadAllData();
+  }
+
+  Future<void> _loadAllData() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.wait([
+        context.read<ProductProvider>().loadProducts(),
+        context.read<OrderProvider>().loadOrders(),
+        context.read<InvoiceProvider>().loadInvoices(),
+        context.read<BusinessProvider>().loadProfile(),
+      ]);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +57,7 @@ class DashboardScreen extends StatelessWidget {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-              color: theme.appBarBackground,  // ✅ Ahora usa el color del tema
+              color: theme.appBarBackground,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),
@@ -53,13 +77,14 @@ class DashboardScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      businessProvider.profile.businessName.isEmpty
+                      // ✅ CORREGIDO: Manejo seguro de null
+                      (businessProvider.profile?.businessName?.isEmpty ?? true)
                           ? l10n.businessName
-                          : businessProvider.profile.businessName,
+                          : businessProvider.profile!.businessName,
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
-                        color: theme.appBarForeground,  // ✅ Ahora usa el color del tema
+                        color: theme.appBarForeground,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -69,7 +94,7 @@ class DashboardScreen extends StatelessWidget {
                       l10n.businessManagement,
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: theme.appBarForeground.withOpacity(0.9),  // ✅ Ahora usa el color del tema
+                        color: theme.appBarForeground.withOpacity(0.9),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

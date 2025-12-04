@@ -9,7 +9,11 @@ class OfflineConfig {
   static Future<bool> hasConnection() async {
     try {
       final connectivityResult = await Connectivity().checkConnectivity();
-      final hasConnection = connectivityResult != ConnectivityResult.none;
+      
+      // ✅ CORRECCIÓN: Manejo correcto de la nueva API de connectivity_plus
+      final hasConnection = connectivityResult.contains(ConnectivityResult.mobile) ||
+                           connectivityResult.contains(ConnectivityResult.wifi) ||
+                           connectivityResult.contains(ConnectivityResult.ethernet);
       
       if (hasConnection) {
         AppLogger.info('📶 Conexión detectada');
@@ -19,7 +23,8 @@ class OfflineConfig {
       
       return hasConnection;
     } catch (e) {
-      AppLogger.warning('No se pudo verificar conexión, asumiendo offline', e);
+      // ✅ CORRECCIÓN: AppLogger.warning solo acepta 1 parámetro
+      AppLogger.warning('No se pudo verificar conexión (error: $e), asumiendo offline');
       return false;
     }
   }

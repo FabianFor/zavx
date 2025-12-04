@@ -1,10 +1,11 @@
-import 'dart:convert';
+// lib/providers/invoice_provider.dart
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/invoice.dart';
 import '../core/constants/validation_limits.dart';
 
 class InvoiceProvider with ChangeNotifier {
+  Box<Invoice>? _box;
   List<Invoice> _invoices = [];
   bool _isLoading = false;
   String? _error;
@@ -29,6 +30,12 @@ class InvoiceProvider with ChangeNotifier {
 
   int get totalInvoices => _invoices.length;
 
+  @override
+  void dispose() {
+    _box?.close();
+    super.dispose();
+  }
+
   Future<void> loadInvoices() async {
     if (_isInitialized) return;
 
@@ -37,34 +44,13 @@ class InvoiceProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? invoicesJson = prefs.getString('invoices');
-
-      if (invoicesJson != null) {
-        final List<dynamic> decodedList = json.decode(invoicesJson);
-        _invoices = decodedList.map((item) => Invoice.fromJson(item)).toList();
-      } else {
-        _invoices = [];
-      }
-
+      _box = await Hive.openBox<Invoice>('invoices');
+      _invoices = _box!.values.toList();
       _isInitialized = true;
     } catch (e) {
-      _error = 'Error al cargar facturas';
+      _error = 'Error al cargar facturas: $e';
     } finally {
       _isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  Future<void> _saveInvoices() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String encodedData = json.encode(
-        _invoices.map((invoice) => invoice.toJson()).toList(),
-      );
-      await prefs.setString('invoices', encodedData);
-    } catch (e) {
-      _error = 'Error al guardar facturas';
       notifyListeners();
     }
   }
@@ -90,13 +76,17 @@ class InvoiceProvider with ChangeNotifier {
     }
 
     try {
+      // Guardar en Hive
+      await _box!.put(invoice.id, invoice);
+      
+      // Insertar al inicio
       _invoices.insert(0, invoice);
-      await _saveInvoices();
+      
       _error = null;
       notifyListeners();
       return true;
     } catch (e) {
-      _error = 'Error al agregar factura';
+      _error = 'Error al agregar factura: $e';
       notifyListeners();
       return false;
     }
@@ -104,16 +94,28 @@ class InvoiceProvider with ChangeNotifier {
 
   Future<void> deleteInvoice(String invoiceId) async {
     try {
-      _invoices.removeWhere((invoice) => invoice.id == invoiceId);
-      await _saveInvoices();
+      final index = _invoices.indexWhere((inv) => inv.id == invoiceId);
+      if (index == -1) {
+        _error = 'Factura no encontrada';
+        notifyListeners();
+        return;
+      }
+
+      // Eliminar de Hive
+      await _box!.delete(invoiceId);
+      
+      // Eliminar de memoria
+      _invoices.removeAt(index);
+      
       _error = null;
       notifyListeners();
     } catch (e) {
-      _error = 'Error al eliminar factura';
+      _error = 'Error al eliminar factura: $e';
       notifyListeners();
     }
   }
 
+  // ✅ BÚSQUEDA POR NOMBRE, NÚMERO Y TELÉFONO
   List<Invoice> searchInvoices(String query) {
     if (query.isEmpty) return _invoices;
     
@@ -123,6 +125,11 @@ class InvoiceProvider with ChangeNotifier {
              invoice.invoiceNumber.toString().contains(query) ||
              invoice.customerPhone.contains(query);
     }).toList();
+  }
+
+  // ✅ BÚSQUEDA POR ID (instantánea)
+  Invoice? getInvoiceById(String id) {
+    return _box?.get(id);
   }
 
   List<Invoice> getInvoicesByDateRange(DateTime start, DateTime end) {

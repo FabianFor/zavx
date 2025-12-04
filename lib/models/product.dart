@@ -1,54 +1,49 @@
-import 'package:uuid/uuid.dart';
+import 'package:hive/hive.dart';
 
+part 'product.g.dart';
+
+@HiveType(typeId: 0)
 class Product {
-  String id;
-  String name;
-  double price;
-  String description;
-  int stock;
-  String imagePath;
+  @HiveField(0)
+  final String id;
+  
+  @HiveField(1)
+  final String name;
+  
+  @HiveField(2)
+  final String description;
+  
+  @HiveField(3)
+  final double price;
+  
+  @HiveField(4)
+  final int stock;
+  
+  @HiveField(5)
+  final String imagePath;
 
   Product({
-    String? id,
+    required this.id,
     required this.name,
+    required this.description,
     required this.price,
-    this.description = '',
-    this.stock = 0,
-    this.imagePath = '',
-  }) : id = id ?? const Uuid().v4();
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'price': price,
-        'description': description,
-        'stock': stock,
-        'imagePath': imagePath,
-      };
-
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      price: (json['price'] as num).toDouble(),
-      description: json['description'] as String? ?? '',
-      stock: json['stock'] as int? ?? 0,
-      imagePath: json['imagePath'] as String? ?? '',
-    );
-  }
+    required this.stock,
+    required this.imagePath,
+  });
 
   Product copyWith({
+    String? id,
     String? name,
-    double? price,
     String? description,
+    double? price,
     int? stock,
     String? imagePath,
   }) {
     return Product(
-      id: id,
+      id: id ?? this.id,
       name: name ?? this.name,
-      price: price ?? this.price,
       description: description ?? this.description,
+      price: price ?? this.price,
       stock: stock ?? this.stock,
       imagePath: imagePath ?? this.imagePath,
     );

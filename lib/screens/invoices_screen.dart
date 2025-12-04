@@ -8,6 +8,7 @@ import '../core/utils/theme_helper.dart';
 import '../providers/invoice_provider.dart';
 import '../providers/business_provider.dart';
 import '../providers/settings_provider.dart';
+import '../models/business_profile.dart';
 import '../services/invoice_image_generator.dart';
 import '../services/permission_handler.dart';
 import '../services/gallery_saver.dart';
@@ -668,11 +669,10 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
             ),
           ],
         ),
-content: Text(
-  '¿Estás seguro de eliminar la ${l10n.receipt} #${invoice.invoiceNumber}?\n\n${l10n.cannotUndo}',
-  style: TextStyle(fontSize: 15.sp, color: theme.textPrimary),
-),
-
+        content: Text(
+          '¿Estás seguro de eliminar la ${l10n.receipt} #${invoice.invoiceNumber}?\n\n${l10n.cannotUndo}',
+          style: TextStyle(fontSize: 15.sp, color: theme.textPrimary),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -752,7 +752,13 @@ content: Text(
     try {
       final imagePath = await InvoiceImageGenerator.generateImage(
         invoice: invoice,
-        businessProfile: businessProvider.profile,
+        businessProfile: businessProvider.profile ?? BusinessProfile(
+          name: '',
+          address: '',
+          phone: '',
+          email: '',
+          logoPath: '',
+        ),
         context: context,
         settingsProvider: settingsProvider,
       );
@@ -815,7 +821,13 @@ content: Text(
     try {
       final tempImagePath = await InvoiceImageGenerator.generateImage(
         invoice: invoice,
-        businessProfile: businessProvider.profile,
+        businessProfile: businessProvider.profile ?? BusinessProfile(
+          name: '',
+          address: '',
+          phone: '',
+          email: '',
+          logoPath: '',
+        ),
         context: context,
         settingsProvider: settingsProvider,
       );
@@ -850,7 +862,6 @@ content: Text(
     }
   }
 
-  // ✅ FUNCIONES AUXILIARES PARA TRADUCCIONES
   String _getResultsText(AppLocalizations l10n) {
     switch (l10n.localeName) {
       case 'es': return 'resultado(s)';

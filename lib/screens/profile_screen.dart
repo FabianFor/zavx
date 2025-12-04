@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import '../l10n/app_localizations.dart';
 import '../core/utils/theme_helper.dart';
+import '../models/business_profile.dart';
 import '../providers/business_provider.dart';
 import '../services/permission_handler.dart';
 
@@ -28,19 +29,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     final businessProvider = context.read<BusinessProvider>();
+    
+    // ✅ CORREGIDO: Manejo seguro de null
     _businessNameController = TextEditingController(
-      text: businessProvider.profile.businessName,
+      text: businessProvider.profile?.businessName ?? '',
     );
     _addressController = TextEditingController(
-      text: businessProvider.profile.address,
+      text: businessProvider.profile?.businessAddress ?? '',
     );
     _phoneController = TextEditingController(
-      text: businessProvider.profile.phone,
+      text: businessProvider.profile?.businessPhone ?? '',
     );
     _emailController = TextEditingController(
-      text: businessProvider.profile.email,
+      text: businessProvider.profile?.businessEmail ?? '',
     );
-    _logoPath = businessProvider.profile.logoPath;
+    _logoPath = businessProvider.profile?.businessLogo ?? '';
   }
 
   @override
@@ -114,27 +117,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final businessProvider = context.read<BusinessProvider>();
 
-    await businessProvider.updateProfile(
-      businessName: _businessNameController.text.trim(),
+    // ✅ CORREGIDO: Crear nuevo BusinessProfile
+    final updatedProfile = BusinessProfile(
+      name: _businessNameController.text.trim(),
       address: _addressController.text.trim(),
       phone: _phoneController.text.trim(),
       email: _emailController.text.trim(),
       logoPath: _logoPath,
     );
 
+    final success = await businessProvider.saveProfile(updatedProfile);
+
     if (mounted) {
       setState(() {
         _isSubmitting = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('✅ Perfil actualizado correctamente'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      Navigator.pop(context);
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Perfil actualizado correctamente'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('❌ Error al guardar el perfil'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
