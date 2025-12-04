@@ -28,7 +28,7 @@ dependencies:
   # Images
   image_picker: ^1.0.4
   
-  # Sharing
+  # Sharing (solo para compartir/descargar, no afecta funcionalidad offline)
   share_plus: ^7.2.1
   
   # Permissions
@@ -40,6 +40,12 @@ dependencies:
   # Utils
   uuid: ^4.2.1
   intl: ^0.20.2
+  
+  # Logger para debugging
+  logger: ^2.0.2
+  
+  # Conectividad (opcional, solo para verificar estado)
+  connectivity_plus: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -48,4 +54,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  generate: true  # ✅ Necesario para generación automática de traducciones
+  generate: true

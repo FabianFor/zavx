@@ -8,7 +8,9 @@ import 'package:intl/intl.dart';
 import '../models/invoice.dart';
 import '../models/business_profile.dart';
 import '../providers/settings_provider.dart';
+import '../core/utils/app_logger.dart';
 
+/// ✅ FUNCIONA 100% OFFLINE - No requiere internet
 class InvoiceImageGenerator {
   static final GlobalKey _globalKey = GlobalKey();
 
@@ -18,11 +20,12 @@ class InvoiceImageGenerator {
     required BuildContext context,
     required SettingsProvider settingsProvider,
   }) async {
+    OverlayEntry? overlayEntry; // ✅ Variable nullable para cleanup
+    
     try {
-      print('📸 Generando boleta minimalista...');
+      AppLogger.info('📸 Generando boleta minimalista...');
       
       final overlay = Overlay.of(context);
-      late OverlayEntry overlayEntry;
       
       overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
@@ -46,31 +49,57 @@ class InvoiceImageGenerator {
       );
 
       overlay.insert(overlayEntry);
+      
+      // Esperar a que se renderice
       await Future.delayed(const Duration(milliseconds: 500));
+
+      // ✅ VALIDACIÓN: Verificar que el context existe
+      if (_globalKey.currentContext == null) {
+        throw Exception('No se pudo obtener el contexto del RepaintBoundary');
+      }
 
       RenderRepaintBoundary boundary =
           _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       
       ui.Image image = await boundary.toImage(pixelRatio: 3.0);
       ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      Uint8List pngBytes = byteData!.buffer.asUint8List();
+      
+      // ✅ VALIDACIÓN: Verificar que se obtuvo data
+      if (byteData == null) {
+        throw Exception('No se pudo convertir la imagen a bytes');
+      }
+      
+      Uint8List pngBytes = byteData.buffer.asUint8List();
+      AppLogger.success('Imagen capturada: ${pngBytes.length} bytes');
 
-      print('✅ Imagen capturada: ${pngBytes.length} bytes');
-
+      // ✅ CLEANUP: Remover overlay en finally
       overlayEntry.remove();
+      overlayEntry = null;
 
       final directory = await getTemporaryDirectory();
       final tempPath = '${directory.path}/temp_invoice_${invoice.invoiceNumber}_${DateTime.now().millisecondsSinceEpoch}.png';
       
       final file = File(tempPath);
       await file.writeAsBytes(pngBytes);
+      
+      // ✅ VALIDACIÓN: Verificar que se guardó
+      if (!await file.exists()) {
+        throw Exception('No se pudo guardar la imagen temporal');
+      }
 
-      print('✅ Imagen guardada: $tempPath');
+      AppLogger.success('Imagen guardada: $tempPath');
       return tempPath;
+      
     } catch (e, stackTrace) {
-      print('❌ Error: $e');
-      print('Stack: $stackTrace');
+      AppLogger.error('Error crítico al generar imagen', e, stackTrace);
       rethrow;
+    } finally {
+      // ✅ CLEANUP GARANTIZADO: Remover overlay si existe
+      try {
+        overlayEntry?.remove();
+      } catch (e) {
+        AppLogger.warning('Error al remover overlay (no crítico)', e);
+      }
     }
   }
 }
@@ -180,117 +209,122 @@ class MinimalistInvoiceWidget extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           Container(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             decoration: const BoxDecoration(
+              color: Color(0xFFE8E8E8),
               border: Border(
-                bottom: BorderSide(
-                  color: Color(0xFF2C2C2C),
-                  width: 1.5,
-                ),
+                top: BorderSide(color: Color(0xFF2C2C2C), width: 1.5),
+                bottom: BorderSide(color: Color(0xFF2C2C2C), width: 1.5),
               ),
             ),
             child: const Row(
               children: [
-                SizedBox(
-                  width: 60,
-                  child: Text(
-                    'CANT.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF2C2C2C),
-                    ),
-                  ),
-                ),
                 Expanded(
                   flex: 3,
-                  child: Text(
-                    'DESCRIPCIÓN',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF2C2C2C),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(
+                      'Lista de productos',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2C2C2C),
+                      ),
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: 100,
+                  width: 80,
                   child: Text(
-                    'PRECIO UNIT.',
+                    'Unitario',
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF2C2C2C),
                     ),
-                    textAlign: TextAlign.right,
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(width: 20),
                 SizedBox(
-                  width: 100,
+                  width: 80,
                   child: Text(
-                    'TOTAL',
+                    'Total',
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF2C2C2C),
                     ),
-                    textAlign: TextAlign.right,
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           ...invoice.items.map((item) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+            return Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Color(0xFFE0E0E0), width: 1),
+                ),
+              ),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 60,
-                    child: Text(
-                      '${item.quantity}',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Color(0xFF2C2C2C),
-                      ),
-                    ),
-                  ),
                   Expanded(
                     flex: 3,
-                    child: Text(
-                      item.productName,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Color(0xFF2C2C2C),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: RichText(
+                        text: TextSpan(
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF2C2C2C),
+                            height: 1.4,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: item.productName,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '\n${item.quantity}x',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFF666666),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   SizedBox(
-                    width: 100,
+                    width: 80,
                     child: Text(
                       settingsProvider.formatPrice(item.price),
                       style: const TextStyle(
-                        fontSize: 15,
-                        color: Color(0xFF2C2C2C),
+                        fontSize: 14,
+                        color: Color(0xFF666666),
                       ),
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   const SizedBox(width: 20),
                   SizedBox(
-                    width: 100,
+                    width: 80,
                     child: Text(
                       settingsProvider.formatPrice(item.total),
                       style: const TextStyle(
-                        fontSize: 15,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                         color: Color(0xFF2C2C2C),
                       ),
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ],
@@ -299,33 +333,32 @@ class MinimalistInvoiceWidget extends StatelessWidget {
           }),
           const SizedBox(height: 20),
           Container(
-            padding: const EdgeInsets.only(top: 12),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
             decoration: const BoxDecoration(
+              color: Color(0xFFE8E8E8),
               border: Border(
-                top: BorderSide(
-                  color: Color(0xFF2C2C2C),
-                  width: 1.5,
-                ),
+                top: BorderSide(color: Color(0xFF2C2C2C), width: 2),
               ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const Text(
-                  'TOTAL: ',
+                  'Total',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF2C2C2C),
                   ),
                 ),
+                const SizedBox(width: 40),
                 Text(
                   settingsProvider.formatPrice(invoice.total),
                   style: const TextStyle(
-                    fontSize: 28,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF2C2C2C),
-                    letterSpacing: 1,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ],

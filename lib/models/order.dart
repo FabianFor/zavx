@@ -1,3 +1,5 @@
+import '../core/utils/app_logger.dart';
+
 class Order {
   final String id;
   final int orderNumber;
@@ -21,7 +23,49 @@ class Order {
     required this.total,
     required this.status,
     required this.createdAt,
-  });
+  }) {
+    // ✅ VALIDACIÓN DE INTEGRIDAD: Verificar que los cálculos son correctos
+    _validateIntegrity();
+  }
+
+  /// ✅ Valida que los totales sean correctos
+  void _validateIntegrity() {
+    // Calcular subtotal esperado
+    final calculatedSubtotal = items.fold(0.0, (sum, item) => sum + item.total);
+    
+    // Verificar con tolerancia de 0.01 por redondeos
+    if ((calculatedSubtotal - subtotal).abs() > 0.01) {
+      AppLogger.warning(
+        'INCONSISTENCIA: Subtotal esperado: $calculatedSubtotal, actual: $subtotal'
+      );
+    }
+    
+    // Verificar total
+    final expectedTotal = subtotal + tax;
+    if ((expectedTotal - total).abs() > 0.01) {
+      AppLogger.warning(
+        'INCONSISTENCIA: Total esperado: $expectedTotal, actual: $total'
+      );
+    }
+    
+    // Verificar items válidos
+    for (final item in items) {
+      if (item.quantity <= 0) {
+        AppLogger.error('ITEM INVÁLIDO: Cantidad debe ser > 0');
+      }
+      if (item.price < 0) {
+        AppLogger.error('ITEM INVÁLIDO: Precio no puede ser negativo');
+      }
+      
+      final expectedItemTotal = item.price * item.quantity;
+      if ((expectedItemTotal - item.total).abs() > 0.01) {
+        AppLogger.warning(
+          'ITEM INCONSISTENTE: ${item.productName} - '
+          'Total esperado: $expectedItemTotal, actual: ${item.total}'
+        );
+      }
+    }
+  }
 
   // ✅ Convertir a JSON
   Map<String, dynamic> toJson() {
@@ -39,25 +83,30 @@ class Order {
     };
   }
 
-  // ✅ Crear desde JSON
+  // ✅ Crear desde JSON con validación
   factory Order.fromJson(Map<String, dynamic> json) {
-    return Order(
-      id: json['id'] ?? '',
-      orderNumber: json['orderNumber'] ?? 0,
-      customerName: json['customerName'] ?? '',
-      customerPhone: json['customerPhone'] ?? '',
-      items: (json['items'] as List<dynamic>?)
-              ?.map((item) => OrderItem.fromJson(item))
-              .toList() ??
-          [],
-      subtotal: (json['subtotal'] ?? 0).toDouble(),
-      tax: (json['tax'] ?? 0).toDouble(),
-      total: (json['total'] ?? 0).toDouble(),
-      status: json['status'] ?? 'pending',
-      createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'])
-          : DateTime.now(),
-    );
+    try {
+      return Order(
+        id: json['id'] ?? '',
+        orderNumber: json['orderNumber'] ?? 0,
+        customerName: json['customerName'] ?? '',
+        customerPhone: json['customerPhone'] ?? '',
+        items: (json['items'] as List<dynamic>?)
+                ?.map((item) => OrderItem.fromJson(item))
+                .toList() ??
+            [],
+        subtotal: (json['subtotal'] ?? 0).toDouble(),
+        tax: (json['tax'] ?? 0).toDouble(),
+        total: (json['total'] ?? 0).toDouble(),
+        status: json['status'] ?? 'pending',
+        createdAt: json['createdAt'] != null
+            ? DateTime.parse(json['createdAt'])
+            : DateTime.now(),
+      );
+    } catch (e, stackTrace) {
+      AppLogger.error('Error al crear Order desde JSON', e, stackTrace);
+      rethrow;
+    }
   }
 
   // ✅ Copiar con cambios
@@ -88,7 +137,7 @@ class Order {
   }
 }
 
-// ✅ Clase OrderItem (item individual del pedido)
+// ✅ Clase OrderItem con validación
 class OrderItem {
   final String productId;
   final String productName;
@@ -102,7 +151,23 @@ class OrderItem {
     required this.quantity,
     required this.price,
     required this.total,
-  });
+  }) {
+    // ✅ VALIDACIONES
+    if (quantity <= 0) {
+      throw ArgumentError('Quantity must be > 0');
+    }
+    if (price < 0) {
+      throw ArgumentError('Price cannot be negative');
+    }
+    
+    // Validar total (con tolerancia de redondeo)
+    final expectedTotal = price * quantity;
+    if ((expectedTotal - total).abs() > 0.01) {
+      AppLogger.warning(
+        'OrderItem total mismatch: expected $expectedTotal, got $total'
+      );
+    }
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -115,13 +180,18 @@ class OrderItem {
   }
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
-    return OrderItem(
-      productId: json['productId'] ?? '',
-      productName: json['productName'] ?? '',
-      quantity: json['quantity'] ?? 0,
-      price: (json['price'] ?? 0).toDouble(),
-      total: (json['total'] ?? 0).toDouble(),
-    );
+    try {
+      return OrderItem(
+        productId: json['productId'] ?? '',
+        productName: json['productName'] ?? '',
+        quantity: json['quantity'] ?? 0,
+        price: (json['price'] ?? 0).toDouble(),
+        total: (json['total'] ?? 0).toDouble(),
+      );
+    } catch (e, stackTrace) {
+      AppLogger.error('Error al crear OrderItem desde JSON', e, stackTrace);
+      rethrow;
+    }
   }
 
   OrderItem copyWith({
