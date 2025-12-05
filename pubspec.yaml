@@ -59,8 +59,8 @@ dev_dependencies:
   
   # ... dependencias existentes
   pdf: ^3.10.8
-  open_file: ^3.3.2 
-
+  open_file: ^3.5.0
+  
 flutter:
   uses-material-design: true
   generate: true

@@ -2,14 +2,13 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
-/// 🎯 Guarda archivos en DCIM/MiNegocio (visible en galería)
-/// ✅ Compatible con TODAS las versiones de Android
-/// ✅ Sin permisos en Android 10+ (API 29+)
-/// ✅ Con permisos en Android 9 y anteriores
+/// 🎯 Guarda archivos en DCIM/MiNegocio usando MediaStore (Android 10+)
 class GallerySaver {
-  
-  /// 📥 GUARDAR ARCHIVO EN DCIM (Visible en galería inmediatamente)
+  static const platform = MethodChannel('com.example.mi_negocio_app/media_store');
+
+  /// 📥 GUARDAR ARCHIVO EN DCIM (Compatible con TODAS las versiones)
   static Future<String> saveFileToGallery({
     required String tempFilePath,
     required String fileName,
@@ -32,51 +31,14 @@ class GallerySaver {
           print('📱 [2/5] Android SDK: $sdkInt');
         }
 
-        final Directory? externalDir = await getExternalStorageDirectory();
-        
-        if (externalDir == null) {
-          throw Exception('❌ No se pudo acceder al almacenamiento externo');
+        // ✅ ANDROID 10+ (API 29+): Usar MediaStore
+        if (sdkInt >= 29) {
+          return await _saveUsingMediaStore(tempFilePath, fileName);
         }
-
-        // 🎯 RUTA DCIM: /storage/emulated/0/DCIM/MiNegocio
-        final String basePath = externalDir.path.split('/Android')[0];
-        final String dcimFolderPath = '$basePath/DCIM/MiNegocio';
-        
-        if (kDebugMode) {
-          print('📁 [3/5] Carpeta destino: $dcimFolderPath');
+        // ✅ ANDROID 9 y anteriores: Copiar directamente
+        else {
+          return await _saveUsingDirectCopy(tempFilePath, fileName);
         }
-        
-        final Directory dcimFolder = Directory(dcimFolderPath);
-        if (!await dcimFolder.exists()) {
-          await dcimFolder.create(recursive: true);
-          if (kDebugMode) {
-            print('📁 [3/5] Carpeta creada en DCIM');
-          }
-        }
-
-        final String finalFilePath = '$dcimFolderPath/$fileName';
-        
-        // Copiar archivo
-        await tempFile.copy(finalFilePath);
-        
-        if (kDebugMode) {
-          print('✅ [4/5] Archivo copiado: $finalFilePath');
-        }
-        
-        // Verificar que se guardó
-        final savedFile = File(finalFilePath);
-        if (!await savedFile.exists()) {
-          throw Exception('❌ El archivo no se guardó correctamente');
-        }
-        
-        // Notificar al sistema (crítico para que aparezca en galería)
-        await _notifyMediaScanner(finalFilePath, dcimFolderPath);
-        
-        if (kDebugMode) {
-          print('✅ [5/5] Guardado exitoso en DCIM/MiNegocio');
-        }
-        
-        return finalFilePath;
         
       } else {
         // iOS u otras plataformas
@@ -94,7 +56,92 @@ class GallerySaver {
     }
   }
 
-  /// 📢 Notificar al Media Scanner de Android
+  /// 📱 ANDROID 10+ - Usar MediaStore API
+  static Future<String> _saveUsingMediaStore(String tempFilePath, String fileName) async {
+    try {
+      if (kDebugMode) {
+        print('📱 [3/5] Usando MediaStore API (Android 10+)');
+      }
+
+      final tempFile = File(tempFilePath);
+      final bytes = await tempFile.readAsBytes();
+      
+      final isPdf = fileName.toLowerCase().endsWith('.pdf');
+      final mimeType = isPdf ? 'application/pdf' : 'image/png';
+      
+      // Llamar al método nativo de Android
+      final String? savedPath = await platform.invokeMethod('saveToMediaStore', {
+        'fileName': fileName,
+        'mimeType': mimeType,
+        'bytes': bytes,
+      });
+
+      if (savedPath == null || savedPath.isEmpty) {
+        throw Exception('MediaStore devolvió ruta vacía');
+      }
+
+      if (kDebugMode) {
+        print('✅ [5/5] Guardado exitoso con MediaStore: $savedPath');
+      }
+
+      return savedPath;
+      
+    } catch (e) {
+      if (kDebugMode) {
+        print('❌ Error en MediaStore: $e');
+      }
+      rethrow;
+    }
+  }
+
+  /// 📁 ANDROID 6-9 - Copiar directamente a DCIM
+  static Future<String> _saveUsingDirectCopy(String tempFilePath, String fileName) async {
+    try {
+      if (kDebugMode) {
+        print('📁 [3/5] Usando copia directa (Android 6-9)');
+      }
+
+      final Directory? externalDir = await getExternalStorageDirectory();
+      
+      if (externalDir == null) {
+        throw Exception('❌ No se pudo acceder al almacenamiento externo');
+      }
+
+      final String basePath = externalDir.path.split('/Android')[0];
+      final String dcimFolderPath = '$basePath/DCIM/MiNegocio';
+      
+      if (kDebugMode) {
+        print('📁 [4/5] Carpeta destino: $dcimFolderPath');
+      }
+      
+      final Directory dcimFolder = Directory(dcimFolderPath);
+      if (!await dcimFolder.exists()) {
+        await dcimFolder.create(recursive: true);
+      }
+
+      final String finalFilePath = '$dcimFolderPath/$fileName';
+      final tempFile = File(tempFilePath);
+      
+      await tempFile.copy(finalFilePath);
+      
+      if (kDebugMode) {
+        print('✅ [5/5] Guardado exitoso en DCIM');
+      }
+      
+      // Notificar al Media Scanner
+      await _notifyMediaScanner(finalFilePath, dcimFolderPath);
+      
+      return finalFilePath;
+      
+    } catch (e) {
+      if (kDebugMode) {
+        print('❌ Error en copia directa: $e');
+      }
+      rethrow;
+    }
+  }
+
+  /// 📢 Notificar al Media Scanner (solo Android 6-9)
   static Future<void> _notifyMediaScanner(String filePath, String folderPath) async {
     try {
       if (!Platform.isAndroid) return;
@@ -103,8 +150,7 @@ class GallerySaver {
         print('📷 Notificando al Media Scanner...');
       }
       
-      // Método 1: Escanear archivo específico
-      final result1 = await Process.run('am', [
+      await Process.run('am', [
         'broadcast',
         '-a',
         'android.intent.action.MEDIA_SCANNER_SCAN_FILE',
@@ -112,30 +158,11 @@ class GallerySaver {
         'file://$filePath'
       ]);
       
-      if (kDebugMode) {
-        print('📷 Scan archivo: ${result1.exitCode == 0 ? "✅" : "⚠️"}');
-      }
-
-      // Método 2: Escanear carpeta completa (para Android antiguos)
-      await Future.delayed(const Duration(milliseconds: 100));
-      
-      final result2 = await Process.run('am', [
-        'broadcast',
-        '-a',
-        'android.intent.action.MEDIA_MOUNTED',
-        '-d',
-        'file://$folderPath'
-      ]);
-      
-      if (kDebugMode) {
-        print('📷 Scan carpeta: ${result2.exitCode == 0 ? "✅" : "⚠️"}');
-      }
-      
     } catch (e) {
+      // No crítico si falla
       if (kDebugMode) {
         print('⚠️ Media Scanner falló (no crítico): $e');
       }
-      // No es crítico si falla
     }
   }
 
@@ -146,7 +173,7 @@ class GallerySaver {
     return 'Boleta_${invoiceNumber}_$timestamp.$extension';
   }
 
-  /// 💾 MÉTODO PRINCIPAL: Guardar boleta en DCIM
+  /// 💾 MÉTODO PRINCIPAL
   static Future<String> saveInvoiceToGallery({
     required String tempFilePath,
     required int invoiceNumber,
@@ -168,13 +195,10 @@ class GallerySaver {
       try {
         await File(tempFilePath).delete();
         if (kDebugMode) {
-          print('🗑️ Temporal eliminado: $tempFilePath');
+          print('🗑️ Temporal eliminado');
         }
       } catch (e) {
-        // No crítico si no se puede borrar
-        if (kDebugMode) {
-          print('⚠️ No se pudo borrar temporal: $e');
-        }
+        // No crítico
       }
       
       return savedPath;
