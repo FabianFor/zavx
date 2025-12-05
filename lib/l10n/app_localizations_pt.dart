@@ -18,7 +18,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get orders => 'Pedidos';
 
   @override
-  String get invoices => 'Notas Fiscais';
+  String get invoices => 'Faturas';
 
   @override
   String get settings => 'Configurações';
@@ -84,7 +84,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noOrders => 'Sem pedidos';
 
   @override
-  String get noInvoices => 'Sem notas fiscais';
+  String get noInvoices => 'Sem faturas';
 
   @override
   String get language => 'Idioma';
@@ -111,7 +111,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get phone => 'Telefone';
 
   @override
-  String get email => 'Email';
+  String get email => 'E-mail';
 
   @override
   String get share => 'Compartilhar';
@@ -126,10 +126,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get addImage => 'Adicionar imagem';
 
   @override
-  String get changeImage => 'Mudar imagem';
+  String get changeImage => 'Alterar imagem';
 
   @override
-  String get businessManagement => 'Gestão de Negócios';
+  String get businessManagement => 'Gestão do Negócio';
 
   @override
   String get productsRegistered => 'Produtos Registrados';
@@ -203,7 +203,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get clear => 'Limpar';
 
   @override
-  String get orderCreatedSuccess => 'Pedido e nota fiscal criados com sucesso';
+  String get orderCreatedSuccess => 'Pedido e fatura criados com sucesso';
 
   @override
   String get orderCreatedError => 'Erro ao criar pedido';
@@ -245,13 +245,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get lowStockProducts => 'Produtos com estoque baixo';
 
   @override
-  String get tapToChangeLogo => 'Toque para mudar o logo';
+  String get tapToChangeLogo => 'Toque para alterar o logo';
 
   @override
   String get businessNameRequired => 'O nome do negócio é obrigatório';
 
   @override
-  String get invalidEmail => 'Insira um email válido';
+  String get invalidEmail => 'Digite um e-mail válido';
 
   @override
   String get profileUpdated => 'Perfil atualizado com sucesso';
@@ -284,7 +284,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get noInvoicesFound => 'Nenhuma nota fiscal encontrada';
+  String get noInvoicesFound => 'Nenhuma fatura encontrada';
 
   @override
   String get clearFilters => 'Limpar filtros';
@@ -295,15 +295,15 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get deleteInvoice => 'Excluir nota fiscal';
+  String get deleteInvoice => 'Excluir fatura';
 
   @override
   String deleteInvoiceConfirm(int number) {
-    return 'Tem certeza de que deseja excluir a Nota Fiscal #$number?\n\nEsta ação não pode ser desfeita.';
+    return 'Tem certeza de que deseja excluir a Fatura #$number?\n\nEsta ação não pode ser desfeita.';
   }
 
   @override
-  String get invoiceDeleted => 'Nota fiscal excluída';
+  String get invoiceDeleted => 'Fatura excluída';
 
   @override
   String get needPermissionsToShare =>
@@ -348,7 +348,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get permissionsMessage =>
-      'Este aplicativo precisa de acesso às suas fotos para adicionar imagens aos produtos.\n\nVá para:\nConfigurações → Apps → MiNegocio → Permissões → Fotos e mídia';
+      'Este aplicativo precisa de acesso às suas fotos para adicionar imagens aos produtos.\n\nVá para:\nConfigurações → Aplicativos → MeuNegócio → Permissões → Fotos e mídia';
 
   @override
   String get openSettings => 'Abrir Configurações';
@@ -362,11 +362,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String invoiceNumber(int number) {
-    return 'Nota Fiscal #$number';
+    return 'Fatura #$number';
   }
 
   @override
-  String get businessNameLabel => 'Nome da empresa';
+  String get businessNameLabel => 'Nome do negócio';
 
   @override
   String get addressLabel => 'Endereço';
@@ -375,10 +375,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get phoneLabel => 'Telefone';
 
   @override
-  String get emailLabel => 'Email';
+  String get emailLabel => 'E-mail';
 
   @override
   String get productList => 'Lista de produtos';
+
+  @override
+  String get quantity => 'Quantidade';
+
+  @override
+  String get quantityShort => 'Qtd.';
 
   @override
   String get unitPrice => 'Preço unitário';
@@ -459,8 +465,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get successOrderCreated =>
-      '✅ Pedido e nota fiscal criados com sucesso';
+  String get successOrderCreated => '✅ Pedido e fatura criados com sucesso';
 
   @override
   String get errorOrderCreation => '❌ Erro ao criar pedido';
@@ -483,16 +488,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get maxStockValue => 'O estoque máximo é 999999';
 
   @override
-  String get validStockRequired => 'Insira um estoque válido';
+  String get validStockRequired => 'Digite um estoque válido';
 
   @override
-  String get minPriceValue => 'O preço mínimo é 0,01';
+  String get minPriceValue => 'O preço mínimo é 0.01';
 
   @override
   String get maxPriceValue => 'O preço máximo é 99999999';
 
   @override
-  String get validPriceRequired => 'Insira um preço válido';
+  String get validPriceRequired => 'Digite um preço válido';
 
   @override
   String get customerNameMinLength => 'O nome deve ter pelo menos 2 caracteres';

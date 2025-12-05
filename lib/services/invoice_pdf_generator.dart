@@ -3,17 +3,39 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:printing/printing.dart';
+import 'package:flutter/services.dart' show rootBundle;  // ✅ AGREGA ESTA LÍNEA
 import '../models/business_profile.dart';
 import '../providers/settings_provider.dart';
-
 
 class InvoicePdfGenerator {
   static Future<String> generatePdf({
     required dynamic invoice,
     required BusinessProfile businessProfile,
     required SettingsProvider settingsProvider,
+    required Map<String, String> translations,
+    String languageCode = 'es',
   }) async {
     final pdf = pw.Document();
+
+    // ✅ Cargar fuentes con soporte multiidioma
+    pw.Font? font;
+    pw.Font? fontBold;
+    
+    try {
+      // Intenta cargar Noto Sans (soporta chino, japonés, etc.)
+      font = await PdfGoogleFonts.notoSansRegular();
+      fontBold = await PdfGoogleFonts.notoSansBold();
+    } catch (e) {
+      print('⚠️ Error cargando fuente de Google: $e');
+      // Fallback: usar fuente por defecto
+      try {
+        final fontData = await rootBundle.load("assets/fonts/Roboto-Regular.ttf");
+        font = pw.Font.ttf(fontData);
+      } catch (e2) {
+        print('⚠️ Usando fuente por defecto del sistema');
+      }
+    }
 
     pw.ImageProvider? logoImage;
     if (businessProfile.logoPath.isNotEmpty) {
@@ -26,6 +48,26 @@ class InvoicePdfGenerator {
       } catch (e) {
         print('⚠️ No se pudo cargar el logo: $e');
       }
+    }
+
+    pw.TextStyle getTextStyle({
+      double fontSize = 12,
+      bool bold = false,
+      PdfColor? color,
+    }) {
+      if (font != null) {
+        return pw.TextStyle(
+          font: bold ? fontBold ?? font : font,
+          fontSize: fontSize,
+          color: color ?? PdfColors.black,
+          fontWeight: bold ? pw.FontWeight.bold : pw.FontWeight.normal,
+        );
+      }
+      return pw.TextStyle(
+        fontSize: fontSize,
+        color: color ?? PdfColors.black,
+        fontWeight: bold ? pw.FontWeight.bold : pw.FontWeight.normal,
+      );
     }
 
     pdf.addPage(
@@ -77,12 +119,8 @@ class InvoicePdfGenerator {
                 pw.Text(
                   businessProfile.name.isNotEmpty 
                     ? businessProfile.name 
-                    : 'Nombre del Negocio',
-                  style: pw.TextStyle(
-                    fontSize: 32,
-                    fontWeight: pw.FontWeight.bold,
-                    color: PdfColors.black,
-                  ),
+                    : translations['businessName'] ?? 'Business Name',
+                  style: getTextStyle(fontSize: 32, bold: true),
                 ),
 
                 pw.SizedBox(height: 12),
@@ -91,15 +129,12 @@ class InvoicePdfGenerator {
                   pw.Row(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text('📍 ', style: const pw.TextStyle(fontSize: 16)),
+                      pw.Text('📍 ', style: getTextStyle(fontSize: 16)),
                       pw.SizedBox(width: 8),
                       pw.Expanded(
                         child: pw.Text(
                           businessProfile.address,
-                          style: const pw.TextStyle(
-                            fontSize: 16,
-                            color: PdfColors.black,
-                          ),
+                          style: getTextStyle(fontSize: 16),
                         ),
                       ),
                     ],
@@ -111,14 +146,11 @@ class InvoicePdfGenerator {
                 if (businessProfile.phone.isNotEmpty)
                   pw.Row(
                     children: [
-                      pw.Text('📞 ', style: const pw.TextStyle(fontSize: 16)),
+                      pw.Text('📞 ', style: getTextStyle(fontSize: 16)),
                       pw.SizedBox(width: 8),
                       pw.Text(
                         businessProfile.phone,
-                        style: const pw.TextStyle(
-                          fontSize: 16,
-                          color: PdfColors.black,
-                        ),
+                        style: getTextStyle(fontSize: 16),
                       ),
                     ],
                   ),
@@ -129,15 +161,12 @@ class InvoicePdfGenerator {
                 if (businessProfile.email.isNotEmpty)
                   pw.Row(
                     children: [
-                      pw.Text('📧 ', style: const pw.TextStyle(fontSize: 16)),
+                      pw.Text('📧 ', style: getTextStyle(fontSize: 16)),
                       pw.SizedBox(width: 8),
                       pw.Expanded(
                         child: pw.Text(
                           businessProfile.email,
-                          style: const pw.TextStyle(
-                            fontSize: 16,
-                            color: PdfColors.black,
-                          ),
+                          style: getTextStyle(fontSize: 16),
                         ),
                       ),
                     ],
@@ -148,10 +177,10 @@ class InvoicePdfGenerator {
                 pw.Table(
                   border: pw.TableBorder.all(color: PdfColors.grey400, width: 1),
                   columnWidths: {
-                    0: const pw.FlexColumnWidth(3),
-                    1: const pw.FlexColumnWidth(0.9),
-                    2: const pw.FlexColumnWidth(1.3),
-                    3: const pw.FlexColumnWidth(1.3),
+                    0: const pw.FlexColumnWidth(3.0),
+                    1: const pw.FlexColumnWidth(1.0),
+                    2: const pw.FlexColumnWidth(1.5),
+                    3: const pw.FlexColumnWidth(1.5),
                   },
                   children: [
                     pw.TableRow(
@@ -160,49 +189,33 @@ class InvoicePdfGenerator {
                       ),
                       children: [
                         pw.Padding(
-                          padding: const pw.EdgeInsets.all(12),
+                          padding: const pw.EdgeInsets.all(8),
                           child: pw.Text(
-                            'Lista de productos',
-                            style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 16,
-                              color: PdfColors.black,
-                            ),
+                            translations['productList'] ?? 'Product list',
+                            style: getTextStyle(fontSize: 13, bold: true),
                           ),
                         ),
                         pw.Padding(
-                          padding: const pw.EdgeInsets.all(12),
+                          padding: const pw.EdgeInsets.all(8),
                           child: pw.Text(
-                            'Cant.',
-                            style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 16,
-                              color: PdfColors.black,
-                            ),
+                            translations['quantity'] ?? 'Quantity',
+                            style: getTextStyle(fontSize: 13, bold: true),
                             textAlign: pw.TextAlign.center,
                           ),
                         ),
                         pw.Padding(
-                          padding: const pw.EdgeInsets.all(12),
+                          padding: const pw.EdgeInsets.all(8),
                           child: pw.Text(
-                            'Unitario',
-                            style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 16,
-                              color: PdfColors.black,
-                            ),
+                            translations['unitPrice'] ?? 'Unit price',
+                            style: getTextStyle(fontSize: 13, bold: true),
                             textAlign: pw.TextAlign.center,
                           ),
                         ),
                         pw.Padding(
-                          padding: const pw.EdgeInsets.all(12),
+                          padding: const pw.EdgeInsets.all(8),
                           child: pw.Text(
-                            'Total',
-                            style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 16,
-                              color: PdfColors.black,
-                            ),
+                            translations['total'] ?? 'Total',
+                            style: getTextStyle(fontSize: 13, bold: true),
                             textAlign: pw.TextAlign.center,
                           ),
                         ),
@@ -213,47 +226,34 @@ class InvoicePdfGenerator {
                       return pw.TableRow(
                         children: [
                           pw.Padding(
-                            padding: const pw.EdgeInsets.all(10),
+                            padding: const pw.EdgeInsets.all(8),
                             child: pw.Text(
                               item.productName,
-                              style: const pw.TextStyle(
-                                fontSize: 14,
-                                color: PdfColors.black,
-                              ),
+                              style: getTextStyle(fontSize: 12),
                             ),
                           ),
                           pw.Padding(
-                            padding: const pw.EdgeInsets.all(10),
+                            padding: const pw.EdgeInsets.all(8),
                             child: pw.Text(
                               '${item.quantity}',
-                              style: pw.TextStyle(
-                                fontSize: 14,
-                                fontWeight: pw.FontWeight.bold,
-                                color: PdfColors.black,
-                              ),
+                              style: getTextStyle(fontSize: 12, bold: true),
                               textAlign: pw.TextAlign.center,
                             ),
                           ),
                           pw.Padding(
-                            padding: const pw.EdgeInsets.all(10),
+                            padding: const pw.EdgeInsets.all(8),
                             child: pw.Text(
                               settingsProvider.formatPrice(item.price),
-                              style: const pw.TextStyle(
-                                fontSize: 14,
-                                color: PdfColors.black,
-                              ),
-                              textAlign: pw.TextAlign.center,
+                              style: getTextStyle(fontSize: 12),
+                              textAlign: pw.TextAlign.right,
                             ),
                           ),
                           pw.Padding(
-                            padding: const pw.EdgeInsets.all(10),
+                            padding: const pw.EdgeInsets.all(8),
                             child: pw.Text(
                               settingsProvider.formatPrice(item.total),
-                              style: const pw.TextStyle(
-                                fontSize: 14,
-                                color: PdfColors.black,
-                              ),
-                              textAlign: pw.TextAlign.center,
+                              style: getTextStyle(fontSize: 12),
+                              textAlign: pw.TextAlign.right,
                             ),
                           ),
                         ],
@@ -271,12 +271,8 @@ class InvoicePdfGenerator {
                     color: PdfColors.grey300,
                   ),
                   child: pw.Text(
-                    'Total: ${settingsProvider.formatPrice(invoice.total)}',
-                    style: pw.TextStyle(
-                      fontSize: 24,
-                      fontWeight: pw.FontWeight.bold,
-                      color: PdfColors.black,
-                    ),
+                    '${translations['totalLabel'] ?? 'Total:'} ${settingsProvider.formatPrice(invoice.total)}',
+                    style: getTextStyle(fontSize: 24, bold: true),
                   ),
                 ),
 
@@ -285,10 +281,7 @@ class InvoicePdfGenerator {
                 pw.Center(
                   child: pw.Text(
                     DateFormat('dd/MM/yyyy HH:mm').format(invoice.createdAt),
-                    style: const pw.TextStyle(
-                      fontSize: 11,
-                      color: PdfColors.grey700,
-                    ),
+                    style: getTextStyle(fontSize: 11, color: PdfColors.grey700),
                   ),
                 ),
               ],

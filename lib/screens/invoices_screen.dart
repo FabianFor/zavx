@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:open_file/open_file.dart'; // ✅ NUEVO IMPORT
+import 'package:open_file/open_file.dart';
 import '../l10n/app_localizations.dart';
 import '../core/utils/theme_helper.dart';
 import '../providers/invoice_provider.dart';
@@ -729,7 +729,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
     );
   }
 
-  // ✅ COMPARTIR CON FORMATO CONFIGURADO
   Future<void> _handleShareInvoice(
     BuildContext context,
     dynamic invoice,
@@ -781,6 +780,14 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
             logoPath: '',
           ),
           settingsProvider: settingsProvider,
+          translations: {
+            'productList': l10n.productList,
+            'quantity': l10n.quantity,
+            'unitPrice': l10n.unitPrice,
+            'total': l10n.totalPrice,
+            'totalLabel': l10n.totalLabel,
+            'businessName': l10n.businessNameLabel,
+          },
         );
       } else {
         filePath = await InvoiceImageGenerator.generateImage(
@@ -816,7 +823,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
     }
   }
 
-  // ✅ DESCARGAR EN DCIM/MiNegocio CON BOTÓN "VER"
   Future<void> _handleDownloadInvoice(
     BuildContext context,
     dynamic invoice,
@@ -857,7 +863,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
       String filePath;
       bool isPdf = settingsProvider.downloadFormat == 'pdf';
       
-      // Generar archivo (imagen o PDF)
       if (isPdf) {
         filePath = await InvoicePdfGenerator.generatePdf(
           invoice: invoice,
@@ -869,6 +874,14 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
             logoPath: '',
           ),
           settingsProvider: settingsProvider,
+          translations: {
+            'productList': l10n.productList,
+            'quantityShort': l10n.quantityShort,
+            'unitPrice': l10n.unitPrice,
+            'total': l10n.totalPrice,
+            'totalLabel': l10n.totalLabel,
+            'businessName': l10n.businessNameLabel,
+          },
         );
       } else {
         filePath = await InvoiceImageGenerator.generateImage(
@@ -885,7 +898,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
         );
       }
 
-      // ✅ Guardar en DCIM/MiNegocio
       final savedPath = await GallerySaver.saveInvoiceToGallery(
         tempFilePath: filePath,
         invoiceNumber: invoice.invoiceNumber,
@@ -895,7 +907,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
       if (context.mounted) {
         Navigator.pop(context);
         
-        // ✅ Snackbar con botón "Ver"
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(

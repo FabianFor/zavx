@@ -18,7 +18,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get orders => 'Pedidos';
 
   @override
-  String get invoices => 'Boletas';
+  String get invoices => 'Facturas';
 
   @override
   String get settings => 'Configuración';
@@ -84,7 +84,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noOrders => 'No hay pedidos';
 
   @override
-  String get noInvoices => 'No hay boletas';
+  String get noInvoices => 'No hay facturas';
 
   @override
   String get language => 'Idioma';
@@ -111,7 +111,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get phone => 'Teléfono';
 
   @override
-  String get email => 'Email';
+  String get email => 'Correo electrónico';
 
   @override
   String get share => 'Compartir';
@@ -129,7 +129,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get changeImage => 'Cambiar imagen';
 
   @override
-  String get businessManagement => 'Gestión de Negocios';
+  String get businessManagement => 'Gestión del Negocio';
 
   @override
   String get productsRegistered => 'Productos Registrados';
@@ -196,17 +196,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String totalItems(int count) {
-    return 'Total ($count items):';
+    return 'Total ($count artículos):';
   }
 
   @override
   String get clear => 'Limpiar';
 
   @override
-  String get orderCreatedSuccess => 'Pedido y boleta creados exitosamente';
+  String get orderCreatedSuccess => 'Pedido y factura creados exitosamente';
 
   @override
-  String get orderCreatedError => 'Error al crear pedido';
+  String get orderCreatedError => 'Error al crear el pedido';
 
   @override
   String get noProductsAvailable => 'No hay productos disponibles';
@@ -221,7 +221,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get productUpdatedSuccess => 'Producto actualizado exitosamente';
 
   @override
-  String get imageSelectedSuccess => 'Imagen seleccionada correctamente';
+  String get imageSelectedSuccess => 'Imagen seleccionada exitosamente';
 
   @override
   String get retry => 'Reintentar';
@@ -239,7 +239,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get viewCart => 'Ver Carrito';
 
   @override
-  String get quickAccess => 'Accesos Rápidos';
+  String get quickAccess => 'Acceso Rápido';
 
   @override
   String get lowStockProducts => 'Productos con stock bajo';
@@ -251,22 +251,23 @@ class AppLocalizationsEs extends AppLocalizations {
   String get businessNameRequired => 'El nombre del negocio es obligatorio';
 
   @override
-  String get invalidEmail => 'Ingrese un email válido';
+  String get invalidEmail => 'Ingrese un correo válido';
 
   @override
-  String get profileUpdated => 'Perfil actualizado correctamente';
+  String get profileUpdated => 'Perfil actualizado exitosamente';
 
   @override
-  String get logoSelected => 'Logo seleccionado correctamente';
+  String get logoSelected => 'Logo seleccionado exitosamente';
 
   @override
-  String get needPermissions => 'Necesitas dar permisos para elegir una imagen';
+  String get needPermissions =>
+      'Necesitas otorgar permisos para elegir una imagen';
 
   @override
   String get imageSelectionError => 'Error al seleccionar imagen';
 
   @override
-  String get darkModeSubtitle => 'Activa el tema oscuro';
+  String get darkModeSubtitle => 'Activar tema oscuro';
 
   @override
   String get businessProfileSubtitle => 'Edita la información de tu negocio';
@@ -283,7 +284,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get noInvoicesFound => 'No se encontraron boletas';
+  String get noInvoicesFound => 'No se encontraron facturas';
 
   @override
   String get clearFilters => 'Limpiar filtros';
@@ -294,22 +295,21 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get deleteInvoice => 'Eliminar boleta';
+  String get deleteInvoice => 'Eliminar factura';
 
   @override
   String deleteInvoiceConfirm(int number) {
-    return '¿Estás seguro de eliminar la Boleta #$number?\n\nEsta acción no se puede deshacer.';
+    return '¿Estás seguro de eliminar la Factura #$number?\n\nEsta acción no se puede deshacer.';
   }
 
   @override
-  String get invoiceDeleted => 'Boleta eliminada';
+  String get invoiceDeleted => 'Factura eliminada';
 
   @override
-  String get needPermissionsToShare => 'Se necesitan permisos para compartir';
+  String get needPermissionsToShare => 'Permisos necesarios para compartir';
 
   @override
-  String get needPermissionsToDownload =>
-      'Se necesitan permisos para descargar';
+  String get needPermissionsToDownload => 'Permisos necesarios para descargar';
 
   @override
   String get savedToGallery => 'Guardado en galería';
@@ -346,25 +346,25 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get permissionsMessage =>
-      'Esta app necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Apps → MiNegocio → Permisos → Fotos y multimedia';
+      'Esta aplicación necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Aplicaciones → MiNegocio → Permisos → Fotos y multimedia';
 
   @override
   String get openSettings => 'Abrir Configuración';
 
   @override
   String get needPermissionToSelectImage =>
-      'Necesitas dar permiso para seleccionar imágenes';
+      'Necesitas otorgar permiso para seleccionar imágenes';
 
   @override
-  String get trySelectAnyway => 'Intenta seleccionar la imagen de todos modos';
+  String get trySelectAnyway => 'Intentar seleccionar la imagen de todos modos';
 
   @override
   String invoiceNumber(int number) {
-    return 'Boleta #$number';
+    return 'Factura #$number';
   }
 
   @override
-  String get businessNameLabel => 'Nombre de empresa';
+  String get businessNameLabel => 'Nombre del negocio';
 
   @override
   String get addressLabel => 'Dirección';
@@ -373,13 +373,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get phoneLabel => 'Teléfono';
 
   @override
-  String get emailLabel => 'Correo';
+  String get emailLabel => 'Correo electrónico';
 
   @override
   String get productList => 'Lista de productos';
 
   @override
-  String get unitPrice => 'Unitario';
+  String get quantity => 'Cantidad';
+
+  @override
+  String get quantityShort => 'Cant.';
+
+  @override
+  String get unitPrice => 'Precio unitario';
 
   @override
   String get totalPrice => 'Total';
@@ -411,11 +417,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get warningNeedPermissionsToShare =>
-      '⚠️ Se necesitan permisos para compartir';
+      '⚠️ Permisos necesarios para compartir';
 
   @override
   String get warningNeedPermissionsToDownload =>
-      '⚠️ Se necesitan permisos para descargar';
+      '⚠️ Permisos necesarios para descargar';
 
   @override
   String get successSavedToGallery => '✅ Guardado en galería';
@@ -440,7 +446,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get warningPermissionsDenied => '⚠️ Permisos denegados';
 
   @override
-  String get successImageSelected => '✅ Imagen seleccionada correctamente';
+  String get successImageSelected => '✅ Imagen seleccionada exitosamente';
 
   @override
   String get errorOccurred => '❌ Error';
@@ -457,10 +463,10 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get successOrderCreated => '✅ Pedido y boleta creados exitosamente';
+  String get successOrderCreated => '✅ Pedido y factura creados exitosamente';
 
   @override
-  String get errorOrderCreation => '❌ Error al crear pedido';
+  String get errorOrderCreation => '❌ Error al crear el pedido';
 
   @override
   String get errorAddToOrder => '❌ Agrega al menos un producto al pedido';

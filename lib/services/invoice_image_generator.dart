@@ -248,58 +248,58 @@ class InvoiceContent extends StatelessWidget {
         Table(
           border: TableBorder.all(color: Colors.grey[400]!, width: 1),
           columnWidths: const {
-            0: FlexColumnWidth(3),
-            1: FlexColumnWidth(0.9),
-            2: FlexColumnWidth(1.3),
-            3: FlexColumnWidth(1.3),
+            0: FlexColumnWidth(2.8),
+            1: FlexColumnWidth(1.2),
+            2: FlexColumnWidth(1.5),
+            3: FlexColumnWidth(1.5),
           },
           children: [
             TableRow(
               decoration: BoxDecoration(color: Colors.grey[300]),
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(8),
                   child: Text(
                     l10n.productList,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
-                      fontSize: 16,
+                      fontSize: 13,
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(8),
                   child: Text(
-                    'Cantidad',
+                    l10n.quantity,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
-                      fontSize: 16,
+                      fontSize: 13,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(8),
                   child: Text(
                     l10n.unitPrice,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
-                      fontSize: 16,
+                      fontSize: 13,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(8),
                   child: Text(
                     l10n.totalPrice,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
-                      fontSize: 16,
+                      fontSize: 13,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -310,47 +310,47 @@ class InvoiceContent extends StatelessWidget {
             ...invoice.items.map((item) => TableRow(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(8),
                   child: Text(
                     item.productName,
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(8),
                   child: Text(
                     '${item.quantity}',
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(8),
                   child: Text(
                     settingsProvider.formatPrice(item.price),
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.right,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(8),
                   child: Text(
                     settingsProvider.formatPrice(item.total),
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.right,
                   ),
                 ),
               ],

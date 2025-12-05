@@ -3,7 +3,7 @@
   "dashboard": "Painel",
   "products": "Produtos",
   "orders": "Pedidos",
-  "invoices": "Notas Fiscais",
+  "invoices": "Faturas",
   "settings": "Configurações",
   "profile": "Perfil",
   "add": "Adicionar",
@@ -25,7 +25,7 @@
   "cannotUndo": "Esta ação não pode ser desfeita",
   "noProducts": "Sem produtos",
   "noOrders": "Sem pedidos",
-  "noInvoices": "Sem notas fiscais",
+  "noInvoices": "Sem faturas",
   "language": "Idioma",
   "selectLanguage": "Selecionar idioma",
   "currency": "Moeda",
@@ -34,13 +34,13 @@
   "businessName": "Nome do Negócio",
   "address": "Endereço",
   "phone": "Telefone",
-  "email": "Email",
+  "email": "E-mail",
   "share": "Compartilhar",
   "download": "Baixar",
   "error": "Erro",
   "addImage": "Adicionar imagem",
-  "changeImage": "Mudar imagem",
-  "businessManagement": "Gestão de Negócios",
+  "changeImage": "Alterar imagem",
+  "businessManagement": "Gestão do Negócio",
   "productsRegistered": "Produtos Registrados",
   "ordersPlaced": "Pedidos Realizados",
   "totalRevenue": "Receita Total",
@@ -71,7 +71,7 @@
     }
   },
   "clear": "Limpar",
-  "orderCreatedSuccess": "Pedido e nota fiscal criados com sucesso",
+  "orderCreatedSuccess": "Pedido e fatura criados com sucesso",
   "orderCreatedError": "Erro ao criar pedido",
   "noProductsAvailable": "Nenhum produto disponível",
   "noProductsFound": "Nenhum produto encontrado",
@@ -85,9 +85,9 @@
   "viewCart": "Ver Carrinho",
   "quickAccess": "Acesso Rápido",
   "lowStockProducts": "Produtos com estoque baixo",
-  "tapToChangeLogo": "Toque para mudar o logo",
+  "tapToChangeLogo": "Toque para alterar o logo",
   "businessNameRequired": "O nome do negócio é obrigatório",
-  "invalidEmail": "Insira um email válido",
+  "invalidEmail": "Digite um e-mail válido",
   "profileUpdated": "Perfil atualizado com sucesso",
   "logoSelected": "Logo selecionado com sucesso",
   "needPermissions": "Você precisa conceder permissões para escolher uma imagem",
@@ -104,7 +104,7 @@
       }
     }
   },
-  "noInvoicesFound": "Nenhuma nota fiscal encontrada",
+  "noInvoicesFound": "Nenhuma fatura encontrada",
   "clearFilters": "Limpar filtros",
   "productsCount": "{count} produto(s)",
   "@productsCount": {
@@ -114,8 +114,8 @@
       }
     }
   },
-  "deleteInvoice": "Excluir nota fiscal",
-  "deleteInvoiceConfirm": "Tem certeza de que deseja excluir a Nota Fiscal #{number}?\n\nEsta ação não pode ser desfeita.",
+  "deleteInvoice": "Excluir fatura",
+  "deleteInvoiceConfirm": "Tem certeza de que deseja excluir a Fatura #{number}?\n\nEsta ação não pode ser desfeita.",
   "@deleteInvoiceConfirm": {
     "placeholders": {
       "number": {
@@ -123,7 +123,7 @@
       }
     }
   },
-  "invoiceDeleted": "Nota fiscal excluída",
+  "invoiceDeleted": "Fatura excluída",
   "needPermissionsToShare": "Permissões necessárias para compartilhar",
   "needPermissionsToDownload": "Permissões necessárias para baixar",
   "savedToGallery": "Salvo na galeria",
@@ -137,11 +137,11 @@
   "deleteProductConfirm": "Tem certeza de que deseja excluir este produto?",
   "productDeleted": "Produto excluído com sucesso",
   "permissionsNeeded": "Permissões necessárias",
-  "permissionsMessage": "Este aplicativo precisa de acesso às suas fotos para adicionar imagens aos produtos.\n\nVá para:\nConfigurações → Apps → MiNegocio → Permissões → Fotos e mídia",
+  "permissionsMessage": "Este aplicativo precisa de acesso às suas fotos para adicionar imagens aos produtos.\n\nVá para:\nConfigurações → Aplicativos → MeuNegócio → Permissões → Fotos e mídia",
   "openSettings": "Abrir Configurações",
   "needPermissionToSelectImage": "Você precisa conceder permissão para selecionar imagens",
   "trySelectAnyway": "Tentar selecionar a imagem mesmo assim",
-  "invoiceNumber": "Nota Fiscal #{number}",
+  "invoiceNumber": "Fatura #{number}",
   "@invoiceNumber": {
     "placeholders": {
       "number": {
@@ -149,11 +149,13 @@
       }
     }
   },
-  "businessNameLabel": "Nome da empresa",
+  "businessNameLabel": "Nome do negócio",
   "addressLabel": "Endereço",
   "phoneLabel": "Telefone",
-  "emailLabel": "Email",
+  "emailLabel": "E-mail",
   "productList": "Lista de produtos",
+  "quantity": "Quantidade",
+  "quantityShort": "Qtd.",
   "unitPrice": "Preço unitário",
   "totalPrice": "Total",
   "receipt": "Recibo",
@@ -211,7 +213,7 @@
       }
     }
   },
-  "successOrderCreated": "✅ Pedido e nota fiscal criados com sucesso",
+  "successOrderCreated": "✅ Pedido e fatura criados com sucesso",
   "errorOrderCreation": "❌ Erro ao criar pedido",
   "errorAddToOrder": "❌ Adicione pelo menos um produto ao pedido",
   "errorInsufficientStock": "❌ Estoque insuficiente para {product}",
@@ -225,10 +227,10 @@
   "totalLabel": "Total:",
   "minStockCharacters": "O estoque mínimo é 0",
   "maxStockValue": "O estoque máximo é 999999",
-  "validStockRequired": "Insira um estoque válido",
-  "minPriceValue": "O preço mínimo é 0,01",
+  "validStockRequired": "Digite um estoque válido",
+  "minPriceValue": "O preço mínimo é 0.01",
   "maxPriceValue": "O preço máximo é 99999999",
-  "validPriceRequired": "Insira um preço válido",
+  "validPriceRequired": "Digite um preço válido",
   "customerNameMinLength": "O nome deve ter pelo menos 2 caracteres",
   "customerNameMaxLength": "O nome é muito longo",
   "phoneNumberInvalid": "Número de telefone inválido",

@@ -5,7 +5,7 @@
   "orders": "订单",
   "invoices": "发票",
   "settings": "设置",
-  "profile": "个人资料",
+  "profile": "档案",
   "add": "添加",
   "edit": "编辑",
   "delete": "删除",
@@ -16,7 +16,7 @@
   "price": "价格",
   "stock": "库存",
   "category": "类别",
-  "food": "食物",
+  "food": "食品",
   "drinks": "饮料",
   "desserts": "甜点",
   "others": "其他",
@@ -30,8 +30,8 @@
   "selectLanguage": "选择语言",
   "currency": "货币",
   "selectCurrency": "选择货币",
-  "businessProfile": "企业资料",
-  "businessName": "企业名称",
+  "businessProfile": "商业资料",
+  "businessName": "商家名称",
   "address": "地址",
   "phone": "电话",
   "email": "电子邮件",
@@ -40,7 +40,7 @@
   "error": "错误",
   "addImage": "添加图片",
   "changeImage": "更改图片",
-  "businessManagement": "企业管理",
+  "businessManagement": "业务管理",
   "productsRegistered": "已注册产品",
   "ordersPlaced": "已下订单",
   "totalRevenue": "总收入",
@@ -48,7 +48,7 @@
   "darkMode": "深色模式",
   "theme": "主题",
   "searchProducts": "搜索产品...",
-  "searchByCustomer": "按客户或号码搜索...",
+  "searchByCustomer": "按客户或编号搜索...",
   "customerName": "客户姓名",
   "customerNameRequired": "客户姓名 *",
   "phoneOptional": "电话（可选）",
@@ -57,10 +57,10 @@
   "editProduct": "编辑产品",
   "minCharacters": "最少2个字符",
   "priceRequired": "价格为必填项",
-  "invalidPrice": "无效价格",
+  "invalidPrice": "价格无效",
   "stockRequired": "库存为必填项",
-  "invalidStock": "无效库存",
-  "addToOrder": "至少添加一个产品到订单",
+  "invalidStock": "库存无效",
+  "addToOrder": "至少在订单中添加一个产品",
   "insufficientStock": "库存不足",
   "totalItems": "总计（{count}项）：",
   "@totalItems": {
@@ -71,32 +71,32 @@
     }
   },
   "clear": "清除",
-  "orderCreatedSuccess": "订单和发票创建成功",
+  "orderCreatedSuccess": "订单和发票已成功创建",
   "orderCreatedError": "创建订单时出错",
   "noProductsAvailable": "没有可用产品",
   "noProductsFound": "未找到产品",
-  "productAddedSuccess": "产品添加成功",
-  "productUpdatedSuccess": "产品更新成功",
-  "imageSelectedSuccess": "图片选择成功",
+  "productAddedSuccess": "产品已成功添加",
+  "productUpdatedSuccess": "产品已成功更新",
+  "imageSelectedSuccess": "图片已成功选择",
   "retry": "重试",
   "permissionsDenied": "权限被拒绝",
   "close": "关闭",
   "cart": "购物车",
   "viewCart": "查看购物车",
   "quickAccess": "快速访问",
-  "lowStockProducts": "低库存产品",
+  "lowStockProducts": "库存不足的产品",
   "tapToChangeLogo": "点击更改徽标",
-  "businessNameRequired": "企业名称为必填项",
+  "businessNameRequired": "商家名称为必填项",
   "invalidEmail": "请输入有效的电子邮件",
-  "profileUpdated": "个人资料更新成功",
-  "logoSelected": "徽标选择成功",
+  "profileUpdated": "资料已成功更新",
+  "logoSelected": "徽标已成功选择",
   "needPermissions": "您需要授予权限以选择图片",
   "imageSelectionError": "选择图片时出错",
-  "darkModeSubtitle": "启用深色主题",
-  "businessProfileSubtitle": "编辑您的企业信息",
+  "darkModeSubtitle": "激活深色主题",
+  "businessProfileSubtitle": "编辑您的商业信息",
   "version": "版本",
   "filterByDate": "按日期过滤",
-  "results": "{count}个结果",
+  "results": "{count} 个结果",
   "@results": {
     "placeholders": {
       "count": {
@@ -106,7 +106,7 @@
   },
   "noInvoicesFound": "未找到发票",
   "clearFilters": "清除过滤器",
-  "productsCount": "{count}个产品",
+  "productsCount": "{count} 个产品",
   "@productsCount": {
     "placeholders": {
       "count": {
@@ -115,7 +115,7 @@
     }
   },
   "deleteInvoice": "删除发票",
-  "deleteInvoiceConfirm": "您确定要删除发票#{number}吗？\n\n此操作无法撤消。",
+  "deleteInvoiceConfirm": "您确定要删除发票 #{number} 吗？\n\n此操作无法撤消。",
   "@deleteInvoiceConfirm": {
     "placeholders": {
       "number": {
@@ -124,8 +124,8 @@
     }
   },
   "invoiceDeleted": "发票已删除",
-  "needPermissionsToShare": "需要共享权限",
-  "needPermissionsToDownload": "需要下载权限",
+  "needPermissionsToShare": "需要权限才能分享",
+  "needPermissionsToDownload": "需要权限才能下载",
   "savedToGallery": "已保存到图库",
   "customerData": "客户数据",
   "nameField": "姓名 *",
@@ -135,13 +135,13 @@
   "units": "单位",
   "deleteProduct": "删除产品",
   "deleteProductConfirm": "您确定要删除此产品吗？",
-  "productDeleted": "产品删除成功",
+  "productDeleted": "产品已成功删除",
   "permissionsNeeded": "需要权限",
-  "permissionsMessage": "此应用需要访问您的照片以向产品添加图片。\n\n前往：\n设置→应用→MiNegocio→权限→照片和媒体",
+  "permissionsMessage": "此应用需要访问您的照片以将图片添加到产品中。\n\n前往：\n设置 → 应用 → 我的业务 → 权限 → 照片和媒体",
   "openSettings": "打开设置",
-  "needPermissionToSelectImage": "您需要授予权限以选择图片",
+  "needPermissionToSelectImage": "您需要授予选择图片的权限",
   "trySelectAnyway": "仍然尝试选择图片",
-  "invoiceNumber": "发票#{number}",
+  "invoiceNumber": "发票 #{number}",
   "@invoiceNumber": {
     "placeholders": {
       "number": {
@@ -149,15 +149,17 @@
       }
     }
   },
-  "businessNameLabel": "企业名称",
+  "businessNameLabel": "商家名称",
   "addressLabel": "地址",
   "phoneLabel": "电话",
   "emailLabel": "电子邮件",
   "productList": "产品列表",
+  "quantity": "数量",
+  "quantityShort": "数量",
   "unitPrice": "单价",
   "totalPrice": "总计",
   "receipt": "收据",
-  "receiptNumber": "收据#{number}",
+  "receiptNumber": "收据 #{number}",
   "@receiptNumber": {
     "placeholders": {
       "number": {
@@ -168,7 +170,7 @@
   "productsSuffix": "产品：",
   "totalSuffix": "总计：",
   "deleteReceipt": "删除收据",
-  "deleteReceiptConfirm": "您确定要删除收据#{number}吗？\n\n此操作无法撤消。",
+  "deleteReceiptConfirm": "您确定要删除收据 #{number} 吗？\n\n此操作无法撤消。",
   "@deleteReceiptConfirm": {
     "placeholders": {
       "number": {
@@ -177,11 +179,11 @@
     }
   },
   "receiptDeleted": "收据已删除",
-  "warningNeedPermissionsToShare": "⚠️ 需要共享权限",
-  "warningNeedPermissionsToDownload": "⚠️ 需要下载权限",
+  "warningNeedPermissionsToShare": "⚠️ 需要权限才能分享",
+  "warningNeedPermissionsToDownload": "⚠️ 需要权限才能下载",
   "successSavedToGallery": "✅ 已保存到图库",
-  "searchByCustomerOrNumber": "按客户或号码搜索...",
-  "resultsCount": "{count}个结果",
+  "searchByCustomerOrNumber": "按客户或编号搜索...",
+  "resultsCount": "{count} 个结果",
   "@resultsCount": {
     "placeholders": {
       "count": {
@@ -190,7 +192,7 @@
     }
   },
   "noReceiptsFound": "未找到收据",
-  "productsCountLabel": "{count}个产品",
+  "productsCountLabel": "{count} 个产品",
   "@productsCountLabel": {
     "placeholders": {
       "count": {
@@ -199,10 +201,10 @@
     }
   },
   "warningPermissionsDenied": "⚠️ 权限被拒绝",
-  "successImageSelected": "✅ 图片选择成功",
+  "successImageSelected": "✅ 图片已成功选择",
   "errorOccurred": "❌ 错误",
-  "successProductAdded": "✅ 产品添加成功",
-  "successProductUpdated": "✅ 产品更新成功",
+  "successProductAdded": "✅ 产品已成功添加",
+  "successProductUpdated": "✅ 产品已成功更新",
   "errorWithMessage": "❌ 错误：{message}",
   "@errorWithMessage": {
     "placeholders": {
@@ -211,10 +213,10 @@
       }
     }
   },
-  "successOrderCreated": "✅ 订单和发票创建成功",
+  "successOrderCreated": "✅ 订单和发票已成功创建",
   "errorOrderCreation": "❌ 创建订单时出错",
-  "errorAddToOrder": "❌ 至少添加一个产品到订单",
-  "errorInsufficientStock": "❌ {product}库存不足",
+  "errorAddToOrder": "❌ 至少在订单中添加一个产品",
+  "errorInsufficientStock": "❌ {product} 库存不足",
   "@errorInsufficientStock": {
     "placeholders": {
       "product": {
@@ -230,19 +232,19 @@
   "maxPriceValue": "最高价格为99999999",
   "validPriceRequired": "请输入有效价格",
   "customerNameMinLength": "姓名至少需要2个字符",
-  "customerNameMaxLength": "姓名过长",
-  "phoneNumberInvalid": "无效的电话号码",
-  "phoneMinLength": "电话至少需要7位数字",
+  "customerNameMaxLength": "姓名太长",
+  "phoneNumberInvalid": "电话号码无效",
+  "phoneMinLength": "电话号码至少需要7位数字",
   "downloadFormat": "下载格式",
   "@downloadFormat": {
     "description": "下载格式部分标题"
   },
-  "downloadFormatImage": "图片 (PNG)",
+  "downloadFormatImage": "图片（PNG）",
   "@downloadFormatImage": {
-    "description": "选择下载为图片"
+    "description": "下载为图片的选项"
   },
-  "downloadFormatPdf": "文档 (PDF)",
+  "downloadFormatPdf": "文档（PDF）",
   "@downloadFormatPdf": {
-    "description": "选择下载为PDF"
+    "description": "下载为PDF的选项"
   }
 }

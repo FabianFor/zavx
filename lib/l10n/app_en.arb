@@ -154,6 +154,8 @@
   "phoneLabel": "Phone",
   "emailLabel": "Email",
   "productList": "Product list",
+  "quantity": "Quantity",
+  "quantityShort": "Qty.",
   "unitPrice": "Unit price",
   "totalPrice": "Total",
   "receipt": "Receipt",

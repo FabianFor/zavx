@@ -123,7 +123,7 @@ abstract class AppLocalizations {
   /// No description provided for @invoices.
   ///
   /// In es, this message translates to:
-  /// **'Boletas'**
+  /// **'Facturas'**
   String get invoices;
 
   /// No description provided for @settings.
@@ -255,7 +255,7 @@ abstract class AppLocalizations {
   /// No description provided for @noInvoices.
   ///
   /// In es, this message translates to:
-  /// **'No hay boletas'**
+  /// **'No hay facturas'**
   String get noInvoices;
 
   /// No description provided for @language.
@@ -309,7 +309,7 @@ abstract class AppLocalizations {
   /// No description provided for @email.
   ///
   /// In es, this message translates to:
-  /// **'Email'**
+  /// **'Correo electrónico'**
   String get email;
 
   /// No description provided for @share.
@@ -345,7 +345,7 @@ abstract class AppLocalizations {
   /// No description provided for @businessManagement.
   ///
   /// In es, this message translates to:
-  /// **'Gestión de Negocios'**
+  /// **'Gestión del Negocio'**
   String get businessManagement;
 
   /// No description provided for @productsRegistered.
@@ -477,7 +477,7 @@ abstract class AppLocalizations {
   /// No description provided for @totalItems.
   ///
   /// In es, this message translates to:
-  /// **'Total ({count} items):'**
+  /// **'Total ({count} artículos):'**
   String totalItems(int count);
 
   /// No description provided for @clear.
@@ -489,13 +489,13 @@ abstract class AppLocalizations {
   /// No description provided for @orderCreatedSuccess.
   ///
   /// In es, this message translates to:
-  /// **'Pedido y boleta creados exitosamente'**
+  /// **'Pedido y factura creados exitosamente'**
   String get orderCreatedSuccess;
 
   /// No description provided for @orderCreatedError.
   ///
   /// In es, this message translates to:
-  /// **'Error al crear pedido'**
+  /// **'Error al crear el pedido'**
   String get orderCreatedError;
 
   /// No description provided for @noProductsAvailable.
@@ -525,7 +525,7 @@ abstract class AppLocalizations {
   /// No description provided for @imageSelectedSuccess.
   ///
   /// In es, this message translates to:
-  /// **'Imagen seleccionada correctamente'**
+  /// **'Imagen seleccionada exitosamente'**
   String get imageSelectedSuccess;
 
   /// No description provided for @retry.
@@ -561,7 +561,7 @@ abstract class AppLocalizations {
   /// No description provided for @quickAccess.
   ///
   /// In es, this message translates to:
-  /// **'Accesos Rápidos'**
+  /// **'Acceso Rápido'**
   String get quickAccess;
 
   /// No description provided for @lowStockProducts.
@@ -585,25 +585,25 @@ abstract class AppLocalizations {
   /// No description provided for @invalidEmail.
   ///
   /// In es, this message translates to:
-  /// **'Ingrese un email válido'**
+  /// **'Ingrese un correo válido'**
   String get invalidEmail;
 
   /// No description provided for @profileUpdated.
   ///
   /// In es, this message translates to:
-  /// **'Perfil actualizado correctamente'**
+  /// **'Perfil actualizado exitosamente'**
   String get profileUpdated;
 
   /// No description provided for @logoSelected.
   ///
   /// In es, this message translates to:
-  /// **'Logo seleccionado correctamente'**
+  /// **'Logo seleccionado exitosamente'**
   String get logoSelected;
 
   /// No description provided for @needPermissions.
   ///
   /// In es, this message translates to:
-  /// **'Necesitas dar permisos para elegir una imagen'**
+  /// **'Necesitas otorgar permisos para elegir una imagen'**
   String get needPermissions;
 
   /// No description provided for @imageSelectionError.
@@ -615,7 +615,7 @@ abstract class AppLocalizations {
   /// No description provided for @darkModeSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Activa el tema oscuro'**
+  /// **'Activar tema oscuro'**
   String get darkModeSubtitle;
 
   /// No description provided for @businessProfileSubtitle.
@@ -645,7 +645,7 @@ abstract class AppLocalizations {
   /// No description provided for @noInvoicesFound.
   ///
   /// In es, this message translates to:
-  /// **'No se encontraron boletas'**
+  /// **'No se encontraron facturas'**
   String get noInvoicesFound;
 
   /// No description provided for @clearFilters.
@@ -663,31 +663,31 @@ abstract class AppLocalizations {
   /// No description provided for @deleteInvoice.
   ///
   /// In es, this message translates to:
-  /// **'Eliminar boleta'**
+  /// **'Eliminar factura'**
   String get deleteInvoice;
 
   /// No description provided for @deleteInvoiceConfirm.
   ///
   /// In es, this message translates to:
-  /// **'¿Estás seguro de eliminar la Boleta #{number}?\n\nEsta acción no se puede deshacer.'**
+  /// **'¿Estás seguro de eliminar la Factura #{number}?\n\nEsta acción no se puede deshacer.'**
   String deleteInvoiceConfirm(int number);
 
   /// No description provided for @invoiceDeleted.
   ///
   /// In es, this message translates to:
-  /// **'Boleta eliminada'**
+  /// **'Factura eliminada'**
   String get invoiceDeleted;
 
   /// No description provided for @needPermissionsToShare.
   ///
   /// In es, this message translates to:
-  /// **'Se necesitan permisos para compartir'**
+  /// **'Permisos necesarios para compartir'**
   String get needPermissionsToShare;
 
   /// No description provided for @needPermissionsToDownload.
   ///
   /// In es, this message translates to:
-  /// **'Se necesitan permisos para descargar'**
+  /// **'Permisos necesarios para descargar'**
   String get needPermissionsToDownload;
 
   /// No description provided for @savedToGallery.
@@ -759,7 +759,7 @@ abstract class AppLocalizations {
   /// No description provided for @permissionsMessage.
   ///
   /// In es, this message translates to:
-  /// **'Esta app necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Apps → MiNegocio → Permisos → Fotos y multimedia'**
+  /// **'Esta aplicación necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Aplicaciones → MiNegocio → Permisos → Fotos y multimedia'**
   String get permissionsMessage;
 
   /// No description provided for @openSettings.
@@ -771,25 +771,25 @@ abstract class AppLocalizations {
   /// No description provided for @needPermissionToSelectImage.
   ///
   /// In es, this message translates to:
-  /// **'Necesitas dar permiso para seleccionar imágenes'**
+  /// **'Necesitas otorgar permiso para seleccionar imágenes'**
   String get needPermissionToSelectImage;
 
   /// No description provided for @trySelectAnyway.
   ///
   /// In es, this message translates to:
-  /// **'Intenta seleccionar la imagen de todos modos'**
+  /// **'Intentar seleccionar la imagen de todos modos'**
   String get trySelectAnyway;
 
   /// No description provided for @invoiceNumber.
   ///
   /// In es, this message translates to:
-  /// **'Boleta #{number}'**
+  /// **'Factura #{number}'**
   String invoiceNumber(int number);
 
   /// No description provided for @businessNameLabel.
   ///
   /// In es, this message translates to:
-  /// **'Nombre de empresa'**
+  /// **'Nombre del negocio'**
   String get businessNameLabel;
 
   /// No description provided for @addressLabel.
@@ -807,7 +807,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailLabel.
   ///
   /// In es, this message translates to:
-  /// **'Correo'**
+  /// **'Correo electrónico'**
   String get emailLabel;
 
   /// No description provided for @productList.
@@ -816,10 +816,22 @@ abstract class AppLocalizations {
   /// **'Lista de productos'**
   String get productList;
 
+  /// No description provided for @quantity.
+  ///
+  /// In es, this message translates to:
+  /// **'Cantidad'**
+  String get quantity;
+
+  /// No description provided for @quantityShort.
+  ///
+  /// In es, this message translates to:
+  /// **'Cant.'**
+  String get quantityShort;
+
   /// No description provided for @unitPrice.
   ///
   /// In es, this message translates to:
-  /// **'Unitario'**
+  /// **'Precio unitario'**
   String get unitPrice;
 
   /// No description provided for @totalPrice.
@@ -873,13 +885,13 @@ abstract class AppLocalizations {
   /// No description provided for @warningNeedPermissionsToShare.
   ///
   /// In es, this message translates to:
-  /// **'⚠️ Se necesitan permisos para compartir'**
+  /// **'⚠️ Permisos necesarios para compartir'**
   String get warningNeedPermissionsToShare;
 
   /// No description provided for @warningNeedPermissionsToDownload.
   ///
   /// In es, this message translates to:
-  /// **'⚠️ Se necesitan permisos para descargar'**
+  /// **'⚠️ Permisos necesarios para descargar'**
   String get warningNeedPermissionsToDownload;
 
   /// No description provided for @successSavedToGallery.
@@ -921,7 +933,7 @@ abstract class AppLocalizations {
   /// No description provided for @successImageSelected.
   ///
   /// In es, this message translates to:
-  /// **'✅ Imagen seleccionada correctamente'**
+  /// **'✅ Imagen seleccionada exitosamente'**
   String get successImageSelected;
 
   /// No description provided for @errorOccurred.
@@ -951,13 +963,13 @@ abstract class AppLocalizations {
   /// No description provided for @successOrderCreated.
   ///
   /// In es, this message translates to:
-  /// **'✅ Pedido y boleta creados exitosamente'**
+  /// **'✅ Pedido y factura creados exitosamente'**
   String get successOrderCreated;
 
   /// No description provided for @errorOrderCreation.
   ///
   /// In es, this message translates to:
-  /// **'❌ Error al crear pedido'**
+  /// **'❌ Error al crear el pedido'**
   String get errorOrderCreation;
 
   /// No description provided for @errorAddToOrder.
@@ -1038,7 +1050,7 @@ abstract class AppLocalizations {
   /// **'El teléfono debe tener al menos 7 dígitos'**
   String get phoneMinLength;
 
-  /// Título de la sección de formato de descarga
+  /// Título de sección de formato de descarga
   ///
   /// In es, this message translates to:
   /// **'Formato de descarga'**

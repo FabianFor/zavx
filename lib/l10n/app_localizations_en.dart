@@ -380,6 +380,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get productList => 'Product list';
 
   @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get quantityShort => 'Qty.';
+
+  @override
   String get unitPrice => 'Unit price';
 
   @override

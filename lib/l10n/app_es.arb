@@ -3,7 +3,7 @@
   "dashboard": "Panel",
   "products": "Productos",
   "orders": "Pedidos",
-  "invoices": "Boletas",
+  "invoices": "Facturas",
   "settings": "Configuración",
   "profile": "Perfil",
   "add": "Agregar",
@@ -25,7 +25,7 @@
   "cannotUndo": "Esta acción no se puede deshacer",
   "noProducts": "No hay productos",
   "noOrders": "No hay pedidos",
-  "noInvoices": "No hay boletas",
+  "noInvoices": "No hay facturas",
   "language": "Idioma",
   "selectLanguage": "Seleccionar idioma",
   "currency": "Moneda",
@@ -34,13 +34,13 @@
   "businessName": "Nombre del Negocio",
   "address": "Dirección",
   "phone": "Teléfono",
-  "email": "Email",
+  "email": "Correo electrónico",
   "share": "Compartir",
   "download": "Descargar",
   "error": "Error",
   "addImage": "Agregar imagen",
   "changeImage": "Cambiar imagen",
-  "businessManagement": "Gestión de Negocios",
+  "businessManagement": "Gestión del Negocio",
   "productsRegistered": "Productos Registrados",
   "ordersPlaced": "Pedidos Realizados",
   "totalRevenue": "Ingresos Totales",
@@ -62,7 +62,7 @@
   "invalidStock": "Stock inválido",
   "addToOrder": "Agrega al menos un producto al pedido",
   "insufficientStock": "Stock insuficiente para",
-  "totalItems": "Total ({count} items):",
+  "totalItems": "Total ({count} artículos):",
   "@totalItems": {
     "placeholders": {
       "count": {
@@ -71,28 +71,28 @@
     }
   },
   "clear": "Limpiar",
-  "orderCreatedSuccess": "Pedido y boleta creados exitosamente",
-  "orderCreatedError": "Error al crear pedido",
+  "orderCreatedSuccess": "Pedido y factura creados exitosamente",
+  "orderCreatedError": "Error al crear el pedido",
   "noProductsAvailable": "No hay productos disponibles",
   "noProductsFound": "No se encontraron productos",
   "productAddedSuccess": "Producto agregado exitosamente",
   "productUpdatedSuccess": "Producto actualizado exitosamente",
-  "imageSelectedSuccess": "Imagen seleccionada correctamente",
+  "imageSelectedSuccess": "Imagen seleccionada exitosamente",
   "retry": "Reintentar",
   "permissionsDenied": "Permisos denegados",
   "close": "Cerrar",
   "cart": "Carrito",
   "viewCart": "Ver Carrito",
-  "quickAccess": "Accesos Rápidos",
+  "quickAccess": "Acceso Rápido",
   "lowStockProducts": "Productos con stock bajo",
   "tapToChangeLogo": "Toca para cambiar el logo",
   "businessNameRequired": "El nombre del negocio es obligatorio",
-  "invalidEmail": "Ingrese un email válido",
-  "profileUpdated": "Perfil actualizado correctamente",
-  "logoSelected": "Logo seleccionado correctamente",
-  "needPermissions": "Necesitas dar permisos para elegir una imagen",
+  "invalidEmail": "Ingrese un correo válido",
+  "profileUpdated": "Perfil actualizado exitosamente",
+  "logoSelected": "Logo seleccionado exitosamente",
+  "needPermissions": "Necesitas otorgar permisos para elegir una imagen",
   "imageSelectionError": "Error al seleccionar imagen",
-  "darkModeSubtitle": "Activa el tema oscuro",
+  "darkModeSubtitle": "Activar tema oscuro",
   "businessProfileSubtitle": "Edita la información de tu negocio",
   "version": "Versión",
   "filterByDate": "Filtrar por fecha",
@@ -104,7 +104,7 @@
       }
     }
   },
-  "noInvoicesFound": "No se encontraron boletas",
+  "noInvoicesFound": "No se encontraron facturas",
   "clearFilters": "Limpiar filtros",
   "productsCount": "{count} producto(s)",
   "@productsCount": {
@@ -114,8 +114,8 @@
       }
     }
   },
-  "deleteInvoice": "Eliminar boleta",
-  "deleteInvoiceConfirm": "¿Estás seguro de eliminar la Boleta #{number}?\n\nEsta acción no se puede deshacer.",
+  "deleteInvoice": "Eliminar factura",
+  "deleteInvoiceConfirm": "¿Estás seguro de eliminar la Factura #{number}?\n\nEsta acción no se puede deshacer.",
   "@deleteInvoiceConfirm": {
     "placeholders": {
       "number": {
@@ -123,9 +123,9 @@
       }
     }
   },
-  "invoiceDeleted": "Boleta eliminada",
-  "needPermissionsToShare": "Se necesitan permisos para compartir",
-  "needPermissionsToDownload": "Se necesitan permisos para descargar",
+  "invoiceDeleted": "Factura eliminada",
+  "needPermissionsToShare": "Permisos necesarios para compartir",
+  "needPermissionsToDownload": "Permisos necesarios para descargar",
   "savedToGallery": "Guardado en galería",
   "customerData": "Datos del Cliente",
   "nameField": "Nombre *",
@@ -137,11 +137,11 @@
   "deleteProductConfirm": "¿Estás seguro de eliminar este producto?",
   "productDeleted": "Producto eliminado exitosamente",
   "permissionsNeeded": "Permisos necesarios",
-  "permissionsMessage": "Esta app necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Apps → MiNegocio → Permisos → Fotos y multimedia",
+  "permissionsMessage": "Esta aplicación necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Aplicaciones → MiNegocio → Permisos → Fotos y multimedia",
   "openSettings": "Abrir Configuración",
-  "needPermissionToSelectImage": "Necesitas dar permiso para seleccionar imágenes",
-  "trySelectAnyway": "Intenta seleccionar la imagen de todos modos",
-  "invoiceNumber": "Boleta #{number}",
+  "needPermissionToSelectImage": "Necesitas otorgar permiso para seleccionar imágenes",
+  "trySelectAnyway": "Intentar seleccionar la imagen de todos modos",
+  "invoiceNumber": "Factura #{number}",
   "@invoiceNumber": {
     "placeholders": {
       "number": {
@@ -149,12 +149,14 @@
       }
     }
   },
-  "businessNameLabel": "Nombre de empresa",
+  "businessNameLabel": "Nombre del negocio",
   "addressLabel": "Dirección",
   "phoneLabel": "Teléfono",
-  "emailLabel": "Correo",
+  "emailLabel": "Correo electrónico",
   "productList": "Lista de productos",
-  "unitPrice": "Unitario",
+  "quantity": "Cantidad",
+  "quantityShort": "Cant.",
+  "unitPrice": "Precio unitario",
   "totalPrice": "Total",
   "receipt": "Boleta",
   "receiptNumber": "Boleta #{number}",
@@ -177,8 +179,8 @@
     }
   },
   "receiptDeleted": "Boleta eliminada",
-  "warningNeedPermissionsToShare": "⚠️ Se necesitan permisos para compartir",
-  "warningNeedPermissionsToDownload": "⚠️ Se necesitan permisos para descargar",
+  "warningNeedPermissionsToShare": "⚠️ Permisos necesarios para compartir",
+  "warningNeedPermissionsToDownload": "⚠️ Permisos necesarios para descargar",
   "successSavedToGallery": "✅ Guardado en galería",
   "searchByCustomerOrNumber": "Buscar por cliente o número...",
   "resultsCount": "{count} resultado(s)",
@@ -199,7 +201,7 @@
     }
   },
   "warningPermissionsDenied": "⚠️ Permisos denegados",
-  "successImageSelected": "✅ Imagen seleccionada correctamente",
+  "successImageSelected": "✅ Imagen seleccionada exitosamente",
   "errorOccurred": "❌ Error",
   "successProductAdded": "✅ Producto agregado exitosamente",
   "successProductUpdated": "✅ Producto actualizado exitosamente",
@@ -211,8 +213,8 @@
       }
     }
   },
-  "successOrderCreated": "✅ Pedido y boleta creados exitosamente",
-  "errorOrderCreation": "❌ Error al crear pedido",
+  "successOrderCreated": "✅ Pedido y factura creados exitosamente",
+  "errorOrderCreation": "❌ Error al crear el pedido",
   "errorAddToOrder": "❌ Agrega al menos un producto al pedido",
   "errorInsufficientStock": "❌ Stock insuficiente para {product}",
   "@errorInsufficientStock": {
@@ -235,7 +237,7 @@
   "phoneMinLength": "El teléfono debe tener al menos 7 dígitos",
   "downloadFormat": "Formato de descarga",
   "@downloadFormat": {
-    "description": "Título de la sección de formato de descarga"
+    "description": "Título de sección de formato de descarga"
   },
   "downloadFormatImage": "Imagen (PNG)",
   "@downloadFormatImage": {
