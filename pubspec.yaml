@@ -54,7 +54,8 @@ dependencies:
   printing: ^5.11.1
   
   # ✅ NUEVA: Para seleccionar archivos JSON
-  file_picker: ^6.1.1
+  file_picker: ^8.0.3
+
 
 dev_dependencies:
   flutter_test:

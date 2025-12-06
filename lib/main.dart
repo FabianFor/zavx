@@ -17,6 +17,7 @@ import 'models/product.dart';
 import 'models/order.dart';
 import 'models/invoice.dart';
 import 'models/business_profile.dart';
+import 'models/user.dart'; // ✅ NUEVO
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,7 @@ void main() async {
   Hive.registerAdapter(OrderItemAdapter());
   Hive.registerAdapter(InvoiceAdapter());
   Hive.registerAdapter(BusinessProfileAdapter());
+  Hive.registerAdapter(UserAdapter()); // ✅ NUEVO - AGREGAR ESTA LÍNEA
   
   runApp(const MyApp());
 }
@@ -39,9 +41,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Auth provider (primero)
+        // Auth provider (primero) - ✅ INICIALIZA USUARIOS
         ChangeNotifierProvider(
-          create: (_) => AuthProvider(),
+          create: (_) => AuthProvider()..initialize(), // ✅ AGREGADO ..initialize()
         ),
         
         // Settings provider
