@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
 import '../l10n/app_localizations.dart';
 import '../core/utils/theme_helper.dart';
 import '../providers/invoice_provider.dart';
@@ -930,7 +930,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
               textColor: Colors.white,
               onPressed: () async {
                 try {
-                  await OpenFile.open(savedPath);
+                  await OpenFilex.open(savedPath);
                 } catch (e) {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
