@@ -25,20 +25,6 @@ void main() async {
   debugPrint('🚀 Inicializando Hive...');
   await Hive.initFlutter();
   
-  // 🔥 COMENTADO - Ya no borra los datos cada vez que abres la app
-  /*
-  try {
-    await Hive.deleteBoxFromDisk('users');
-    await Hive.deleteBoxFromDisk('products');
-    await Hive.deleteBoxFromDisk('orders');
-    await Hive.deleteBoxFromDisk('invoices');
-    await Hive.deleteBoxFromDisk('business_profile');
-    debugPrint('✅ Boxes antiguos borrados correctamente');
-  } catch (e) {
-    debugPrint('⚠️ Error borrando boxes (puede ser normal si no existen): $e');
-  }
-  */
-  
   // Registrar TODOS los adaptadores
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(OrderAdapter());
@@ -67,23 +53,23 @@ class MyApp extends StatelessWidget {
         
         // Settings provider
         ChangeNotifierProvider(
-          create: (_) => SettingsProvider()..loadSettings(),
+          create: (_) => SettingsProvider(),
         ),
         
         // Business profile
         ChangeNotifierProvider(
-          create: (_) => BusinessProvider()..loadProfile(),
+          create: (_) => BusinessProvider(),
         ),
         
         // Data providers
         ChangeNotifierProvider(
-          create: (_) => ProductProvider()..loadProducts(),
+          create: (_) => ProductProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => OrderProvider()..loadOrders(),
+          create: (_) => OrderProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => InvoiceProvider()..loadInvoices(),
+          create: (_) => InvoiceProvider(),
         ),
       ],
       child: Consumer<SettingsProvider>(
@@ -141,14 +127,21 @@ class _AppInitializerState extends State<_AppInitializer> {
   Future<void> _initializeApp() async {
     debugPrint('🔧 Inicializando app...');
     
-    // Obtener el AuthProvider y esperar a que inicialice
-    final authProvider = context.read<AuthProvider>();
-    await authProvider.initialize();
-    
-    debugPrint('✅ AuthProvider inicializado');
-    
-    // Pequeña pausa para asegurar
-    await Future.delayed(const Duration(milliseconds: 300));
+    try {
+      // ✅✅ CARGAR TODOS LOS PROVIDERS EN PARALELO ✅✅
+      await Future.wait([
+        context.read<AuthProvider>().initialize(),
+        context.read<SettingsProvider>().loadSettings(),
+        context.read<BusinessProvider>().loadProfile(),
+        context.read<ProductProvider>().loadProducts(),
+        context.read<OrderProvider>().loadOrders(),
+        context.read<InvoiceProvider>().loadInvoices(),
+      ]);
+      
+      debugPrint('✅ Todos los providers inicializados correctamente');
+    } catch (e) {
+      debugPrint('❌ Error inicializando providers: $e');
+    }
     
     if (mounted) {
       setState(() {
@@ -171,7 +164,7 @@ class _AppInitializerState extends State<_AppInitializer> {
               ),
               SizedBox(height: 16),
               Text(
-                'Inicializando...',
+                'Cargando...',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white,
