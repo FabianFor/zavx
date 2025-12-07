@@ -269,5 +269,104 @@
   "importError": "Import error",
   "fileNotSelected": "No file selected",
   "logout": "Logout"
+  ,
+  "statistics": "Statistics",
+  "sales": "Sales",
+  "today": "Today",
+  "thisWeek": "This week",
+  "thisMonth": "This month",
+  "allTime": "Total",
+  "invoicesCount": "{count} invoices",
+  "@invoicesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "topProducts": "Top selling products",
+  "unitsSold": "{count} units sold",
+  "@unitsSold": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stockAlerts": "Stock Alerts",
+  "allGood": "All good",
+  "noLowStockProducts": "No low stock products",
+  "outOfStock": "Out of Stock ({count})",
+  "@outOfStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lowStock": "Low Stock ({count})",
+  "@lowStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noSalesRecorded": "No sales recorded",
+  "todayLabel": "Today",
+  "weekLabel": "Week",
+  "monthLabel": "Month",
+  "allLabel": "All",
+  "customRange": "Range",
+  "selectRange": "Select range",
+  "periodTotal": "Period total:",
+  "noBilletsInPeriod": "No receipts in this period",
+  "billetCount": "{count} receipt(s)",
+  "@billetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+  ,
+  "filterToday": "Today",
+  "filterWeek": "Week",
+  "filterMonth": "Month",
+  "filterAll": "All",
+  "filterRange": "Range",
+  "selectDateRange": "Select range",
+  "todayDate": "Today - {date}",
+  "@todayDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "thisWeekLabel": "This week",
+  "thisMonthDate": "This month - {date}",
+  "@thisMonthDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "allDates": "All dates",
+  "customRangeLabel": "Custom range",
+  "dateRange": "{start} - {end}",
+  "@dateRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "clearAllFilters": "Clear filters",
+  "noBilletsInPeriodShort": "No receipts in this period"
 
 }

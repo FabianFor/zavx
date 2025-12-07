@@ -1193,6 +1193,234 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cerrar Sesión'**
   String get logout;
+
+  /// No description provided for @statistics.
+  ///
+  /// In es, this message translates to:
+  /// **'Estadísticas'**
+  String get statistics;
+
+  /// No description provided for @sales.
+  ///
+  /// In es, this message translates to:
+  /// **'Ventas'**
+  String get sales;
+
+  /// No description provided for @today.
+  ///
+  /// In es, this message translates to:
+  /// **'Hoy'**
+  String get today;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta semana'**
+  String get thisWeek;
+
+  /// No description provided for @thisMonth.
+  ///
+  /// In es, this message translates to:
+  /// **'Este mes'**
+  String get thisMonth;
+
+  /// No description provided for @allTime.
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get allTime;
+
+  /// No description provided for @invoicesCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count} facturas'**
+  String invoicesCount(int count);
+
+  /// No description provided for @topProducts.
+  ///
+  /// In es, this message translates to:
+  /// **'Productos más vendidos'**
+  String get topProducts;
+
+  /// No description provided for @unitsSold.
+  ///
+  /// In es, this message translates to:
+  /// **'{count} unidades vendidas'**
+  String unitsSold(int count);
+
+  /// No description provided for @stockAlerts.
+  ///
+  /// In es, this message translates to:
+  /// **'Alertas de Stock'**
+  String get stockAlerts;
+
+  /// No description provided for @allGood.
+  ///
+  /// In es, this message translates to:
+  /// **'Todo en orden'**
+  String get allGood;
+
+  /// No description provided for @noLowStockProducts.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay productos con stock bajo'**
+  String get noLowStockProducts;
+
+  /// No description provided for @outOfStock.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin Stock ({count})'**
+  String outOfStock(int count);
+
+  /// No description provided for @lowStock.
+  ///
+  /// In es, this message translates to:
+  /// **'Stock Bajo ({count})'**
+  String lowStock(int count);
+
+  /// No description provided for @noSalesRecorded.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay ventas registradas'**
+  String get noSalesRecorded;
+
+  /// No description provided for @todayLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Hoy'**
+  String get todayLabel;
+
+  /// No description provided for @weekLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Semana'**
+  String get weekLabel;
+
+  /// No description provided for @monthLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Mes'**
+  String get monthLabel;
+
+  /// No description provided for @allLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Todo'**
+  String get allLabel;
+
+  /// No description provided for @customRange.
+  ///
+  /// In es, this message translates to:
+  /// **'Rango'**
+  String get customRange;
+
+  /// No description provided for @selectRange.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar rango'**
+  String get selectRange;
+
+  /// No description provided for @periodTotal.
+  ///
+  /// In es, this message translates to:
+  /// **'Total del período:'**
+  String get periodTotal;
+
+  /// No description provided for @noBilletsInPeriod.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay boletas en este período'**
+  String get noBilletsInPeriod;
+
+  /// No description provided for @billetCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count} boleta(s)'**
+  String billetCount(int count);
+
+  /// No description provided for @filterToday.
+  ///
+  /// In es, this message translates to:
+  /// **'Hoy'**
+  String get filterToday;
+
+  /// No description provided for @filterWeek.
+  ///
+  /// In es, this message translates to:
+  /// **'Semana'**
+  String get filterWeek;
+
+  /// No description provided for @filterMonth.
+  ///
+  /// In es, this message translates to:
+  /// **'Mes'**
+  String get filterMonth;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Todo'**
+  String get filterAll;
+
+  /// No description provided for @filterRange.
+  ///
+  /// In es, this message translates to:
+  /// **'Rango'**
+  String get filterRange;
+
+  /// No description provided for @selectDateRange.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar rango'**
+  String get selectDateRange;
+
+  /// No description provided for @todayDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Hoy - {date}'**
+  String todayDate(String date);
+
+  /// No description provided for @thisWeekLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta semana'**
+  String get thisWeekLabel;
+
+  /// No description provided for @thisMonthDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Este mes - {date}'**
+  String thisMonthDate(String date);
+
+  /// No description provided for @allDates.
+  ///
+  /// In es, this message translates to:
+  /// **'Todas las fechas'**
+  String get allDates;
+
+  /// No description provided for @customRangeLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Rango personalizado'**
+  String get customRangeLabel;
+
+  /// No description provided for @dateRange.
+  ///
+  /// In es, this message translates to:
+  /// **'{start} - {end}'**
+  String dateRange(String start, String end);
+
+  /// No description provided for @clearAllFilters.
+  ///
+  /// In es, this message translates to:
+  /// **'Limpiar filtros'**
+  String get clearAllFilters;
+
+  /// No description provided for @noBilletsInPeriodShort.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay boletas en este período'**
+  String get noBilletsInPeriodShort;
 }
 
 class _AppLocalizationsDelegate

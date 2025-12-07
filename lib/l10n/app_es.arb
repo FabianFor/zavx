@@ -246,8 +246,7 @@
   "downloadFormatPdf": "Documento (PDF)",
   "@downloadFormatPdf": {
     "description": "Opción para descargar como PDF"
-  }
-    ,
+  },
   "loginTitle": "MiNegocio",
   "loginSubtitle": "Sistema de Gestión",
   "loginAsEmployee": "Entrar como Empleado",
@@ -268,6 +267,104 @@
   "exportError": "Error al exportar",
   "importError": "Error al importar",
   "fileNotSelected": "No se seleccionó archivo",
-  "logout": "Cerrar Sesión"
+  "logout": "Cerrar Sesión",
+  "statistics": "Estadísticas",
+  "sales": "Ventas",
+  "today": "Hoy",
+  "thisWeek": "Esta semana",
+  "thisMonth": "Este mes",
+  "allTime": "Total",
+  "invoicesCount": "{count} facturas",
+  "@invoicesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "topProducts": "Productos más vendidos",
+  "unitsSold": "{count} unidades vendidas",
+  "@unitsSold": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stockAlerts": "Alertas de Stock",
+  "allGood": "Todo en orden",
+  "noLowStockProducts": "No hay productos con stock bajo",
+  "outOfStock": "Sin Stock ({count})",
+  "@outOfStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lowStock": "Stock Bajo ({count})",
+  "@lowStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noSalesRecorded": "No hay ventas registradas",
+  "todayLabel": "Hoy",
+  "weekLabel": "Semana",
+  "monthLabel": "Mes",
+  "allLabel": "Todo",
+  "customRange": "Rango",
+  "selectRange": "Seleccionar rango",
+  "periodTotal": "Total del período:",
+  "noBilletsInPeriod": "No hay boletas en este período",
+  "billetCount": "{count} boleta(s)",
+  "@billetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+    ,
+  "filterToday": "Hoy",
+  "filterWeek": "Semana",
+  "filterMonth": "Mes",
+  "filterAll": "Todo",
+  "filterRange": "Rango",
+  "selectDateRange": "Seleccionar rango",
+  "todayDate": "Hoy - {date}",
+  "@todayDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "thisWeekLabel": "Esta semana",
+  "thisMonthDate": "Este mes - {date}",
+  "@thisMonthDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "allDates": "Todas las fechas",
+  "customRangeLabel": "Rango personalizado",
+  "dateRange": "{start} - {end}",
+  "@dateRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "clearAllFilters": "Limpiar filtros",
+  "noBilletsInPeriodShort": "No hay boletas en este período"
 
 }

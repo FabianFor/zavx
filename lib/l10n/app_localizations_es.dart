@@ -581,4 +581,134 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get logout => 'Cerrar Sesión';
+
+  @override
+  String get statistics => 'Estadísticas';
+
+  @override
+  String get sales => 'Ventas';
+
+  @override
+  String get today => 'Hoy';
+
+  @override
+  String get thisWeek => 'Esta semana';
+
+  @override
+  String get thisMonth => 'Este mes';
+
+  @override
+  String get allTime => 'Total';
+
+  @override
+  String invoicesCount(int count) {
+    return '$count facturas';
+  }
+
+  @override
+  String get topProducts => 'Productos más vendidos';
+
+  @override
+  String unitsSold(int count) {
+    return '$count unidades vendidas';
+  }
+
+  @override
+  String get stockAlerts => 'Alertas de Stock';
+
+  @override
+  String get allGood => 'Todo en orden';
+
+  @override
+  String get noLowStockProducts => 'No hay productos con stock bajo';
+
+  @override
+  String outOfStock(int count) {
+    return 'Sin Stock ($count)';
+  }
+
+  @override
+  String lowStock(int count) {
+    return 'Stock Bajo ($count)';
+  }
+
+  @override
+  String get noSalesRecorded => 'No hay ventas registradas';
+
+  @override
+  String get todayLabel => 'Hoy';
+
+  @override
+  String get weekLabel => 'Semana';
+
+  @override
+  String get monthLabel => 'Mes';
+
+  @override
+  String get allLabel => 'Todo';
+
+  @override
+  String get customRange => 'Rango';
+
+  @override
+  String get selectRange => 'Seleccionar rango';
+
+  @override
+  String get periodTotal => 'Total del período:';
+
+  @override
+  String get noBilletsInPeriod => 'No hay boletas en este período';
+
+  @override
+  String billetCount(int count) {
+    return '$count boleta(s)';
+  }
+
+  @override
+  String get filterToday => 'Hoy';
+
+  @override
+  String get filterWeek => 'Semana';
+
+  @override
+  String get filterMonth => 'Mes';
+
+  @override
+  String get filterAll => 'Todo';
+
+  @override
+  String get filterRange => 'Rango';
+
+  @override
+  String get selectDateRange => 'Seleccionar rango';
+
+  @override
+  String todayDate(String date) {
+    return 'Hoy - $date';
+  }
+
+  @override
+  String get thisWeekLabel => 'Esta semana';
+
+  @override
+  String thisMonthDate(String date) {
+    return 'Este mes - $date';
+  }
+
+  @override
+  String get allDates => 'Todas las fechas';
+
+  @override
+  String get customRangeLabel => 'Rango personalizado';
+
+  @override
+  String dateRange(String start, String end) {
+    return '$start - $end';
+  }
+
+  @override
+  String get clearAllFilters => 'Limpiar filtros';
+
+  @override
+  String get noBilletsInPeriodShort => 'No hay boletas en este período';
 }

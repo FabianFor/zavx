@@ -269,6 +269,105 @@
   "importError": "Erro ao importar",
   "fileNotSelected": "Nenhum arquivo selecionado",
   "logout": "Sair"
+  ,
+  "statistics": "Estatísticas",
+  "sales": "Vendas",
+  "today": "Hoje",
+  "thisWeek": "Esta semana",
+  "thisMonth": "Este mês",
+  "allTime": "Total",
+  "invoicesCount": "{count} faturas",
+  "@invoicesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "topProducts": "Produtos mais vendidos",
+  "unitsSold": "{count} unidades vendidas",
+  "@unitsSold": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stockAlerts": "Alertas de Estoque",
+  "allGood": "Tudo em ordem",
+  "noLowStockProducts": "Sem produtos com estoque baixo",
+  "outOfStock": "Sem Estoque ({count})",
+  "@outOfStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lowStock": "Estoque Baixo ({count})",
+  "@lowStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noSalesRecorded": "Sem vendas registradas",
+  "todayLabel": "Hoje",
+  "weekLabel": "Semana",
+  "monthLabel": "Mês",
+  "allLabel": "Tudo",
+  "customRange": "Intervalo",
+  "selectRange": "Selecionar intervalo",
+  "periodTotal": "Total do período:",
+  "noBilletsInPeriod": "Sem recibos neste período",
+  "billetCount": "{count} recibo(s)",
+  "@billetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+  ,
+  "filterToday": "Hoje",
+  "filterWeek": "Semana",
+  "filterMonth": "Mês",
+  "filterAll": "Tudo",
+  "filterRange": "Intervalo",
+  "selectDateRange": "Selecionar intervalo",
+  "todayDate": "Hoje - {date}",
+  "@todayDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "thisWeekLabel": "Esta semana",
+  "thisMonthDate": "Este mês - {date}",
+  "@thisMonthDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "allDates": "Todas as datas",
+  "customRangeLabel": "Intervalo personalizado",
+  "dateRange": "{start} - {end}",
+  "@dateRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "clearAllFilters": "Limpar filtros",
+  "noBilletsInPeriodShort": "Sem recibos neste período"
 
 }
 

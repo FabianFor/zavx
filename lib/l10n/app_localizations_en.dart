@@ -580,4 +580,134 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logout => 'Logout';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get sales => 'Sales';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get thisWeek => 'This week';
+
+  @override
+  String get thisMonth => 'This month';
+
+  @override
+  String get allTime => 'Total';
+
+  @override
+  String invoicesCount(int count) {
+    return '$count invoices';
+  }
+
+  @override
+  String get topProducts => 'Top selling products';
+
+  @override
+  String unitsSold(int count) {
+    return '$count units sold';
+  }
+
+  @override
+  String get stockAlerts => 'Stock Alerts';
+
+  @override
+  String get allGood => 'All good';
+
+  @override
+  String get noLowStockProducts => 'No low stock products';
+
+  @override
+  String outOfStock(int count) {
+    return 'Out of Stock ($count)';
+  }
+
+  @override
+  String lowStock(int count) {
+    return 'Low Stock ($count)';
+  }
+
+  @override
+  String get noSalesRecorded => 'No sales recorded';
+
+  @override
+  String get todayLabel => 'Today';
+
+  @override
+  String get weekLabel => 'Week';
+
+  @override
+  String get monthLabel => 'Month';
+
+  @override
+  String get allLabel => 'All';
+
+  @override
+  String get customRange => 'Range';
+
+  @override
+  String get selectRange => 'Select range';
+
+  @override
+  String get periodTotal => 'Period total:';
+
+  @override
+  String get noBilletsInPeriod => 'No receipts in this period';
+
+  @override
+  String billetCount(int count) {
+    return '$count receipt(s)';
+  }
+
+  @override
+  String get filterToday => 'Today';
+
+  @override
+  String get filterWeek => 'Week';
+
+  @override
+  String get filterMonth => 'Month';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterRange => 'Range';
+
+  @override
+  String get selectDateRange => 'Select range';
+
+  @override
+  String todayDate(String date) {
+    return 'Today - $date';
+  }
+
+  @override
+  String get thisWeekLabel => 'This week';
+
+  @override
+  String thisMonthDate(String date) {
+    return 'This month - $date';
+  }
+
+  @override
+  String get allDates => 'All dates';
+
+  @override
+  String get customRangeLabel => 'Custom range';
+
+  @override
+  String dateRange(String start, String end) {
+    return '$start - $end';
+  }
+
+  @override
+  String get clearAllFilters => 'Clear filters';
+
+  @override
+  String get noBilletsInPeriodShort => 'No receipts in this period';
 }

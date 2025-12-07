@@ -49,13 +49,12 @@ class InvoicesScreenContent extends StatefulWidget {
   State<InvoicesScreenContent> createState() => _InvoicesScreenContentState();
 }
 
-// ✅ ENUM PARA FILTROS RÁPIDOS
 enum DateFilter { today, thisWeek, thisMonth, all, custom }
 
 class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
-  DateFilter _selectedFilter = DateFilter.today; // ✅ POR DEFECTO: HOY
+  DateFilter _selectedFilter = DateFilter.today;
   DateTime? _customStartDate;
   DateTime? _customEndDate;
 
@@ -65,15 +64,12 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
     super.dispose();
   }
 
-  // ✅ MÉTODO PARA FILTRAR FACTURAS
   List<dynamic> _getFilteredInvoices(List<dynamic> allInvoices) {
     return allInvoices.where((invoice) {
-      // Filtro por búsqueda
       final matchesSearch = _searchQuery.isEmpty ||
           invoice.customerName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           invoice.invoiceNumber.toString().contains(_searchQuery);
 
-      // Filtro por fecha
       final now = DateTime.now();
       bool matchesDate = false;
 
@@ -112,22 +108,39 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
         date1.day == date2.day;
   }
 
-  String _getFilterLabel() {
+  String _getFilterLabel(AppLocalizations l10n) {
     final now = DateTime.now();
     switch (_selectedFilter) {
       case DateFilter.today:
-        return 'Hoy - ${DateFormat('dd/MM/yyyy').format(now)}';
+        return '${l10n.filterToday} - ${DateFormat('dd/MM/yyyy').format(now)}';
       case DateFilter.thisWeek:
-        return 'Esta semana';
+        return l10n.thisWeekLabel;
       case DateFilter.thisMonth:
-        return 'Este mes - ${DateFormat('MMMM yyyy', 'es').format(now)}';
+        return '${l10n.filterMonth} - ${DateFormat('MMMM yyyy', l10n.localeName).format(now)}';
       case DateFilter.all:
-        return 'Todas las fechas';
+        return l10n.allDates;
       case DateFilter.custom:
         if (_customStartDate != null && _customEndDate != null) {
-          return '${DateFormat('dd/MM').format(_customStartDate!)} - ${DateFormat('dd/MM/yyyy').format(_customEndDate!)}';
+          final start = DateFormat('dd/MM').format(_customStartDate!);
+          final end = DateFormat('dd/MM/yyyy').format(_customEndDate!);
+          return '$start - $end';
         }
-        return 'Rango personalizado';
+        return l10n.customRangeLabel;
+    }
+  }
+
+  String _getCountText(AppLocalizations l10n, int count) {
+    switch (l10n.localeName) {
+      case 'es':
+        return '$count boleta${count != 1 ? 's' : ''}';
+      case 'en':
+        return '$count receipt${count != 1 ? 's' : ''}';
+      case 'pt':
+        return '$count recibo${count != 1 ? 's' : ''}';
+      case 'zh':
+        return '$count 张收据';
+      default:
+        return '$count receipt(s)';
     }
   }
 
@@ -145,13 +158,11 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
 
     return Column(
       children: [
-        // ✅ BARRA DE BÚSQUEDA Y FILTRO
         Container(
           padding: EdgeInsets.all(16.w),
           color: theme.cardBackground,
           child: Column(
             children: [
-              // Campo de búsqueda
               TextField(
                 controller: _searchController,
                 onChanged: (value) {
@@ -191,20 +202,19 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
               ),
               SizedBox(height: 12.h),
 
-              // ✅ BOTONES DE FILTROS RÁPIDOS
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildFilterChip('Hoy', DateFilter.today, theme),
+                    _buildFilterChip(l10n.filterToday, DateFilter.today, theme),
                     SizedBox(width: 8.w),
-                    _buildFilterChip('Semana', DateFilter.thisWeek, theme),
+                    _buildFilterChip(l10n.filterWeek, DateFilter.thisWeek, theme),
                     SizedBox(width: 8.w),
-                    _buildFilterChip('Mes', DateFilter.thisMonth, theme),
+                    _buildFilterChip(l10n.filterMonth, DateFilter.thisMonth, theme),
                     SizedBox(width: 8.w),
-                    _buildFilterChip('Todo', DateFilter.all, theme),
+                    _buildFilterChip(l10n.filterAll, DateFilter.all, theme),
                     SizedBox(width: 8.w),
-                    _buildCustomDateButton(theme),
+                    _buildCustomDateButton(theme, l10n),
                   ],
                 ),
               ),
@@ -212,7 +222,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
           ),
         ),
 
-        // ✅ INFORMACIÓN DEL FILTRO ACTUAL
         Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           color: theme.primaryWithOpacity(0.1),
@@ -222,7 +231,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
               SizedBox(width: 8.w),
               Expanded(
                 child: Text(
-                  _getFilterLabel(),
+                  _getFilterLabel(l10n),
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
@@ -231,7 +240,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                 ),
               ),
               Text(
-                '${filteredInvoices.length} boleta${filteredInvoices.length != 1 ? 's' : ''}',
+                _getCountText(l10n, filteredInvoices.length),
                 style: TextStyle(
                   fontSize: 13.sp,
                   color: theme.textSecondary,
@@ -241,7 +250,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
           ),
         ),
 
-        // ✅ TOTAL DEL PERÍODO
         if (filteredInvoices.isNotEmpty)
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -250,7 +258,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total del período:',
+                  l10n.periodTotal,
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
@@ -269,7 +277,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
             ),
           ),
 
-        // LISTA DE FACTURAS
         Expanded(
           child: filteredInvoices.isEmpty
               ? Center(
@@ -286,8 +293,8 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                       SizedBox(height: 16.h),
                       Text(
                         _searchQuery.isNotEmpty
-                            ? _getNoInvoicesFoundText(l10n)
-                            : 'No hay boletas en este período',
+                            ? l10n.noReceiptsFound
+                            : l10n.noBilletsInPeriod,
                         style: TextStyle(
                           fontSize: isTablet ? 16.sp : 18.sp,
                           color: theme.textSecondary,
@@ -304,7 +311,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                             });
                           },
                           icon: Icon(Icons.clear_all, size: 18.sp),
-                          label: Text('Limpiar filtros', style: TextStyle(fontSize: 14.sp)),
+                          label: Text(l10n.clearAllFilters, style: TextStyle(fontSize: 14.sp)),
                           style: TextButton.styleFrom(foregroundColor: theme.primary),
                         ),
                       ],
@@ -442,7 +449,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
     );
   }
 
-  Widget _buildCustomDateButton(ThemeHelper theme) {
+  Widget _buildCustomDateButton(ThemeHelper theme, AppLocalizations l10n) {
     final isSelected = _selectedFilter == DateFilter.custom;
     return ActionChip(
       label: Row(
@@ -450,22 +457,19 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
         children: [
           Icon(Icons.date_range, size: 16.sp, color: isSelected ? Colors.white : theme.primary),
           SizedBox(width: 4.w),
-          Text('Rango', style: TextStyle(fontSize: 13.sp)),
+          Text(l10n.filterRange, style: TextStyle(fontSize: 13.sp)),
         ],
       ),
       onPressed: () async {
-        // ✅✅ TEMA CORREGIDO PARA MODO OSCURO ✅✅
+        final isDark = theme.isDark;
+
         final picked = await showDateRangePicker(
           context: context,
           firstDate: DateTime(2020),
           lastDate: DateTime.now(),
           builder: (context, child) {
-            // ✅ DETECTAR SI ESTÁ EN MODO OSCURO
-            final isDark = theme.isDark;
-            
             return Theme(
               data: ThemeData(
-                // ✅ Configuración para modo oscuro/claro
                 brightness: isDark ? Brightness.dark : Brightness.light,
                 colorScheme: isDark
                     ? ColorScheme.dark(
@@ -480,7 +484,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                         surface: Colors.white,
                         onSurface: Colors.black,
                       ),
-                // ✅ Texto visible
                 textTheme: TextTheme(
                   bodyLarge: TextStyle(color: isDark ? Colors.white : Colors.black),
                   bodyMedium: TextStyle(color: isDark ? Colors.white : Colors.black),
@@ -489,7 +492,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                // ✅ AppBar del calendario
                 appBarTheme: AppBarTheme(
                   backgroundColor: theme.primary,
                   foregroundColor: Colors.white,
@@ -517,9 +519,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
     );
   }
 
-
-  // EL RESTO DEL CÓDIGO SE MANTIENE IGUAL...
-  // (Los métodos _showInvoiceDetails, _confirmDeleteInvoice, etc.)
   void _showInvoiceDetails(BuildContext context, invoice) {
     final l10n = AppLocalizations.of(context)!;
     final theme = ThemeHelper(context);
@@ -1085,21 +1084,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
           ),
         );
       }
-    }
-  }
-
-  String _getNoInvoicesFoundText(AppLocalizations l10n) {
-    switch (l10n.localeName) {
-      case 'es':
-        return 'No se encontraron boletas';
-      case 'en':
-        return 'No receipts found';
-      case 'pt':
-        return 'Nenhum recibo encontrado';
-      case 'zh':
-        return '未找到收据';
-      default:
-        return 'No receipts found';
     }
   }
 

@@ -576,4 +576,134 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get logout => '登出';
+
+  @override
+  String get statistics => '统计';
+
+  @override
+  String get sales => '销售';
+
+  @override
+  String get today => '今天';
+
+  @override
+  String get thisWeek => '本周';
+
+  @override
+  String get thisMonth => '本月';
+
+  @override
+  String get allTime => '总计';
+
+  @override
+  String invoicesCount(int count) {
+    return '$count 张发票';
+  }
+
+  @override
+  String get topProducts => '最畅销产品';
+
+  @override
+  String unitsSold(int count) {
+    return '已售出 $count 件';
+  }
+
+  @override
+  String get stockAlerts => '库存警报';
+
+  @override
+  String get allGood => '一切正常';
+
+  @override
+  String get noLowStockProducts => '没有低库存产品';
+
+  @override
+  String outOfStock(int count) {
+    return '缺货 ($count)';
+  }
+
+  @override
+  String lowStock(int count) {
+    return '库存不足 ($count)';
+  }
+
+  @override
+  String get noSalesRecorded => '未记录销售';
+
+  @override
+  String get todayLabel => '今天';
+
+  @override
+  String get weekLabel => '周';
+
+  @override
+  String get monthLabel => '月';
+
+  @override
+  String get allLabel => '全部';
+
+  @override
+  String get customRange => '范围';
+
+  @override
+  String get selectRange => '选择范围';
+
+  @override
+  String get periodTotal => '期间总计：';
+
+  @override
+  String get noBilletsInPeriod => '此期间没有收据';
+
+  @override
+  String billetCount(int count) {
+    return '$count 张收据';
+  }
+
+  @override
+  String get filterToday => '今天';
+
+  @override
+  String get filterWeek => '周';
+
+  @override
+  String get filterMonth => '月';
+
+  @override
+  String get filterAll => '全部';
+
+  @override
+  String get filterRange => '范围';
+
+  @override
+  String get selectDateRange => '选择范围';
+
+  @override
+  String todayDate(String date) {
+    return '今天 - $date';
+  }
+
+  @override
+  String get thisWeekLabel => '本周';
+
+  @override
+  String thisMonthDate(String date) {
+    return '本月 - $date';
+  }
+
+  @override
+  String get allDates => '所有日期';
+
+  @override
+  String get customRangeLabel => '自定义范围';
+
+  @override
+  String dateRange(String start, String end) {
+    return '$start - $end';
+  }
+
+  @override
+  String get clearAllFilters => '清除筛选';
+
+  @override
+  String get noBilletsInPeriodShort => '此期间没有收据';
 }

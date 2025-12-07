@@ -582,4 +582,134 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get logout => 'Sair';
+
+  @override
+  String get statistics => 'Estatísticas';
+
+  @override
+  String get sales => 'Vendas';
+
+  @override
+  String get today => 'Hoje';
+
+  @override
+  String get thisWeek => 'Esta semana';
+
+  @override
+  String get thisMonth => 'Este mês';
+
+  @override
+  String get allTime => 'Total';
+
+  @override
+  String invoicesCount(int count) {
+    return '$count faturas';
+  }
+
+  @override
+  String get topProducts => 'Produtos mais vendidos';
+
+  @override
+  String unitsSold(int count) {
+    return '$count unidades vendidas';
+  }
+
+  @override
+  String get stockAlerts => 'Alertas de Estoque';
+
+  @override
+  String get allGood => 'Tudo em ordem';
+
+  @override
+  String get noLowStockProducts => 'Sem produtos com estoque baixo';
+
+  @override
+  String outOfStock(int count) {
+    return 'Sem Estoque ($count)';
+  }
+
+  @override
+  String lowStock(int count) {
+    return 'Estoque Baixo ($count)';
+  }
+
+  @override
+  String get noSalesRecorded => 'Sem vendas registradas';
+
+  @override
+  String get todayLabel => 'Hoje';
+
+  @override
+  String get weekLabel => 'Semana';
+
+  @override
+  String get monthLabel => 'Mês';
+
+  @override
+  String get allLabel => 'Tudo';
+
+  @override
+  String get customRange => 'Intervalo';
+
+  @override
+  String get selectRange => 'Selecionar intervalo';
+
+  @override
+  String get periodTotal => 'Total do período:';
+
+  @override
+  String get noBilletsInPeriod => 'Sem recibos neste período';
+
+  @override
+  String billetCount(int count) {
+    return '$count recibo(s)';
+  }
+
+  @override
+  String get filterToday => 'Hoje';
+
+  @override
+  String get filterWeek => 'Semana';
+
+  @override
+  String get filterMonth => 'Mês';
+
+  @override
+  String get filterAll => 'Tudo';
+
+  @override
+  String get filterRange => 'Intervalo';
+
+  @override
+  String get selectDateRange => 'Selecionar intervalo';
+
+  @override
+  String todayDate(String date) {
+    return 'Hoje - $date';
+  }
+
+  @override
+  String get thisWeekLabel => 'Esta semana';
+
+  @override
+  String thisMonthDate(String date) {
+    return 'Este mês - $date';
+  }
+
+  @override
+  String get allDates => 'Todas as datas';
+
+  @override
+  String get customRangeLabel => 'Intervalo personalizado';
+
+  @override
+  String dateRange(String start, String end) {
+    return '$start - $end';
+  }
+
+  @override
+  String get clearAllFilters => 'Limpar filtros';
+
+  @override
+  String get noBilletsInPeriodShort => 'Sem recibos neste período';
 }

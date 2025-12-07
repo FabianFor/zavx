@@ -24,7 +24,7 @@ class ReportsScreen extends StatelessWidget {
       backgroundColor: theme.scaffoldBackground,
       appBar: AppBar(
         title: Text(
-          '📊 Estadísticas',
+          '📊 ${l10n.statistics}',
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
@@ -42,7 +42,7 @@ class ReportsScreen extends StatelessWidget {
           children: [
             // 💰 VENTAS
             Text(
-              '💰 Ventas',
+              '💰 ${l10n.sales}',
               style: TextStyle(
                 fontSize: isTablet ? 18.sp : 20.sp,
                 fontWeight: FontWeight.bold,
@@ -56,6 +56,7 @@ class ReportsScreen extends StatelessWidget {
               theme,
               settingsProvider,
               reportsProvider,
+              l10n,
               isTablet,
             ),
             
@@ -63,7 +64,7 @@ class ReportsScreen extends StatelessWidget {
 
             // 📈 TOP PRODUCTOS
             Text(
-              '📈 Productos más vendidos',
+              '📈 ${l10n.topProducts}',
               style: TextStyle(
                 fontSize: isTablet ? 18.sp : 20.sp,
                 fontWeight: FontWeight.bold,
@@ -76,6 +77,7 @@ class ReportsScreen extends StatelessWidget {
               context,
               theme,
               reportsProvider,
+              l10n,
               isTablet,
             ),
             
@@ -83,7 +85,7 @@ class ReportsScreen extends StatelessWidget {
 
             // ⚠️ STOCK BAJO
             Text(
-              '⚠️ Alertas de Stock',
+              '⚠️ ${l10n.stockAlerts}',
               style: TextStyle(
                 fontSize: isTablet ? 18.sp : 20.sp,
                 fontWeight: FontWeight.bold,
@@ -96,10 +98,10 @@ class ReportsScreen extends StatelessWidget {
               context,
               theme,
               reportsProvider,
+              l10n,
               isTablet,
             ),
             
-            // Espacio extra al final para scroll
             SizedBox(height: 20.h),
           ],
         ),
@@ -112,6 +114,7 @@ class ReportsScreen extends StatelessWidget {
     ThemeHelper theme,
     SettingsProvider settingsProvider,
     ReportsProvider reportsProvider,
+    AppLocalizations l10n,
     bool isTablet,
   ) {
     return GridView.count(
@@ -120,18 +123,18 @@ class ReportsScreen extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12.w,
       mainAxisSpacing: 12.h,
-      childAspectRatio: isTablet ? 1.6 : 1.3, // ✅ Ajustado para que no se corte
+      childAspectRatio: isTablet ? 1.6 : 1.3,
       children: [
         _buildSalesCard(
-          '📅 Hoy',
+          '📅 ${l10n.today}',
           settingsProvider.formatPrice(reportsProvider.getSalesToday()),
-          '${reportsProvider.getInvoicesToday()} facturas',
+          _getInvoicesCountText(l10n, reportsProvider.getInvoicesToday()),
           theme.success,
           theme,
           isTablet,
         ),
         _buildSalesCard(
-          '📆 Semana',
+          '📆 ${l10n.thisWeek}',
           settingsProvider.formatPrice(reportsProvider.getSalesThisWeek()),
           '',
           theme.primary,
@@ -139,7 +142,7 @@ class ReportsScreen extends StatelessWidget {
           isTablet,
         ),
         _buildSalesCard(
-          '📊 Mes',
+          '📊 ${l10n.thisMonth}',
           settingsProvider.formatPrice(reportsProvider.getSalesThisMonth()),
           '',
           const Color(0xFF9C27B0),
@@ -147,7 +150,7 @@ class ReportsScreen extends StatelessWidget {
           isTablet,
         ),
         _buildSalesCard(
-          '💎 Total',
+          '💎 ${l10n.allTime}',
           settingsProvider.formatPrice(reportsProvider.getTotalSales()),
           '',
           const Color(0xFFFF9800),
@@ -229,6 +232,7 @@ class ReportsScreen extends StatelessWidget {
     BuildContext context,
     ThemeHelper theme,
     ReportsProvider reportsProvider,
+    AppLocalizations l10n,
     bool isTablet,
   ) {
     final topProducts = reportsProvider.getTopProducts();
@@ -240,7 +244,7 @@ class ReportsScreen extends StatelessWidget {
           padding: EdgeInsets.all(24.w),
           child: Center(
             child: Text(
-              'No hay ventas registradas',
+              l10n.noSalesRecorded,
               style: TextStyle(
                 color: theme.textSecondary,
                 fontSize: 14.sp,
@@ -303,7 +307,7 @@ class ReportsScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 2.h),
                         Text(
-                          '${product['quantity']} unidades vendidas',
+                          _getUnitsSoldText(l10n, product['quantity']),
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: theme.textSecondary,
@@ -325,6 +329,7 @@ class ReportsScreen extends StatelessWidget {
     BuildContext context,
     ThemeHelper theme,
     ReportsProvider reportsProvider,
+    AppLocalizations l10n,
     bool isTablet,
   ) {
     final lowStock = reportsProvider.getLowStockProducts();
@@ -341,7 +346,7 @@ class ReportsScreen extends StatelessWidget {
                 Icon(Icons.check_circle, color: theme.success, size: 48.sp),
                 SizedBox(height: 8.h),
                 Text(
-                  '✅ Todo en orden',
+                  '✅ ${l10n.allGood}',
                   style: TextStyle(
                     color: theme.success,
                     fontSize: 16.sp,
@@ -350,7 +355,7 @@ class ReportsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  'No hay productos con stock bajo',
+                  l10n.noLowStockProducts,
                   style: TextStyle(
                     color: theme.textSecondary,
                     fontSize: 13.sp,
@@ -365,7 +370,6 @@ class ReportsScreen extends StatelessWidget {
 
     return Column(
       children: [
-        // SIN STOCK
         if (outOfStock.isNotEmpty) ...[
           Card(
             color: theme.error.withOpacity(0.1),
@@ -383,7 +387,7 @@ class ReportsScreen extends StatelessWidget {
                       Icon(Icons.error, color: theme.error, size: 20.sp),
                       SizedBox(width: 8.w),
                       Text(
-                        'Sin Stock (${outOfStock.length})',
+                        _getStockAlertText(l10n, outOfStock.length, true),
                         style: TextStyle(
                           fontSize: isTablet ? 15.sp : 16.sp,
                           fontWeight: FontWeight.bold,
@@ -420,7 +424,6 @@ class ReportsScreen extends StatelessWidget {
           SizedBox(height: 12.h),
         ],
 
-        // STOCK BAJO
         if (lowStock.isNotEmpty)
           Card(
             color: Colors.orange.withOpacity(0.1),
@@ -438,7 +441,7 @@ class ReportsScreen extends StatelessWidget {
                       Icon(Icons.warning, color: Colors.orange, size: 20.sp),
                       SizedBox(width: 8.w),
                       Text(
-                        'Stock Bajo (${lowStock.length})',
+                        _getStockAlertText(l10n, lowStock.length, false),
                         style: TextStyle(
                           fontSize: isTablet ? 15.sp : 16.sp,
                           fontWeight: FontWeight.bold,
@@ -493,13 +496,73 @@ class ReportsScreen extends StatelessWidget {
   Color _getPositionColor(int position) {
     switch (position) {
       case 1:
-        return const Color(0xFFFFD700); // Oro
+        return const Color(0xFFFFD700);
       case 2:
-        return const Color(0xFFC0C0C0); // Plata
+        return const Color(0xFFC0C0C0);
       case 3:
-        return const Color(0xFFCD7F32); // Bronce
+        return const Color(0xFFCD7F32);
       default:
         return Colors.blue;
+    }
+  }
+
+  String _getInvoicesCountText(AppLocalizations l10n, int count) {
+    switch (l10n.localeName) {
+      case 'es':
+        return '$count factura${count != 1 ? 's' : ''}';
+      case 'en':
+        return '$count invoice${count != 1 ? 's' : ''}';
+      case 'pt':
+        return '$count fatura${count != 1 ? 's' : ''}';
+      case 'zh':
+        return '$count 张发票';
+      default:
+        return '$count invoice(s)';
+    }
+  }
+
+  String _getUnitsSoldText(AppLocalizations l10n, int count) {
+    switch (l10n.localeName) {
+      case 'es':
+        return '$count unidad${count != 1 ? 'es' : ''} vendida${count != 1 ? 's' : ''}';
+      case 'en':
+        return '$count unit${count != 1 ? 's' : ''} sold';
+      case 'pt':
+        return '$count unidade${count != 1 ? 's' : ''} vendida${count != 1 ? 's' : ''}';
+      case 'zh':
+        return '已售出 $count 件';
+      default:
+        return '$count units sold';
+    }
+  }
+
+  String _getStockAlertText(AppLocalizations l10n, int count, bool isOutOfStock) {
+    if (isOutOfStock) {
+      switch (l10n.localeName) {
+        case 'es':
+          return 'Sin Stock ($count)';
+        case 'en':
+          return 'Out of Stock ($count)';
+        case 'pt':
+          return 'Sem Estoque ($count)';
+        case 'zh':
+          return '缺货 ($count)';
+        default:
+          return 'Out of Stock ($count)';
+      }
+    } else {
+      switch (l10n.localeName) {
+        case 'es':
+          return 'Stock Bajo ($count)';
+        case 'en':
+          return 'Low Stock ($count)';
+        case 'pt':
+          return 'Estoque Baixo ($count)';
+        case 'zh':
+          return '库存不足 ($count)';
+        default:
+          return 'Low Stock ($count)';
+      }
     }
   }
 }

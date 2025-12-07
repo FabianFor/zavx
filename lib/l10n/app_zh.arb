@@ -269,5 +269,104 @@
   "importError": "导入错误",
   "fileNotSelected": "未选择文件",
   "logout": "登出"
+  ,
+  "statistics": "统计",
+  "sales": "销售",
+  "today": "今天",
+  "thisWeek": "本周",
+  "thisMonth": "本月",
+  "allTime": "总计",
+  "invoicesCount": "{count} 张发票",
+  "@invoicesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "topProducts": "最畅销产品",
+  "unitsSold": "已售出 {count} 件",
+  "@unitsSold": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stockAlerts": "库存警报",
+  "allGood": "一切正常",
+  "noLowStockProducts": "没有低库存产品",
+  "outOfStock": "缺货 ({count})",
+  "@outOfStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lowStock": "库存不足 ({count})",
+  "@lowStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noSalesRecorded": "未记录销售",
+  "todayLabel": "今天",
+  "weekLabel": "周",
+  "monthLabel": "月",
+  "allLabel": "全部",
+  "customRange": "范围",
+  "selectRange": "选择范围",
+  "periodTotal": "期间总计：",
+  "noBilletsInPeriod": "此期间没有收据",
+  "billetCount": "{count} 张收据",
+  "@billetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+  ,
+  "filterToday": "今天",
+  "filterWeek": "周",
+  "filterMonth": "月",
+  "filterAll": "全部",
+  "filterRange": "范围",
+  "selectDateRange": "选择范围",
+  "todayDate": "今天 - {date}",
+  "@todayDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "thisWeekLabel": "本周",
+  "thisMonthDate": "本月 - {date}",
+  "@thisMonthDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "allDates": "所有日期",
+  "customRangeLabel": "自定义范围",
+  "dateRange": "{start} - {end}",
+  "@dateRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "clearAllFilters": "清除筛选",
+  "noBilletsInPeriodShort": "此期间没有收据"
 
 }
