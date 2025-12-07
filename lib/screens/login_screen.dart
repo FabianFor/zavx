@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../l10n/app_localizations.dart';
+import '../core/utils/theme_helper.dart'; // ✅ AGREGADO
 import 'dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -35,7 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     final authProvider = context.read<AuthProvider>();
-    // ✅ MÉTODO CORRECTO: loginAdmin
     final isValid = await authProvider.loginAdmin(password);
 
     setState(() => _isLoading = false);
@@ -55,7 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     final authProvider = context.read<AuthProvider>();
-    // ✅ MÉTODO CORRECTO: loginUsuario
     await authProvider.loginUsuario();
 
     setState(() => _isLoading = false);
@@ -81,8 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = ThemeHelper(context); // ✅ AGREGADO
     
-    // ✅ RESPONSIVE
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final isVerySmall = screenHeight < 700;
@@ -90,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final isTablet = screenWidth > 600;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1E3A5F),
+      backgroundColor: theme.scaffoldBackground, // ✅ CAMBIADO: era const Color(0xFF1E3A5F)
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -105,16 +104,16 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // ✅ LOGO RESPONSIVO
+                  // LOGO
                   Container(
                     width: isVerySmall ? 100.w : (isSmall ? 120.w : 140.w),
                     height: isVerySmall ? 100.w : (isSmall ? 120.w : 140.w),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: theme.cardBackground, // ✅ CAMBIADO: era Colors.white
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withOpacity(theme.isDark ? 0.4 : 0.2), // ✅ CAMBIADO
                           blurRadius: 20,
                           spreadRadius: 5,
                         ),
@@ -136,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                       fontSize: isVerySmall ? 28.sp : (isSmall ? 32.sp : 36.sp),
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: theme.textPrimary, // ✅ CAMBIADO: era Colors.white
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -147,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     l10n.businessManagementSystem,
                     style: TextStyle(
                       fontSize: isVerySmall ? 14.sp : (isSmall ? 16.sp : 18.sp),
-                      color: Colors.white.withOpacity(0.9),
+                      color: theme.textSecondary, // ✅ CAMBIADO: era Colors.white.withOpacity(0.9)
                     ),
                     textAlign: TextAlign.center,
                     maxLines: 2,
@@ -156,19 +155,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   SizedBox(height: isVerySmall ? 32.h : (isSmall ? 40.h : 48.h)),
 
-                  // ✅ TARJETA DE LOGIN RESPONSIVA
+                  // TARJETA DE LOGIN
                   Container(
                     padding: EdgeInsets.all(isVerySmall ? 20.w : (isSmall ? 24.w : 28.w)),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: theme.cardBackground, // ✅ CAMBIADO: era Colors.white
                       borderRadius: BorderRadius.circular(20.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
+                      boxShadow: theme.cardShadow, // ✅ CAMBIADO
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -179,36 +172,39 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                             fontSize: isVerySmall ? 18.sp : (isSmall ? 20.sp : 22.sp),
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFF1E3A5F),
+                            color: theme.primary, // ✅ CAMBIADO: era const Color(0xFF1E3A5F)
                           ),
                           textAlign: TextAlign.center,
+                          maxLines: 2, // ✅ AGREGADO
+                          overflow: TextOverflow.ellipsis, // ✅ AGREGADO
                         ),
 
                         SizedBox(height: isVerySmall ? 20.h : (isSmall ? 24.h : 28.h)),
 
-                        // ✅ CAMPO DE CONTRASEÑA RESPONSIVO
+                        // CAMPO DE CONTRASEÑA
                         TextField(
                           controller: _passwordController,
                           obscureText: _obscurePassword,
                           enabled: !_isLoading,
                           style: TextStyle(
                             fontSize: isVerySmall ? 14.sp : 16.sp,
-                            color: Colors.black87,
+                            color: theme.textPrimary, // ✅ CAMBIADO: era Colors.black87
                           ),
                           decoration: InputDecoration(
                             labelText: l10n.password,
                             labelStyle: TextStyle(
                               fontSize: isVerySmall ? 13.sp : 15.sp,
+                              color: theme.textSecondary, // ✅ AGREGADO
                             ),
                             prefixIcon: Icon(
                               Icons.lock,
-                              color: const Color(0xFF1E3A5F),
+                              color: theme.iconColor, // ✅ CAMBIADO: era const Color(0xFF1E3A5F)
                               size: isVerySmall ? 20.sp : 24.sp,
                             ),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                                color: Colors.grey,
+                                color: theme.iconColor, // ✅ CAMBIADO: era Colors.grey
                                 size: isVerySmall ? 20.sp : 24.sp,
                               ),
                               onPressed: () {
@@ -222,15 +218,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.r),
-                              borderSide: BorderSide(color: Colors.grey.shade300),
+                              borderSide: BorderSide(color: theme.borderColor), // ✅ CAMBIADO
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.r),
-                              borderSide: const BorderSide(
-                                color: Color(0xFF1E3A5F),
-                                width: 2,
-                              ),
+                              borderSide: BorderSide(color: theme.primary, width: 2), // ✅ CAMBIADO
                             ),
+                            filled: true, // ✅ AGREGADO
+                            fillColor: theme.inputFillColor, // ✅ AGREGADO
                             contentPadding: EdgeInsets.symmetric(
                               horizontal: 16.w,
                               vertical: isVerySmall ? 14.h : 16.h,
@@ -241,21 +236,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         SizedBox(height: isVerySmall ? 20.h : (isSmall ? 24.h : 28.h)),
 
-                        // ✅ BOTÓN LOGIN ADMIN RESPONSIVO
+                        // BOTÓN LOGIN ADMIN
                         SizedBox(
                           height: isVerySmall ? 50.h : (isSmall ? 54.h : 58.h),
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _loginAsAdmin,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1E3A5F),
+                              backgroundColor: theme.primary, // ✅ CAMBIADO: era const Color(0xFF1E3A5F)
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               elevation: 3,
                               padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 12.h,
+                                horizontal: 10.w, // ✅ REDUCIDO: era 16.w
+                                vertical: 0, // ✅ CAMBIADO: era 12.h
                               ),
                             ),
                             child: _isLoading
@@ -269,14 +264,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )
                                 : FittedBox(
                                     fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      l10n.loginButton,
-                                      style: TextStyle(
-                                        fontSize: isVerySmall ? 15.sp : (isSmall ? 16.sp : 18.sp),
-                                        fontWeight: FontWeight.bold,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 8.w), // ✅ AGREGADO
+                                      child: Text(
+                                        l10n.loginButton,
+                                        style: TextStyle(
+                                          fontSize: isVerySmall ? 14.sp : (isSmall ? 15.sp : 16.sp), // ✅ REDUCIDO
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center, // ✅ AGREGADO
+                                        maxLines: 1,
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                           ),
@@ -287,52 +285,52 @@ class _LoginScreenState extends State<LoginScreen> {
                         // DIVISOR
                         Row(
                           children: [
-                            Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+                            Expanded(child: Divider(color: theme.dividerColor, thickness: 1)), // ✅ CAMBIADO
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 12.w),
                               child: Text(
                                 'o',
                                 style: TextStyle(
                                   fontSize: isVerySmall ? 13.sp : 14.sp,
-                                  color: Colors.grey,
+                                  color: theme.textHint, // ✅ CAMBIADO: era Colors.grey
                                 ),
                               ),
                             ),
-                            Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+                            Expanded(child: Divider(color: theme.dividerColor, thickness: 1)), // ✅ CAMBIADO
                           ],
                         ),
 
                         SizedBox(height: isVerySmall ? 16.h : 20.h),
 
-                        // ✅ BOTÓN USUARIO RESPONSIVO
+                        // BOTÓN USUARIO
                         SizedBox(
                           height: isVerySmall ? 50.h : (isSmall ? 54.h : 58.h),
                           child: OutlinedButton(
                             onPressed: _isLoading ? null : _continueAsUser,
                             style: OutlinedButton.styleFrom(
-                              foregroundColor: const Color(0xFF1E3A5F),
-                              side: const BorderSide(
-                                color: Color(0xFF1E3A5F),
-                                width: 2,
-                              ),
+                              foregroundColor: theme.primary, // ✅ CAMBIADO: era const Color(0xFF1E3A5F)
+                              side: BorderSide(color: theme.primary, width: 2), // ✅ CAMBIADO
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 12.h,
+                                horizontal: 10.w, // ✅ REDUCIDO: era 16.w
+                                vertical: 0, // ✅ CAMBIADO: era 12.h
                               ),
                             ),
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: Text(
-                                l10n.continueAsUser,
-                                style: TextStyle(
-                                  fontSize: isVerySmall ? 15.sp : (isSmall ? 16.sp : 18.sp),
-                                  fontWeight: FontWeight.bold,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w), // ✅ AGREGADO
+                                child: Text(
+                                  l10n.continueAsUser,
+                                  style: TextStyle(
+                                    fontSize: isVerySmall ? 14.sp : (isSmall ? 15.sp : 16.sp), // ✅ REDUCIDO
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center, // ✅ AGREGADO
+                                  maxLines: 1,
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
@@ -350,11 +348,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       l10n.userOnlyMode,
                       style: TextStyle(
                         fontSize: isVerySmall ? 11.sp : 13.sp,
-                        color: Colors.white.withOpacity(0.85),
+                        color: theme.textSecondary, // ✅ CAMBIADO: era Colors.white.withOpacity(0.85)
                         fontStyle: FontStyle.italic,
                       ),
                       textAlign: TextAlign.center,
-                      maxLines: 2,
+                      maxLines: 3, // ✅ CAMBIADO: era 2
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
