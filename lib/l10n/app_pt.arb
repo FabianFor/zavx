@@ -3,7 +3,7 @@
   "dashboard": "Painel",
   "products": "Produtos",
   "orders": "Pedidos",
-  "invoices": "Faturas",
+  "invoices": "Recibos",
   "settings": "Configurações",
   "profile": "Perfil",
   "add": "Adicionar",
@@ -25,7 +25,7 @@
   "cannotUndo": "Esta ação não pode ser desfeita",
   "noProducts": "Sem produtos",
   "noOrders": "Sem pedidos",
-  "noInvoices": "Sem faturas",
+  "noInvoices": "Sem recibos",
   "language": "Idioma",
   "selectLanguage": "Selecionar idioma",
   "currency": "Moeda",
@@ -34,7 +34,7 @@
   "businessName": "Nome do Negócio",
   "address": "Endereço",
   "phone": "Telefone",
-  "email": "Email",
+  "email": "E-mail",
   "share": "Compartilhar",
   "download": "Baixar",
   "error": "Erro",
@@ -71,9 +71,9 @@
     }
   },
   "clear": "Limpar",
-  "orderCreatedSuccess": "Pedido e fatura criados com sucesso",
+  "orderCreatedSuccess": "Pedido e recibo criados com sucesso",
   "orderCreatedError": "Erro ao criar pedido",
-  "noProductsAvailable": "Sem produtos disponíveis",
+  "noProductsAvailable": "Nenhum produto disponível",
   "noProductsFound": "Nenhum produto encontrado",
   "productAddedSuccess": "Produto adicionado com sucesso",
   "productUpdatedSuccess": "Produto atualizado com sucesso",
@@ -87,7 +87,7 @@
   "lowStockProducts": "Produtos com estoque baixo",
   "tapToChangeLogo": "Toque para alterar o logo",
   "businessNameRequired": "O nome do negócio é obrigatório",
-  "invalidEmail": "Insira um email válido",
+  "invalidEmail": "Digite um e-mail válido",
   "profileUpdated": "Perfil atualizado com sucesso",
   "logoSelected": "Logo selecionado com sucesso",
   "needPermissions": "Você precisa conceder permissões para escolher uma imagem",
@@ -104,7 +104,7 @@
       }
     }
   },
-  "noInvoicesFound": "Nenhuma fatura encontrada",
+  "noInvoicesFound": "Nenhum recibo encontrado",
   "clearFilters": "Limpar filtros",
   "productsCount": "{count} produto(s)",
   "@productsCount": {
@@ -114,8 +114,8 @@
       }
     }
   },
-  "deleteInvoice": "Excluir fatura",
-  "deleteInvoiceConfirm": "Tem certeza de que deseja excluir a Fatura #{number}?\n\nEsta ação não pode ser desfeita.",
+  "deleteInvoice": "Excluir recibo",
+  "deleteInvoiceConfirm": "Tem certeza de que deseja excluir o Recibo #{number}?\n\nEsta ação não pode ser desfeita.",
   "@deleteInvoiceConfirm": {
     "placeholders": {
       "number": {
@@ -123,7 +123,7 @@
       }
     }
   },
-  "invoiceDeleted": "Fatura excluída",
+  "invoiceDeleted": "Recibo excluído",
   "needPermissionsToShare": "Permissões necessárias para compartilhar",
   "needPermissionsToDownload": "Permissões necessárias para baixar",
   "savedToGallery": "Salvo na galeria",
@@ -137,11 +137,11 @@
   "deleteProductConfirm": "Tem certeza de que deseja excluir este produto?",
   "productDeleted": "Produto excluído com sucesso",
   "permissionsNeeded": "Permissões necessárias",
-  "permissionsMessage": "Este aplicativo precisa de acesso às suas fotos para adicionar imagens aos produtos.\n\nVá para:\nConfigurações → Aplicativos → Proio → Permissões → Fotos e mídia",
+  "permissionsMessage": "Este aplicativo precisa de acesso às suas fotos para adicionar imagens aos produtos.\n\nVá para:\nConfigurações → Aplicativos → Proïon → Permissões → Fotos e mídia",
   "openSettings": "Abrir Configurações",
   "needPermissionToSelectImage": "Você precisa conceder permissão para selecionar imagens",
   "trySelectAnyway": "Tentar selecionar a imagem mesmo assim",
-  "invoiceNumber": "Fatura #{number}",
+  "invoiceNumber": "Recibo #{number}",
   "@invoiceNumber": {
     "placeholders": {
       "number": {
@@ -152,7 +152,7 @@
   "businessNameLabel": "Nome do negócio",
   "addressLabel": "Endereço",
   "phoneLabel": "Telefone",
-  "emailLabel": "Email",
+  "emailLabel": "E-mail",
   "productList": "Lista de produtos",
   "quantity": "Quantidade",
   "quantityShort": "Qtd.",
@@ -213,7 +213,7 @@
       }
     }
   },
-  "successOrderCreated": "✅ Pedido e fatura criados com sucesso",
+  "successOrderCreated": "✅ Pedido e recibo criados com sucesso",
   "errorOrderCreation": "❌ Erro ao criar pedido",
   "errorAddToOrder": "❌ Adicione pelo menos um produto ao pedido",
   "errorInsufficientStock": "❌ Estoque insuficiente para {product}",
@@ -227,10 +227,10 @@
   "totalLabel": "Total:",
   "minStockCharacters": "O estoque mínimo é 0",
   "maxStockValue": "O estoque máximo é 999999",
-  "validStockRequired": "Insira um estoque válido",
+  "validStockRequired": "Digite um estoque válido",
   "minPriceValue": "O preço mínimo é 0.01",
   "maxPriceValue": "O preço máximo é 99999999",
-  "validPriceRequired": "Insira um preço válido",
+  "validPriceRequired": "Digite um preço válido",
   "customerNameMinLength": "O nome deve ter pelo menos 2 caracteres",
   "customerNameMaxLength": "O nome é muito longo",
   "phoneNumberInvalid": "Número de telefone inválido",
@@ -255,7 +255,7 @@
   "password": "Senha",
   "verifying": "Verificando...",
   "defaultPassword": "Senha padrão: 1234",
-  "pleaseEnterPassword": "Por favor, insira a senha",
+  "pleaseEnterPassword": "Por favor, digite a senha",
   "incorrectPassword": "Senha incorreta",
   "loadingData": "Carregando dados...",
   "exportProducts": "Exportar Produtos",
@@ -274,7 +274,7 @@
   "thisWeek": "Esta semana",
   "thisMonth": "Este mês",
   "allTime": "Total",
-  "invoicesCount": "{count} faturas",
+  "invoicesCount": "{count} recibos",
   "@invoicesCount": {
     "placeholders": {
       "count": {
@@ -292,8 +292,8 @@
     }
   },
   "stockAlerts": "Alertas de Estoque",
-  "allGood": "Tudo certo",
-  "noLowStockProducts": "Sem produtos com estoque baixo",
+  "allGood": "Tudo em ordem",
+  "noLowStockProducts": "Nenhum produto com estoque baixo",
   "outOfStock": "Sem Estoque ({count})",
   "@outOfStock": {
     "placeholders": {
@@ -318,7 +318,7 @@
   "customRange": "Intervalo",
   "selectRange": "Selecionar intervalo",
   "periodTotal": "Total do período:",
-  "noBilletsInPeriod": "Sem recibos neste período",
+  "noBilletsInPeriod": "Nenhum recibo neste período",
   "billetCount": "{count} recibo(s)",
   "@billetCount": {
     "placeholders": {
@@ -364,8 +364,8 @@
     }
   },
   "clearAllFilters": "Limpar filtros",
-  "noBilletsInPeriodShort": "Sem recibos neste período",
-  "getStarted": "Vamos começar!",
+  "noBilletsInPeriodShort": "Nenhum recibo neste período",
+  "getStarted": "Vamos Começar!",
   "setupYourBusiness": "Configure seu negócio para começar",
   "businessSetup": "Configuração Inicial",
   "step": "Passo",
@@ -377,8 +377,8 @@
   "tapToAddLogo": "Toque para adicionar logo",
   "contactInfo": "Informações de Contato",
   "phoneNumber": "Telefone",
-  "phoneHint": "Ex: +55 11 98765 4321",
-  "emailAddress": "Email",
+  "phoneHint": "Ex: +55 11 98765-4321",
+  "emailAddress": "E-mail",
   "emailHint": "exemplo@email.com",
   "optionalField": "(Opcional)",
   "preferences": "Preferências",
@@ -389,21 +389,21 @@
   "chinese": "中文",
   "selectYourCurrency": "Moeda",
   "security": "Segurança",
-  "createAdminPassword": "Crie uma senha de administrador",
+  "createAdminPassword": "Criar senha de administrador",
   "passwordHint": "Mínimo 6 caracteres",
   "confirmPassword": "Confirmar senha",
   "confirmPasswordHint": "Repita a senha",
   "passwordMismatch": "As senhas não coincidem",
   "passwordTooShort": "Mínimo 6 caracteres",
   "adminPasswordInfo": "Proteja as funções de administrador",
-  "finish": "Finalizar",
+  "finish": "Concluir",
   "skip": "Pular",
   "next": "Próximo",
   "previous": "Anterior",
-  "allSet": "Tudo pronto!",
+  "allSet": "Tudo Pronto!",
   "readyToStart": "Seu negócio está pronto para começar",
-  "startNow": "Começar agora",
-  "proioApp": "Proio",
+  "startNow": "Começar Agora",
+  "proioApp": "Proïon",
   "businessManagementSystem": "Sistema de Gestão",
   "loginAsAdministrator": "Entrar como Administrador",
   "enterPassword": "Senha",
@@ -412,12 +412,12 @@
   "userOnlyMode": "Usuário: Apenas visualização e criação de pedidos",
   "adminAccessRequired": "Acesso de Administrador",
   "adminLoginRequired": "Você precisa fazer login como administrador",
-  "tryAgain": "Tentar novamente",
+  "tryAgain": "Tentar Novamente",
   "completeAllFields": "Por favor, preencha todos os campos",
   "passwordMinLength": "A senha deve ter pelo menos 4 caracteres",
   "passwordsDoNotMatch": "As senhas não coincidem",
   "passwordConfiguredSuccessfully": "Senha configurada com sucesso",
-  "errorConfiguringPassword": "Erro ao configurar a senha",
+  "errorConfiguringPassword": "Erro ao configurar senha",
   "initialSetup": "Configuração Inicial",
   "configureAdminPassword": "Configure sua senha de administrador",
   "firstTimeMessage": "Esta é a primeira vez que você usa o aplicativo. Por favor, configure uma senha segura.",
@@ -427,6 +427,6 @@
   "repeatPassword": "Repita a senha",
   "configureAndContinue": "Configurar e Continuar",
   "savePasswordSecurely": "🔒 Guarde esta senha em um lugar seguro",
-  "loading": "Carregando..."
-
+  "loading": "Carregando...",
+  "legalDisclaimer": "⚠️ Este recibo é apenas para controle interno. Não constitui um comprovante fiscal válido."
 }

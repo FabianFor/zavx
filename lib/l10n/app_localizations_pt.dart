@@ -18,7 +18,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get orders => 'Pedidos';
 
   @override
-  String get invoices => 'Faturas';
+  String get invoices => 'Recibos';
 
   @override
   String get settings => 'Configurações';
@@ -84,7 +84,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noOrders => 'Sem pedidos';
 
   @override
-  String get noInvoices => 'Sem faturas';
+  String get noInvoices => 'Sem recibos';
 
   @override
   String get language => 'Idioma';
@@ -111,7 +111,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get phone => 'Telefone';
 
   @override
-  String get email => 'Email';
+  String get email => 'E-mail';
 
   @override
   String get share => 'Compartilhar';
@@ -203,13 +203,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get clear => 'Limpar';
 
   @override
-  String get orderCreatedSuccess => 'Pedido e fatura criados com sucesso';
+  String get orderCreatedSuccess => 'Pedido e recibo criados com sucesso';
 
   @override
   String get orderCreatedError => 'Erro ao criar pedido';
 
   @override
-  String get noProductsAvailable => 'Sem produtos disponíveis';
+  String get noProductsAvailable => 'Nenhum produto disponível';
 
   @override
   String get noProductsFound => 'Nenhum produto encontrado';
@@ -251,7 +251,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get businessNameRequired => 'O nome do negócio é obrigatório';
 
   @override
-  String get invalidEmail => 'Insira um email válido';
+  String get invalidEmail => 'Digite um e-mail válido';
 
   @override
   String get profileUpdated => 'Perfil atualizado com sucesso';
@@ -284,7 +284,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get noInvoicesFound => 'Nenhuma fatura encontrada';
+  String get noInvoicesFound => 'Nenhum recibo encontrado';
 
   @override
   String get clearFilters => 'Limpar filtros';
@@ -295,15 +295,15 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get deleteInvoice => 'Excluir fatura';
+  String get deleteInvoice => 'Excluir recibo';
 
   @override
   String deleteInvoiceConfirm(int number) {
-    return 'Tem certeza de que deseja excluir a Fatura #$number?\n\nEsta ação não pode ser desfeita.';
+    return 'Tem certeza de que deseja excluir o Recibo #$number?\n\nEsta ação não pode ser desfeita.';
   }
 
   @override
-  String get invoiceDeleted => 'Fatura excluída';
+  String get invoiceDeleted => 'Recibo excluído';
 
   @override
   String get needPermissionsToShare =>
@@ -348,7 +348,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get permissionsMessage =>
-      'Este aplicativo precisa de acesso às suas fotos para adicionar imagens aos produtos.\n\nVá para:\nConfigurações → Aplicativos → Proio → Permissões → Fotos e mídia';
+      'Este aplicativo precisa de acesso às suas fotos para adicionar imagens aos produtos.\n\nVá para:\nConfigurações → Aplicativos → Proïon → Permissões → Fotos e mídia';
 
   @override
   String get openSettings => 'Abrir Configurações';
@@ -362,7 +362,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String invoiceNumber(int number) {
-    return 'Fatura #$number';
+    return 'Recibo #$number';
   }
 
   @override
@@ -375,7 +375,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get phoneLabel => 'Telefone';
 
   @override
-  String get emailLabel => 'Email';
+  String get emailLabel => 'E-mail';
 
   @override
   String get productList => 'Lista de produtos';
@@ -465,7 +465,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get successOrderCreated => '✅ Pedido e fatura criados com sucesso';
+  String get successOrderCreated => '✅ Pedido e recibo criados com sucesso';
 
   @override
   String get errorOrderCreation => '❌ Erro ao criar pedido';
@@ -488,7 +488,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get maxStockValue => 'O estoque máximo é 999999';
 
   @override
-  String get validStockRequired => 'Insira um estoque válido';
+  String get validStockRequired => 'Digite um estoque válido';
 
   @override
   String get minPriceValue => 'O preço mínimo é 0.01';
@@ -497,7 +497,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get maxPriceValue => 'O preço máximo é 99999999';
 
   @override
-  String get validPriceRequired => 'Insira um preço válido';
+  String get validPriceRequired => 'Digite um preço válido';
 
   @override
   String get customerNameMinLength => 'O nome deve ter pelo menos 2 caracteres';
@@ -545,7 +545,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get defaultPassword => 'Senha padrão: 1234';
 
   @override
-  String get pleaseEnterPassword => 'Por favor, insira a senha';
+  String get pleaseEnterPassword => 'Por favor, digite a senha';
 
   @override
   String get incorrectPassword => 'Senha incorreta';
@@ -603,7 +603,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String invoicesCount(int count) {
-    return '$count faturas';
+    return '$count recibos';
   }
 
   @override
@@ -618,10 +618,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get stockAlerts => 'Alertas de Estoque';
 
   @override
-  String get allGood => 'Tudo certo';
+  String get allGood => 'Tudo em ordem';
 
   @override
-  String get noLowStockProducts => 'Sem produtos com estoque baixo';
+  String get noLowStockProducts => 'Nenhum produto com estoque baixo';
 
   @override
   String outOfStock(int count) {
@@ -658,7 +658,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get periodTotal => 'Total do período:';
 
   @override
-  String get noBilletsInPeriod => 'Sem recibos neste período';
+  String get noBilletsInPeriod => 'Nenhum recibo neste período';
 
   @override
   String billetCount(int count) {
@@ -711,10 +711,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get clearAllFilters => 'Limpar filtros';
 
   @override
-  String get noBilletsInPeriodShort => 'Sem recibos neste período';
+  String get noBilletsInPeriodShort => 'Nenhum recibo neste período';
 
   @override
-  String get getStarted => 'Vamos começar!';
+  String get getStarted => 'Vamos Começar!';
 
   @override
   String get setupYourBusiness => 'Configure seu negócio para começar';
@@ -750,10 +750,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get phoneNumber => 'Telefone';
 
   @override
-  String get phoneHint => 'Ex: +55 11 98765 4321';
+  String get phoneHint => 'Ex: +55 11 98765-4321';
 
   @override
-  String get emailAddress => 'Email';
+  String get emailAddress => 'E-mail';
 
   @override
   String get emailHint => 'exemplo@email.com';
@@ -786,7 +786,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get security => 'Segurança';
 
   @override
-  String get createAdminPassword => 'Crie uma senha de administrador';
+  String get createAdminPassword => 'Criar senha de administrador';
 
   @override
   String get passwordHint => 'Mínimo 6 caracteres';
@@ -807,7 +807,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get adminPasswordInfo => 'Proteja as funções de administrador';
 
   @override
-  String get finish => 'Finalizar';
+  String get finish => 'Concluir';
 
   @override
   String get skip => 'Pular';
@@ -819,16 +819,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get previous => 'Anterior';
 
   @override
-  String get allSet => 'Tudo pronto!';
+  String get allSet => 'Tudo Pronto!';
 
   @override
   String get readyToStart => 'Seu negócio está pronto para começar';
 
   @override
-  String get startNow => 'Começar agora';
+  String get startNow => 'Começar Agora';
 
   @override
-  String get proioApp => 'Proio';
+  String get proioApp => 'Proïon';
 
   @override
   String get businessManagementSystem => 'Sistema de Gestão';
@@ -857,7 +857,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Você precisa fazer login como administrador';
 
   @override
-  String get tryAgain => 'Tentar novamente';
+  String get tryAgain => 'Tentar Novamente';
 
   @override
   String get completeAllFields => 'Por favor, preencha todos os campos';
@@ -872,7 +872,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get passwordConfiguredSuccessfully => 'Senha configurada com sucesso';
 
   @override
-  String get errorConfiguringPassword => 'Erro ao configurar a senha';
+  String get errorConfiguringPassword => 'Erro ao configurar senha';
 
   @override
   String get initialSetup => 'Configuração Inicial';
@@ -904,4 +904,8 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get loading => 'Carregando...';
+
+  @override
+  String get legalDisclaimer =>
+      '⚠️ Este recibo é apenas para controle interno. Não constitui um comprovante fiscal válido.';
 }

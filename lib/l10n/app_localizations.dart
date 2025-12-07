@@ -123,7 +123,7 @@ abstract class AppLocalizations {
   /// No description provided for @invoices.
   ///
   /// In es, this message translates to:
-  /// **'Facturas'**
+  /// **'Recibos'**
   String get invoices;
 
   /// No description provided for @settings.
@@ -255,7 +255,7 @@ abstract class AppLocalizations {
   /// No description provided for @noInvoices.
   ///
   /// In es, this message translates to:
-  /// **'No hay facturas'**
+  /// **'No hay recibos'**
   String get noInvoices;
 
   /// No description provided for @language.
@@ -489,7 +489,7 @@ abstract class AppLocalizations {
   /// No description provided for @orderCreatedSuccess.
   ///
   /// In es, this message translates to:
-  /// **'Pedido y factura creados exitosamente'**
+  /// **'Pedido y recibo creados exitosamente'**
   String get orderCreatedSuccess;
 
   /// No description provided for @orderCreatedError.
@@ -645,7 +645,7 @@ abstract class AppLocalizations {
   /// No description provided for @noInvoicesFound.
   ///
   /// In es, this message translates to:
-  /// **'No se encontraron facturas'**
+  /// **'No se encontraron recibos'**
   String get noInvoicesFound;
 
   /// No description provided for @clearFilters.
@@ -663,19 +663,19 @@ abstract class AppLocalizations {
   /// No description provided for @deleteInvoice.
   ///
   /// In es, this message translates to:
-  /// **'Eliminar factura'**
+  /// **'Eliminar recibo'**
   String get deleteInvoice;
 
   /// No description provided for @deleteInvoiceConfirm.
   ///
   /// In es, this message translates to:
-  /// **'¿Estás seguro de eliminar la Factura #{number}?\n\nEsta acción no se puede deshacer.'**
+  /// **'¿Estás seguro de eliminar el Recibo #{number}?\n\nEsta acción no se puede deshacer.'**
   String deleteInvoiceConfirm(int number);
 
   /// No description provided for @invoiceDeleted.
   ///
   /// In es, this message translates to:
-  /// **'Factura eliminada'**
+  /// **'Recibo eliminado'**
   String get invoiceDeleted;
 
   /// No description provided for @needPermissionsToShare.
@@ -759,7 +759,7 @@ abstract class AppLocalizations {
   /// No description provided for @permissionsMessage.
   ///
   /// In es, this message translates to:
-  /// **'Esta aplicación necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Aplicaciones → Proio → Permisos → Fotos y multimedia'**
+  /// **'Esta aplicación necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Aplicaciones → Proïon → Permisos → Fotos y multimedia'**
   String get permissionsMessage;
 
   /// No description provided for @openSettings.
@@ -783,7 +783,7 @@ abstract class AppLocalizations {
   /// No description provided for @invoiceNumber.
   ///
   /// In es, this message translates to:
-  /// **'Factura #{number}'**
+  /// **'Recibo #{number}'**
   String invoiceNumber(int number);
 
   /// No description provided for @businessNameLabel.
@@ -843,13 +843,13 @@ abstract class AppLocalizations {
   /// No description provided for @receipt.
   ///
   /// In es, this message translates to:
-  /// **'Boleta'**
+  /// **'Recibo'**
   String get receipt;
 
   /// No description provided for @receiptNumber.
   ///
   /// In es, this message translates to:
-  /// **'Boleta #{number}'**
+  /// **'Recibo #{number}'**
   String receiptNumber(int number);
 
   /// No description provided for @productsSuffix.
@@ -867,19 +867,19 @@ abstract class AppLocalizations {
   /// No description provided for @deleteReceipt.
   ///
   /// In es, this message translates to:
-  /// **'Eliminar boleta'**
+  /// **'Eliminar recibo'**
   String get deleteReceipt;
 
   /// No description provided for @deleteReceiptConfirm.
   ///
   /// In es, this message translates to:
-  /// **'¿Estás seguro de eliminar la Boleta #{number}?\n\nEsta acción no se puede deshacer.'**
+  /// **'¿Estás seguro de eliminar el Recibo #{number}?\n\nEsta acción no se puede deshacer.'**
   String deleteReceiptConfirm(int number);
 
   /// No description provided for @receiptDeleted.
   ///
   /// In es, this message translates to:
-  /// **'Boleta eliminada'**
+  /// **'Recibo eliminado'**
   String get receiptDeleted;
 
   /// No description provided for @warningNeedPermissionsToShare.
@@ -915,7 +915,7 @@ abstract class AppLocalizations {
   /// No description provided for @noReceiptsFound.
   ///
   /// In es, this message translates to:
-  /// **'No se encontraron boletas'**
+  /// **'No se encontraron recibos'**
   String get noReceiptsFound;
 
   /// No description provided for @productsCountLabel.
@@ -963,7 +963,7 @@ abstract class AppLocalizations {
   /// No description provided for @successOrderCreated.
   ///
   /// In es, this message translates to:
-  /// **'✅ Pedido y factura creados exitosamente'**
+  /// **'✅ Pedido y recibo creados exitosamente'**
   String get successOrderCreated;
 
   /// No description provided for @errorOrderCreation.
@@ -1233,7 +1233,7 @@ abstract class AppLocalizations {
   /// No description provided for @invoicesCount.
   ///
   /// In es, this message translates to:
-  /// **'{count} facturas'**
+  /// **'{count} recibos'**
   String invoicesCount(int count);
 
   /// No description provided for @topProducts.
@@ -1329,13 +1329,13 @@ abstract class AppLocalizations {
   /// No description provided for @noBilletsInPeriod.
   ///
   /// In es, this message translates to:
-  /// **'No hay boletas en este período'**
+  /// **'No hay recibos en este período'**
   String get noBilletsInPeriod;
 
   /// No description provided for @billetCount.
   ///
   /// In es, this message translates to:
-  /// **'{count} boleta(s)'**
+  /// **'{count} recibo(s)'**
   String billetCount(int count);
 
   /// No description provided for @filterToday.
@@ -1419,7 +1419,7 @@ abstract class AppLocalizations {
   /// No description provided for @noBilletsInPeriodShort.
   ///
   /// In es, this message translates to:
-  /// **'No hay boletas en este período'**
+  /// **'No hay recibos en este período'**
   String get noBilletsInPeriodShort;
 
   /// No description provided for @getStarted.
@@ -1653,7 +1653,7 @@ abstract class AppLocalizations {
   /// No description provided for @proioApp.
   ///
   /// In es, this message translates to:
-  /// **'Proio'**
+  /// **'Proïon'**
   String get proioApp;
 
   /// No description provided for @businessManagementSystem.
@@ -1799,6 +1799,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cargando...'**
   String get loading;
+
+  /// No description provided for @legalDisclaimer.
+  ///
+  /// In es, this message translates to:
+  /// **'⚠️ Este recibo es solo para control interno. No constituye un comprobante de pago válido ante autoridades fiscales.'**
+  String get legalDisclaimer;
 }
 
 class _AppLocalizationsDelegate

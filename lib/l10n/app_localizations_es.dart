@@ -18,7 +18,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get orders => 'Pedidos';
 
   @override
-  String get invoices => 'Facturas';
+  String get invoices => 'Recibos';
 
   @override
   String get settings => 'Configuración';
@@ -84,7 +84,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noOrders => 'No hay pedidos';
 
   @override
-  String get noInvoices => 'No hay facturas';
+  String get noInvoices => 'No hay recibos';
 
   @override
   String get language => 'Idioma';
@@ -203,7 +203,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get clear => 'Limpiar';
 
   @override
-  String get orderCreatedSuccess => 'Pedido y factura creados exitosamente';
+  String get orderCreatedSuccess => 'Pedido y recibo creados exitosamente';
 
   @override
   String get orderCreatedError => 'Error al crear el pedido';
@@ -284,7 +284,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get noInvoicesFound => 'No se encontraron facturas';
+  String get noInvoicesFound => 'No se encontraron recibos';
 
   @override
   String get clearFilters => 'Limpiar filtros';
@@ -295,15 +295,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get deleteInvoice => 'Eliminar factura';
+  String get deleteInvoice => 'Eliminar recibo';
 
   @override
   String deleteInvoiceConfirm(int number) {
-    return '¿Estás seguro de eliminar la Factura #$number?\n\nEsta acción no se puede deshacer.';
+    return '¿Estás seguro de eliminar el Recibo #$number?\n\nEsta acción no se puede deshacer.';
   }
 
   @override
-  String get invoiceDeleted => 'Factura eliminada';
+  String get invoiceDeleted => 'Recibo eliminado';
 
   @override
   String get needPermissionsToShare => 'Permisos necesarios para compartir';
@@ -346,7 +346,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get permissionsMessage =>
-      'Esta aplicación necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Aplicaciones → Proio → Permisos → Fotos y multimedia';
+      'Esta aplicación necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Aplicaciones → Proïon → Permisos → Fotos y multimedia';
 
   @override
   String get openSettings => 'Abrir Configuración';
@@ -360,7 +360,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String invoiceNumber(int number) {
-    return 'Factura #$number';
+    return 'Recibo #$number';
   }
 
   @override
@@ -391,11 +391,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get totalPrice => 'Total';
 
   @override
-  String get receipt => 'Boleta';
+  String get receipt => 'Recibo';
 
   @override
   String receiptNumber(int number) {
-    return 'Boleta #$number';
+    return 'Recibo #$number';
   }
 
   @override
@@ -405,15 +405,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get totalSuffix => 'Total:';
 
   @override
-  String get deleteReceipt => 'Eliminar boleta';
+  String get deleteReceipt => 'Eliminar recibo';
 
   @override
   String deleteReceiptConfirm(int number) {
-    return '¿Estás seguro de eliminar la Boleta #$number?\n\nEsta acción no se puede deshacer.';
+    return '¿Estás seguro de eliminar el Recibo #$number?\n\nEsta acción no se puede deshacer.';
   }
 
   @override
-  String get receiptDeleted => 'Boleta eliminada';
+  String get receiptDeleted => 'Recibo eliminado';
 
   @override
   String get warningNeedPermissionsToShare =>
@@ -435,7 +435,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get noReceiptsFound => 'No se encontraron boletas';
+  String get noReceiptsFound => 'No se encontraron recibos';
 
   @override
   String productsCountLabel(int count) {
@@ -463,7 +463,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get successOrderCreated => '✅ Pedido y factura creados exitosamente';
+  String get successOrderCreated => '✅ Pedido y recibo creados exitosamente';
 
   @override
   String get errorOrderCreation => '❌ Error al crear el pedido';
@@ -602,7 +602,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String invoicesCount(int count) {
-    return '$count facturas';
+    return '$count recibos';
   }
 
   @override
@@ -657,11 +657,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get periodTotal => 'Total del período:';
 
   @override
-  String get noBilletsInPeriod => 'No hay boletas en este período';
+  String get noBilletsInPeriod => 'No hay recibos en este período';
 
   @override
   String billetCount(int count) {
-    return '$count boleta(s)';
+    return '$count recibo(s)';
   }
 
   @override
@@ -710,7 +710,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get clearAllFilters => 'Limpiar filtros';
 
   @override
-  String get noBilletsInPeriodShort => 'No hay boletas en este período';
+  String get noBilletsInPeriodShort => 'No hay recibos en este período';
 
   @override
   String get getStarted => '¡Comencemos!';
@@ -827,7 +827,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get startNow => 'Empezar ahora';
 
   @override
-  String get proioApp => 'Proio';
+  String get proioApp => 'Proïon';
 
   @override
   String get businessManagementSystem => 'Sistema de Gestión';
@@ -907,4 +907,8 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get loading => 'Cargando...';
+
+  @override
+  String get legalDisclaimer =>
+      '⚠️ Este recibo es solo para control interno. No constituye un comprobante de pago válido ante autoridades fiscales.';
 }

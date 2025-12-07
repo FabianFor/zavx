@@ -18,13 +18,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get orders => '订单';
 
   @override
-  String get invoices => '发票';
+  String get invoices => '收据';
 
   @override
   String get settings => '设置';
 
   @override
-  String get profile => '档案';
+  String get profile => '个人资料';
 
   @override
   String get add => '添加';
@@ -57,7 +57,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get category => '类别';
 
   @override
-  String get food => '食品';
+  String get food => '食物';
 
   @override
   String get drinks => '饮料';
@@ -84,7 +84,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noOrders => '没有订单';
 
   @override
-  String get noInvoices => '没有发票';
+  String get noInvoices => '没有收据';
 
   @override
   String get language => '语言';
@@ -99,10 +99,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get selectCurrency => '选择货币';
 
   @override
-  String get businessProfile => '商业资料';
+  String get businessProfile => '业务资料';
 
   @override
-  String get businessName => '商家名称';
+  String get businessName => '公司名称';
 
   @override
   String get address => '地址';
@@ -156,10 +156,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get searchByCustomer => '按客户或编号搜索...';
 
   @override
-  String get customerName => '客户姓名';
+  String get customerName => '客户名称';
 
   @override
-  String get customerNameRequired => '客户姓名 *';
+  String get customerNameRequired => '客户名称 *';
 
   @override
   String get phoneOptional => '电话（可选）';
@@ -174,7 +174,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get editProduct => '编辑产品';
 
   @override
-  String get minCharacters => '最少2个字符';
+  String get minCharacters => '至少2个字符';
 
   @override
   String get priceRequired => '价格为必填项';
@@ -189,7 +189,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get invalidStock => '库存无效';
 
   @override
-  String get addToOrder => '至少在订单中添加一个产品';
+  String get addToOrder => '至少添加一个产品到订单';
 
   @override
   String get insufficientStock => '库存不足';
@@ -203,25 +203,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get clear => '清除';
 
   @override
-  String get orderCreatedSuccess => '订单和发票已成功创建';
+  String get orderCreatedSuccess => '订单和收据创建成功';
 
   @override
   String get orderCreatedError => '创建订单时出错';
 
   @override
-  String get noProductsAvailable => '没有可用产品';
+  String get noProductsAvailable => '没有可用的产品';
 
   @override
   String get noProductsFound => '未找到产品';
 
   @override
-  String get productAddedSuccess => '产品已成功添加';
+  String get productAddedSuccess => '产品添加成功';
 
   @override
-  String get productUpdatedSuccess => '产品已成功更新';
+  String get productUpdatedSuccess => '产品更新成功';
 
   @override
-  String get imageSelectedSuccess => '图片已成功选择';
+  String get imageSelectedSuccess => '图片选择成功';
 
   @override
   String get retry => '重试';
@@ -242,25 +242,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get quickAccess => '快速访问';
 
   @override
-  String get lowStockProducts => '库存不足的产品';
+  String get lowStockProducts => '低库存产品';
 
   @override
   String get tapToChangeLogo => '点击更改徽标';
 
   @override
-  String get businessNameRequired => '商家名称为必填项';
+  String get businessNameRequired => '公司名称为必填项';
 
   @override
   String get invalidEmail => '请输入有效的电子邮件';
 
   @override
-  String get profileUpdated => '资料已成功更新';
+  String get profileUpdated => '个人资料更新成功';
 
   @override
-  String get logoSelected => '徽标已成功选择';
+  String get logoSelected => '徽标选择成功';
 
   @override
-  String get needPermissions => '您需要授予权限以选择图片';
+  String get needPermissions => '您需要授予权限才能选择图片';
 
   @override
   String get imageSelectionError => '选择图片时出错';
@@ -269,40 +269,40 @@ class AppLocalizationsZh extends AppLocalizations {
   String get darkModeSubtitle => '激活深色主题';
 
   @override
-  String get businessProfileSubtitle => '编辑您的商业信息';
+  String get businessProfileSubtitle => '编辑您的业务信息';
 
   @override
   String get version => '版本';
 
   @override
-  String get filterByDate => '按日期过滤';
+  String get filterByDate => '按日期筛选';
 
   @override
   String results(int count) {
-    return '$count 个结果';
+    return '$count个结果';
   }
 
   @override
-  String get noInvoicesFound => '未找到发票';
+  String get noInvoicesFound => '未找到收据';
 
   @override
-  String get clearFilters => '清除过滤器';
+  String get clearFilters => '清除筛选';
 
   @override
   String productsCount(int count) {
-    return '$count 个产品';
+    return '$count个产品';
   }
 
   @override
-  String get deleteInvoice => '删除发票';
+  String get deleteInvoice => '删除收据';
 
   @override
   String deleteInvoiceConfirm(int number) {
-    return '您确定要删除发票 #$number 吗？\n\n此操作无法撤消。';
+    return '您确定要删除收据#$number吗？\n\n此操作无法撤消。';
   }
 
   @override
-  String get invoiceDeleted => '发票已删除';
+  String get invoiceDeleted => '收据已删除';
 
   @override
   String get needPermissionsToShare => '需要权限才能分享';
@@ -317,10 +317,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get customerData => '客户数据';
 
   @override
-  String get nameField => '姓名 *';
+  String get nameField => '名称 *';
 
   @override
-  String get nameRequiredField => '姓名为必填项';
+  String get nameRequiredField => '名称为必填项';
 
   @override
   String get phoneField => '电话（可选）';
@@ -338,31 +338,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get deleteProductConfirm => '您确定要删除此产品吗？';
 
   @override
-  String get productDeleted => '产品已成功删除';
+  String get productDeleted => '产品删除成功';
 
   @override
   String get permissionsNeeded => '需要权限';
 
   @override
   String get permissionsMessage =>
-      '此应用需要访问您的照片以将图片添加到产品中。\n\n前往：\n设置 → 应用 → Proio → 权限 → 照片和媒体';
+      '此应用需要访问您的照片以向产品添加图片。\n\n请前往：\n设置 → 应用 → Proïon → 权限 → 照片和媒体';
 
   @override
   String get openSettings => '打开设置';
 
   @override
-  String get needPermissionToSelectImage => '您需要授予选择图片的权限';
+  String get needPermissionToSelectImage => '您需要授予权限才能选择图片';
 
   @override
   String get trySelectAnyway => '仍然尝试选择图片';
 
   @override
   String invoiceNumber(int number) {
-    return '发票 #$number';
+    return '收据#$number';
   }
 
   @override
-  String get businessNameLabel => '商家名称';
+  String get businessNameLabel => '公司名称';
 
   @override
   String get addressLabel => '地址';
@@ -393,7 +393,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String receiptNumber(int number) {
-    return '收据 #$number';
+    return '收据#$number';
   }
 
   @override
@@ -407,7 +407,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String deleteReceiptConfirm(int number) {
-    return '您确定要删除收据 #$number 吗？\n\n此操作无法撤消。';
+    return '您确定要删除收据#$number吗？\n\n此操作无法撤消。';
   }
 
   @override
@@ -427,7 +427,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String resultsCount(int count) {
-    return '$count 个结果';
+    return '$count个结果';
   }
 
   @override
@@ -435,23 +435,23 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String productsCountLabel(int count) {
-    return '$count 个产品';
+    return '$count个产品';
   }
 
   @override
   String get warningPermissionsDenied => '⚠️ 权限被拒绝';
 
   @override
-  String get successImageSelected => '✅ 图片已成功选择';
+  String get successImageSelected => '✅ 图片选择成功';
 
   @override
   String get errorOccurred => '❌ 错误';
 
   @override
-  String get successProductAdded => '✅ 产品已成功添加';
+  String get successProductAdded => '✅ 产品添加成功';
 
   @override
-  String get successProductUpdated => '✅ 产品已成功更新';
+  String get successProductUpdated => '✅ 产品更新成功';
 
   @override
   String errorWithMessage(String message) {
@@ -459,17 +459,17 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get successOrderCreated => '✅ 订单和发票已成功创建';
+  String get successOrderCreated => '✅ 订单和收据创建成功';
 
   @override
   String get errorOrderCreation => '❌ 创建订单时出错';
 
   @override
-  String get errorAddToOrder => '❌ 至少在订单中添加一个产品';
+  String get errorAddToOrder => '❌ 至少添加一个产品到订单';
 
   @override
   String errorInsufficientStock(String product) {
-    return '❌ $product 库存不足';
+    return '❌ $product库存不足';
   }
 
   @override
@@ -494,16 +494,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get validPriceRequired => '请输入有效价格';
 
   @override
-  String get customerNameMinLength => '姓名至少需要2个字符';
+  String get customerNameMinLength => '名称至少需要2个字符';
 
   @override
-  String get customerNameMaxLength => '姓名太长';
+  String get customerNameMaxLength => '名称太长';
 
   @override
   String get phoneNumberInvalid => '电话号码无效';
 
   @override
-  String get phoneMinLength => '电话号码至少需要7位数字';
+  String get phoneMinLength => '电话至少需要7位数字';
 
   @override
   String get downloadFormat => '下载格式';
@@ -533,7 +533,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get password => '密码';
 
   @override
-  String get verifying => '验证中...';
+  String get verifying => '正在验证...';
 
   @override
   String get defaultPassword => '默认密码：1234';
@@ -545,7 +545,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get incorrectPassword => '密码错误';
 
   @override
-  String get loadingData => '加载数据中...';
+  String get loadingData => '正在加载数据...';
 
   @override
   String get exportProducts => '导出产品';
@@ -575,7 +575,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fileNotSelected => '未选择文件';
 
   @override
-  String get logout => '登出';
+  String get logout => '退出';
 
   @override
   String get statistics => '统计';
@@ -593,11 +593,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get thisMonth => '本月';
 
   @override
-  String get allTime => '总计';
+  String get allTime => '全部';
 
   @override
   String invoicesCount(int count) {
-    return '$count 张发票';
+    return '$count个收据';
   }
 
   @override
@@ -605,7 +605,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String unitsSold(int count) {
-    return '已售出 $count 件';
+    return '已售出$count件';
   }
 
   @override
@@ -619,16 +619,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String outOfStock(int count) {
-    return '缺货 ($count)';
+    return '缺货（$count）';
   }
 
   @override
   String lowStock(int count) {
-    return '库存不足 ($count)';
+    return '库存不足（$count）';
   }
 
   @override
-  String get noSalesRecorded => '未记录销售';
+  String get noSalesRecorded => '没有销售记录';
 
   @override
   String get todayLabel => '今天';
@@ -656,7 +656,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String billetCount(int count) {
-    return '$count 张收据';
+    return '$count个收据';
   }
 
   @override
@@ -708,10 +708,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noBilletsInPeriodShort => '此期间没有收据';
 
   @override
-  String get getStarted => '开始吧！';
+  String get getStarted => '开始使用！';
 
   @override
-  String get setupYourBusiness => '配置您的业务以开始';
+  String get setupYourBusiness => '设置您的业务以开始';
 
   @override
   String get businessSetup => '初始设置';
@@ -720,13 +720,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get step => '步骤';
 
   @override
-  String get ofPreposition => '的';
+  String get ofPreposition => '共';
 
   @override
   String get businessInfo => '业务信息';
 
   @override
-  String get enterBusinessName => '业务名称';
+  String get enterBusinessName => '您的公司名称';
 
   @override
   String get businessNameHint => '例如：我的商店';
@@ -783,7 +783,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get createAdminPassword => '创建管理员密码';
 
   @override
-  String get passwordHint => '最少6个字符';
+  String get passwordHint => '至少6个字符';
 
   @override
   String get confirmPassword => '确认密码';
@@ -795,7 +795,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get passwordMismatch => '密码不匹配';
 
   @override
-  String get passwordTooShort => '最少6个字符';
+  String get passwordTooShort => '至少6个字符';
 
   @override
   String get adminPasswordInfo => '保护管理员功能';
@@ -813,7 +813,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get previous => '上一步';
 
   @override
-  String get allSet => '一切就绪！';
+  String get allSet => '全部完成！';
 
   @override
   String get readyToStart => '您的业务已准备好开始';
@@ -822,31 +822,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get startNow => '立即开始';
 
   @override
-  String get proioApp => 'Proio';
+  String get proioApp => 'Proïon';
 
   @override
   String get businessManagementSystem => '管理系统';
 
   @override
-  String get loginAsAdministrator => '以管理员身份登录';
+  String get loginAsAdministrator => '作为管理员登录';
 
   @override
   String get enterPassword => '密码';
 
   @override
-  String get loginButton => '以管理员身份登录';
+  String get loginButton => '作为管理员登录';
 
   @override
-  String get continueAsUser => '以用户身份继续';
+  String get continueAsUser => '作为用户继续';
 
   @override
   String get userOnlyMode => '用户：仅查看和创建订单';
 
   @override
-  String get adminAccessRequired => '管理员访问';
+  String get adminAccessRequired => '需要管理员访问权限';
 
   @override
-  String get adminLoginRequired => '您需要以管理员身份登录';
+  String get adminLoginRequired => '您需要作为管理员登录';
 
   @override
   String get tryAgain => '重试';
@@ -855,7 +855,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get completeAllFields => '请填写所有字段';
 
   @override
-  String get passwordMinLength => '密码必须至少4个字符';
+  String get passwordMinLength => '密码至少需要4个字符';
 
   @override
   String get passwordsDoNotMatch => '密码不匹配';
@@ -879,7 +879,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get newPassword => '新密码';
 
   @override
-  String get minimumCharacters => '最少4个字符';
+  String get minimumCharacters => '至少4个字符';
 
   @override
   String get confirmPasswordLabel => '确认密码';
@@ -894,5 +894,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get savePasswordSecurely => '🔒 请将此密码保存在安全的地方';
 
   @override
-  String get loading => '加载中...';
+  String get loading => '正在加载...';
+
+  @override
+  String get legalDisclaimer => '⚠️ 此收据仅供内部控制使用，不构成有效的税务凭证。';
 }

@@ -3,9 +3,9 @@
   "dashboard": "仪表板",
   "products": "产品",
   "orders": "订单",
-  "invoices": "发票",
+  "invoices": "收据",
   "settings": "设置",
-  "profile": "档案",
+  "profile": "个人资料",
   "add": "添加",
   "edit": "编辑",
   "delete": "删除",
@@ -16,7 +16,7 @@
   "price": "价格",
   "stock": "库存",
   "category": "类别",
-  "food": "食品",
+  "food": "食物",
   "drinks": "饮料",
   "desserts": "甜点",
   "others": "其他",
@@ -25,13 +25,13 @@
   "cannotUndo": "此操作无法撤消",
   "noProducts": "没有产品",
   "noOrders": "没有订单",
-  "noInvoices": "没有发票",
+  "noInvoices": "没有收据",
   "language": "语言",
   "selectLanguage": "选择语言",
   "currency": "货币",
   "selectCurrency": "选择货币",
-  "businessProfile": "商业资料",
-  "businessName": "商家名称",
+  "businessProfile": "业务资料",
+  "businessName": "公司名称",
   "address": "地址",
   "phone": "电话",
   "email": "电子邮件",
@@ -49,18 +49,18 @@
   "theme": "主题",
   "searchProducts": "搜索产品...",
   "searchByCustomer": "按客户或编号搜索...",
-  "customerName": "客户姓名",
-  "customerNameRequired": "客户姓名 *",
+  "customerName": "客户名称",
+  "customerNameRequired": "客户名称 *",
   "phoneOptional": "电话（可选）",
   "nameRequired": "名称为必填项",
   "addProduct": "添加产品",
   "editProduct": "编辑产品",
-  "minCharacters": "最少2个字符",
+  "minCharacters": "至少2个字符",
   "priceRequired": "价格为必填项",
   "invalidPrice": "价格无效",
   "stockRequired": "库存为必填项",
   "invalidStock": "库存无效",
-  "addToOrder": "至少在订单中添加一个产品",
+  "addToOrder": "至少添加一个产品到订单",
   "insufficientStock": "库存不足",
   "totalItems": "总计（{count}项）：",
   "@totalItems": {
@@ -71,32 +71,32 @@
     }
   },
   "clear": "清除",
-  "orderCreatedSuccess": "订单和发票已成功创建",
+  "orderCreatedSuccess": "订单和收据创建成功",
   "orderCreatedError": "创建订单时出错",
-  "noProductsAvailable": "没有可用产品",
+  "noProductsAvailable": "没有可用的产品",
   "noProductsFound": "未找到产品",
-  "productAddedSuccess": "产品已成功添加",
-  "productUpdatedSuccess": "产品已成功更新",
-  "imageSelectedSuccess": "图片已成功选择",
+  "productAddedSuccess": "产品添加成功",
+  "productUpdatedSuccess": "产品更新成功",
+  "imageSelectedSuccess": "图片选择成功",
   "retry": "重试",
   "permissionsDenied": "权限被拒绝",
   "close": "关闭",
   "cart": "购物车",
   "viewCart": "查看购物车",
   "quickAccess": "快速访问",
-  "lowStockProducts": "库存不足的产品",
+  "lowStockProducts": "低库存产品",
   "tapToChangeLogo": "点击更改徽标",
-  "businessNameRequired": "商家名称为必填项",
+  "businessNameRequired": "公司名称为必填项",
   "invalidEmail": "请输入有效的电子邮件",
-  "profileUpdated": "资料已成功更新",
-  "logoSelected": "徽标已成功选择",
-  "needPermissions": "您需要授予权限以选择图片",
+  "profileUpdated": "个人资料更新成功",
+  "logoSelected": "徽标选择成功",
+  "needPermissions": "您需要授予权限才能选择图片",
   "imageSelectionError": "选择图片时出错",
   "darkModeSubtitle": "激活深色主题",
-  "businessProfileSubtitle": "编辑您的商业信息",
+  "businessProfileSubtitle": "编辑您的业务信息",
   "version": "版本",
-  "filterByDate": "按日期过滤",
-  "results": "{count} 个结果",
+  "filterByDate": "按日期筛选",
+  "results": "{count}个结果",
   "@results": {
     "placeholders": {
       "count": {
@@ -104,9 +104,9 @@
       }
     }
   },
-  "noInvoicesFound": "未找到发票",
-  "clearFilters": "清除过滤器",
-  "productsCount": "{count} 个产品",
+  "noInvoicesFound": "未找到收据",
+  "clearFilters": "清除筛选",
+  "productsCount": "{count}个产品",
   "@productsCount": {
     "placeholders": {
       "count": {
@@ -114,8 +114,8 @@
       }
     }
   },
-  "deleteInvoice": "删除发票",
-  "deleteInvoiceConfirm": "您确定要删除发票 #{number} 吗？\n\n此操作无法撤消。",
+  "deleteInvoice": "删除收据",
+  "deleteInvoiceConfirm": "您确定要删除收据#{number}吗？\n\n此操作无法撤消。",
   "@deleteInvoiceConfirm": {
     "placeholders": {
       "number": {
@@ -123,25 +123,25 @@
       }
     }
   },
-  "invoiceDeleted": "发票已删除",
+  "invoiceDeleted": "收据已删除",
   "needPermissionsToShare": "需要权限才能分享",
   "needPermissionsToDownload": "需要权限才能下载",
   "savedToGallery": "已保存到图库",
   "customerData": "客户数据",
-  "nameField": "姓名 *",
-  "nameRequiredField": "姓名为必填项",
+  "nameField": "名称 *",
+  "nameRequiredField": "名称为必填项",
   "phoneField": "电话（可选）",
   "confirm": "确认",
   "units": "单位",
   "deleteProduct": "删除产品",
   "deleteProductConfirm": "您确定要删除此产品吗？",
-  "productDeleted": "产品已成功删除",
+  "productDeleted": "产品删除成功",
   "permissionsNeeded": "需要权限",
-  "permissionsMessage": "此应用需要访问您的照片以将图片添加到产品中。\n\n前往：\n设置 → 应用 → Proio → 权限 → 照片和媒体",
+  "permissionsMessage": "此应用需要访问您的照片以向产品添加图片。\n\n请前往：\n设置 → 应用 → Proïon → 权限 → 照片和媒体",
   "openSettings": "打开设置",
-  "needPermissionToSelectImage": "您需要授予选择图片的权限",
+  "needPermissionToSelectImage": "您需要授予权限才能选择图片",
   "trySelectAnyway": "仍然尝试选择图片",
-  "invoiceNumber": "发票 #{number}",
+  "invoiceNumber": "收据#{number}",
   "@invoiceNumber": {
     "placeholders": {
       "number": {
@@ -149,7 +149,7 @@
       }
     }
   },
-  "businessNameLabel": "商家名称",
+  "businessNameLabel": "公司名称",
   "addressLabel": "地址",
   "phoneLabel": "电话",
   "emailLabel": "电子邮件",
@@ -159,7 +159,7 @@
   "unitPrice": "价格",
   "totalPrice": "总计",
   "receipt": "收据",
-  "receiptNumber": "收据 #{number}",
+  "receiptNumber": "收据#{number}",
   "@receiptNumber": {
     "placeholders": {
       "number": {
@@ -170,7 +170,7 @@
   "productsSuffix": "产品：",
   "totalSuffix": "总计：",
   "deleteReceipt": "删除收据",
-  "deleteReceiptConfirm": "您确定要删除收据 #{number} 吗？\n\n此操作无法撤消。",
+  "deleteReceiptConfirm": "您确定要删除收据#{number}吗？\n\n此操作无法撤消。",
   "@deleteReceiptConfirm": {
     "placeholders": {
       "number": {
@@ -183,7 +183,7 @@
   "warningNeedPermissionsToDownload": "⚠️ 需要权限才能下载",
   "successSavedToGallery": "✅ 已保存到图库",
   "searchByCustomerOrNumber": "按客户或编号搜索...",
-  "resultsCount": "{count} 个结果",
+  "resultsCount": "{count}个结果",
   "@resultsCount": {
     "placeholders": {
       "count": {
@@ -192,7 +192,7 @@
     }
   },
   "noReceiptsFound": "未找到收据",
-  "productsCountLabel": "{count} 个产品",
+  "productsCountLabel": "{count}个产品",
   "@productsCountLabel": {
     "placeholders": {
       "count": {
@@ -201,10 +201,10 @@
     }
   },
   "warningPermissionsDenied": "⚠️ 权限被拒绝",
-  "successImageSelected": "✅ 图片已成功选择",
+  "successImageSelected": "✅ 图片选择成功",
   "errorOccurred": "❌ 错误",
-  "successProductAdded": "✅ 产品已成功添加",
-  "successProductUpdated": "✅ 产品已成功更新",
+  "successProductAdded": "✅ 产品添加成功",
+  "successProductUpdated": "✅ 产品更新成功",
   "errorWithMessage": "❌ 错误：{message}",
   "@errorWithMessage": {
     "placeholders": {
@@ -213,10 +213,10 @@
       }
     }
   },
-  "successOrderCreated": "✅ 订单和发票已成功创建",
+  "successOrderCreated": "✅ 订单和收据创建成功",
   "errorOrderCreation": "❌ 创建订单时出错",
-  "errorAddToOrder": "❌ 至少在订单中添加一个产品",
-  "errorInsufficientStock": "❌ {product} 库存不足",
+  "errorAddToOrder": "❌ 至少添加一个产品到订单",
+  "errorInsufficientStock": "❌ {product}库存不足",
   "@errorInsufficientStock": {
     "placeholders": {
       "product": {
@@ -231,10 +231,10 @@
   "minPriceValue": "最低价格为0.01",
   "maxPriceValue": "最高价格为99999999",
   "validPriceRequired": "请输入有效价格",
-  "customerNameMinLength": "姓名至少需要2个字符",
-  "customerNameMaxLength": "姓名太长",
+  "customerNameMinLength": "名称至少需要2个字符",
+  "customerNameMaxLength": "名称太长",
   "phoneNumberInvalid": "电话号码无效",
-  "phoneMinLength": "电话号码至少需要7位数字",
+  "phoneMinLength": "电话至少需要7位数字",
   "downloadFormat": "下载格式",
   "@downloadFormat": {
     "description": "下载格式部分标题"
@@ -253,11 +253,11 @@
   "loginAsAdmin": "作为管理员登录",
   "administrator": "管理员",
   "password": "密码",
-  "verifying": "验证中...",
+  "verifying": "正在验证...",
   "defaultPassword": "默认密码：1234",
   "pleaseEnterPassword": "请输入密码",
   "incorrectPassword": "密码错误",
-  "loadingData": "加载数据中...",
+  "loadingData": "正在加载数据...",
   "exportProducts": "导出产品",
   "importProducts": "导入产品",
   "exportFullBackup": "导出全部",
@@ -267,14 +267,14 @@
   "exportError": "导出错误",
   "importError": "导入错误",
   "fileNotSelected": "未选择文件",
-  "logout": "登出",
+  "logout": "退出",
   "statistics": "统计",
   "sales": "销售",
   "today": "今天",
   "thisWeek": "本周",
   "thisMonth": "本月",
-  "allTime": "总计",
-  "invoicesCount": "{count} 张发票",
+  "allTime": "全部",
+  "invoicesCount": "{count}个收据",
   "@invoicesCount": {
     "placeholders": {
       "count": {
@@ -283,7 +283,7 @@
     }
   },
   "topProducts": "最畅销产品",
-  "unitsSold": "已售出 {count} 件",
+  "unitsSold": "已售出{count}件",
   "@unitsSold": {
     "placeholders": {
       "count": {
@@ -294,7 +294,7 @@
   "stockAlerts": "库存警报",
   "allGood": "一切正常",
   "noLowStockProducts": "没有低库存产品",
-  "outOfStock": "缺货 ({count})",
+  "outOfStock": "缺货（{count}）",
   "@outOfStock": {
     "placeholders": {
       "count": {
@@ -302,7 +302,7 @@
       }
     }
   },
-  "lowStock": "库存不足 ({count})",
+  "lowStock": "库存不足（{count}）",
   "@lowStock": {
     "placeholders": {
       "count": {
@@ -310,7 +310,7 @@
       }
     }
   },
-  "noSalesRecorded": "未记录销售",
+  "noSalesRecorded": "没有销售记录",
   "todayLabel": "今天",
   "weekLabel": "周",
   "monthLabel": "月",
@@ -319,7 +319,7 @@
   "selectRange": "选择范围",
   "periodTotal": "期间总计：",
   "noBilletsInPeriod": "此期间没有收据",
-  "billetCount": "{count} 张收据",
+  "billetCount": "{count}个收据",
   "@billetCount": {
     "placeholders": {
       "count": {
@@ -365,13 +365,13 @@
   },
   "clearAllFilters": "清除筛选",
   "noBilletsInPeriodShort": "此期间没有收据",
-  "getStarted": "开始吧！",
-  "setupYourBusiness": "配置您的业务以开始",
+  "getStarted": "开始使用！",
+  "setupYourBusiness": "设置您的业务以开始",
   "businessSetup": "初始设置",
   "step": "步骤",
-  "ofPreposition": "的",
+  "ofPreposition": "共",
   "businessInfo": "业务信息",
-  "enterBusinessName": "业务名称",
+  "enterBusinessName": "您的公司名称",
   "businessNameHint": "例如：我的商店",
   "businessLogo": "徽标（可选）",
   "tapToAddLogo": "点击添加徽标",
@@ -390,31 +390,31 @@
   "selectYourCurrency": "货币",
   "security": "安全",
   "createAdminPassword": "创建管理员密码",
-  "passwordHint": "最少6个字符",
+  "passwordHint": "至少6个字符",
   "confirmPassword": "确认密码",
   "confirmPasswordHint": "重复密码",
   "passwordMismatch": "密码不匹配",
-  "passwordTooShort": "最少6个字符",
+  "passwordTooShort": "至少6个字符",
   "adminPasswordInfo": "保护管理员功能",
   "finish": "完成",
   "skip": "跳过",
   "next": "下一步",
   "previous": "上一步",
-  "allSet": "一切就绪！",
+  "allSet": "全部完成！",
   "readyToStart": "您的业务已准备好开始",
   "startNow": "立即开始",
-  "proioApp": "Proio",
+  "proioApp": "Proïon",
   "businessManagementSystem": "管理系统",
-  "loginAsAdministrator": "以管理员身份登录",
+  "loginAsAdministrator": "作为管理员登录",
   "enterPassword": "密码",
-  "loginButton": "以管理员身份登录",
-  "continueAsUser": "以用户身份继续",
+  "loginButton": "作为管理员登录",
+  "continueAsUser": "作为用户继续",
   "userOnlyMode": "用户：仅查看和创建订单",
-  "adminAccessRequired": "管理员访问",
-  "adminLoginRequired": "您需要以管理员身份登录",
+  "adminAccessRequired": "需要管理员访问权限",
+  "adminLoginRequired": "您需要作为管理员登录",
   "tryAgain": "重试",
   "completeAllFields": "请填写所有字段",
-  "passwordMinLength": "密码必须至少4个字符",
+  "passwordMinLength": "密码至少需要4个字符",
   "passwordsDoNotMatch": "密码不匹配",
   "passwordConfiguredSuccessfully": "密码配置成功",
   "errorConfiguringPassword": "配置密码时出错",
@@ -422,11 +422,11 @@
   "configureAdminPassword": "配置您的管理员密码",
   "firstTimeMessage": "这是您第一次使用该应用程序。请配置一个安全密码。",
   "newPassword": "新密码",
-  "minimumCharacters": "最少4个字符",
+  "minimumCharacters": "至少4个字符",
   "confirmPasswordLabel": "确认密码",
   "repeatPassword": "重复密码",
   "configureAndContinue": "配置并继续",
   "savePasswordSecurely": "🔒 请将此密码保存在安全的地方",
-  "loading": "加载中..."
-
+  "loading": "正在加载...",
+  "legalDisclaimer": "⚠️ 此收据仅供内部控制使用，不构成有效的税务凭证。"
 }

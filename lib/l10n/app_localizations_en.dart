@@ -18,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orders => 'Orders';
 
   @override
-  String get invoices => 'Invoices';
+  String get invoices => 'Receipts';
 
   @override
   String get settings => 'Settings';
@@ -84,7 +84,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noOrders => 'No orders';
 
   @override
-  String get noInvoices => 'No invoices';
+  String get noInvoices => 'No receipts';
 
   @override
   String get language => 'Language';
@@ -203,7 +203,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clear => 'Clear';
 
   @override
-  String get orderCreatedSuccess => 'Order and invoice created successfully';
+  String get orderCreatedSuccess => 'Order and receipt created successfully';
 
   @override
   String get orderCreatedError => 'Error creating order';
@@ -284,7 +284,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get noInvoicesFound => 'No invoices found';
+  String get noInvoicesFound => 'No receipts found';
 
   @override
   String get clearFilters => 'Clear filters';
@@ -295,15 +295,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get deleteInvoice => 'Delete invoice';
+  String get deleteInvoice => 'Delete receipt';
 
   @override
   String deleteInvoiceConfirm(int number) {
-    return 'Are you sure you want to delete Invoice #$number?\n\nThis action cannot be undone.';
+    return 'Are you sure you want to delete Receipt #$number?\n\nThis action cannot be undone.';
   }
 
   @override
-  String get invoiceDeleted => 'Invoice deleted';
+  String get invoiceDeleted => 'Receipt deleted';
 
   @override
   String get needPermissionsToShare => 'Permissions needed to share';
@@ -347,7 +347,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get permissionsMessage =>
-      'This app needs access to your photos to add images to products.\n\nGo to:\nSettings → Apps → Proio → Permissions → Photos and media';
+      'This app needs access to your photos to add images to products.\n\nGo to:\nSettings → Apps → Proïon → Permissions → Photos and media';
 
   @override
   String get openSettings => 'Open Settings';
@@ -361,7 +361,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String invoiceNumber(int number) {
-    return 'Invoice #$number';
+    return 'Receipt #$number';
   }
 
   @override
@@ -463,7 +463,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get successOrderCreated => '✅ Order and invoice created successfully';
+  String get successOrderCreated => '✅ Order and receipt created successfully';
 
   @override
   String get errorOrderCreation => '❌ Error creating order';
@@ -601,7 +601,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String invoicesCount(int count) {
-    return '$count invoices';
+    return '$count receipts';
   }
 
   @override
@@ -826,7 +826,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startNow => 'Start Now';
 
   @override
-  String get proioApp => 'Proio';
+  String get proioApp => 'Proïon';
 
   @override
   String get businessManagementSystem => 'Management System';
@@ -901,4 +901,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loading => 'Loading...';
+
+  @override
+  String get legalDisclaimer =>
+      '⚠️ This receipt is for internal control only. It does not constitute a valid tax document.';
 }

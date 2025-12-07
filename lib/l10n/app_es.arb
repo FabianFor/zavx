@@ -3,7 +3,7 @@
   "dashboard": "Panel",
   "products": "Productos",
   "orders": "Pedidos",
-  "invoices": "Facturas",
+  "invoices": "Recibos",
   "settings": "Configuración",
   "profile": "Perfil",
   "add": "Agregar",
@@ -25,7 +25,7 @@
   "cannotUndo": "Esta acción no se puede deshacer",
   "noProducts": "No hay productos",
   "noOrders": "No hay pedidos",
-  "noInvoices": "No hay facturas",
+  "noInvoices": "No hay recibos",
   "language": "Idioma",
   "selectLanguage": "Seleccionar idioma",
   "currency": "Moneda",
@@ -71,7 +71,7 @@
     }
   },
   "clear": "Limpiar",
-  "orderCreatedSuccess": "Pedido y factura creados exitosamente",
+  "orderCreatedSuccess": "Pedido y recibo creados exitosamente",
   "orderCreatedError": "Error al crear el pedido",
   "noProductsAvailable": "No hay productos disponibles",
   "noProductsFound": "No se encontraron productos",
@@ -104,7 +104,7 @@
       }
     }
   },
-  "noInvoicesFound": "No se encontraron facturas",
+  "noInvoicesFound": "No se encontraron recibos",
   "clearFilters": "Limpiar filtros",
   "productsCount": "{count} producto(s)",
   "@productsCount": {
@@ -114,8 +114,8 @@
       }
     }
   },
-  "deleteInvoice": "Eliminar factura",
-  "deleteInvoiceConfirm": "¿Estás seguro de eliminar la Factura #{number}?\n\nEsta acción no se puede deshacer.",
+  "deleteInvoice": "Eliminar recibo",
+  "deleteInvoiceConfirm": "¿Estás seguro de eliminar el Recibo #{number}?\n\nEsta acción no se puede deshacer.",
   "@deleteInvoiceConfirm": {
     "placeholders": {
       "number": {
@@ -123,7 +123,7 @@
       }
     }
   },
-  "invoiceDeleted": "Factura eliminada",
+  "invoiceDeleted": "Recibo eliminado",
   "needPermissionsToShare": "Permisos necesarios para compartir",
   "needPermissionsToDownload": "Permisos necesarios para descargar",
   "savedToGallery": "Guardado en galería",
@@ -137,11 +137,11 @@
   "deleteProductConfirm": "¿Estás seguro de eliminar este producto?",
   "productDeleted": "Producto eliminado exitosamente",
   "permissionsNeeded": "Permisos necesarios",
-  "permissionsMessage": "Esta aplicación necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Aplicaciones → Proio → Permisos → Fotos y multimedia",
+  "permissionsMessage": "Esta aplicación necesita acceso a tus fotos para agregar imágenes a los productos.\n\nVe a:\nConfiguración → Aplicaciones → Proïon → Permisos → Fotos y multimedia",
   "openSettings": "Abrir Configuración",
   "needPermissionToSelectImage": "Necesitas otorgar permiso para seleccionar imágenes",
   "trySelectAnyway": "Intentar seleccionar la imagen de todos modos",
-  "invoiceNumber": "Factura #{number}",
+  "invoiceNumber": "Recibo #{number}",
   "@invoiceNumber": {
     "placeholders": {
       "number": {
@@ -158,8 +158,8 @@
   "quantityShort": "Cant.",
   "unitPrice": "Precio",
   "totalPrice": "Total",
-  "receipt": "Boleta",
-  "receiptNumber": "Boleta #{number}",
+  "receipt": "Recibo",
+  "receiptNumber": "Recibo #{number}",
   "@receiptNumber": {
     "placeholders": {
       "number": {
@@ -169,8 +169,8 @@
   },
   "productsSuffix": "Productos:",
   "totalSuffix": "Total:",
-  "deleteReceipt": "Eliminar boleta",
-  "deleteReceiptConfirm": "¿Estás seguro de eliminar la Boleta #{number}?\n\nEsta acción no se puede deshacer.",
+  "deleteReceipt": "Eliminar recibo",
+  "deleteReceiptConfirm": "¿Estás seguro de eliminar el Recibo #{number}?\n\nEsta acción no se puede deshacer.",
   "@deleteReceiptConfirm": {
     "placeholders": {
       "number": {
@@ -178,7 +178,7 @@
       }
     }
   },
-  "receiptDeleted": "Boleta eliminada",
+  "receiptDeleted": "Recibo eliminado",
   "warningNeedPermissionsToShare": "⚠️ Permisos necesarios para compartir",
   "warningNeedPermissionsToDownload": "⚠️ Permisos necesarios para descargar",
   "successSavedToGallery": "✅ Guardado en galería",
@@ -191,7 +191,7 @@
       }
     }
   },
-  "noReceiptsFound": "No se encontraron boletas",
+  "noReceiptsFound": "No se encontraron recibos",
   "productsCountLabel": "{count} producto(s)",
   "@productsCountLabel": {
     "placeholders": {
@@ -213,7 +213,7 @@
       }
     }
   },
-  "successOrderCreated": "✅ Pedido y factura creados exitosamente",
+  "successOrderCreated": "✅ Pedido y recibo creados exitosamente",
   "errorOrderCreation": "❌ Error al crear el pedido",
   "errorAddToOrder": "❌ Agrega al menos un producto al pedido",
   "errorInsufficientStock": "❌ Stock insuficiente para {product}",
@@ -274,7 +274,7 @@
   "thisWeek": "Esta semana",
   "thisMonth": "Este mes",
   "allTime": "Total",
-  "invoicesCount": "{count} facturas",
+  "invoicesCount": "{count} recibos",
   "@invoicesCount": {
     "placeholders": {
       "count": {
@@ -318,8 +318,8 @@
   "customRange": "Rango",
   "selectRange": "Seleccionar rango",
   "periodTotal": "Total del período:",
-  "noBilletsInPeriod": "No hay boletas en este período",
-  "billetCount": "{count} boleta(s)",
+  "noBilletsInPeriod": "No hay recibos en este período",
+  "billetCount": "{count} recibo(s)",
   "@billetCount": {
     "placeholders": {
       "count": {
@@ -364,7 +364,7 @@
     }
   },
   "clearAllFilters": "Limpiar filtros",
-  "noBilletsInPeriodShort": "No hay boletas en este período",
+  "noBilletsInPeriodShort": "No hay recibos en este período",
   "getStarted": "¡Comencemos!",
   "setupYourBusiness": "Configura tu negocio para empezar",
   "businessSetup": "Configuración Inicial",
@@ -403,7 +403,7 @@
   "allSet": "¡Todo listo!",
   "readyToStart": "Tu negocio está listo para comenzar",
   "startNow": "Empezar ahora",
-  "proioApp": "Proio",
+  "proioApp": "Proïon",
   "businessManagementSystem": "Sistema de Gestión",
   "loginAsAdministrator": "Iniciar Sesión como Administrador",
   "enterPassword": "Contraseña",
@@ -427,6 +427,6 @@
   "repeatPassword": "Repita la contraseña",
   "configureAndContinue": "Configurar y Continuar",
   "savePasswordSecurely": "🔒 Guarde esta contraseña en un lugar seguro",
-  "loading": "Cargando..."
-
+  "loading": "Cargando...",
+  "legalDisclaimer": "⚠️ Este recibo es solo para control interno. No constituye un comprobante de pago válido ante autoridades fiscales."
 }
