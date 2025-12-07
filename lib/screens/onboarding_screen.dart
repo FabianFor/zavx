@@ -24,6 +24,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   // Controllers
   final _businessNameController = TextEditingController();
+  final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -40,6 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void dispose() {
     _pageController.dispose();
     _businessNameController.dispose();
+    _addressController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -92,7 +94,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (_businessNameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(l10n.businessNameHint),
+          content: Text(l10n.businessNameRequired),
           backgroundColor: Colors.red,
         ),
       );
@@ -130,7 +132,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     // Guardar perfil de negocio
     final profile = BusinessProfile(
       name: _businessNameController.text.trim(),
-      address: '',
+      address: _addressController.text.trim(),
       phone: _phoneController.text.trim(),
       email: _emailController.text.trim(),
       logoPath: _logoPath ?? '',
@@ -258,18 +260,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // PÁGINA 1: BIENVENIDA CON LOGO CIRCULAR MÁS GRANDE
+  // PÁGINA 1: BIENVENIDA CON LOGO CIRCULAR
   Widget _buildWelcomePage(AppLocalizations l10n, ThemeHelper theme) {
     return Center(
-      child: Padding(
-        padding: EdgeInsets.all(32.w),
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 20.h),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo circular de proion - TAMAÑO AUMENTADO A 200x200
             Container(
-              width: 210.w,
-              height: 210.w,
+              width: 180.w,
+              height: 180.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
@@ -295,7 +296,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Text(
               'Proïon',
               style: TextStyle(
-                fontSize: 48.sp,
+                fontSize: 42.sp,
                 fontWeight: FontWeight.bold,
                 color: theme.textPrimary,
               ),
@@ -305,7 +306,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               l10n.setupYourBusiness,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 18.sp,
+                fontSize: 16.sp,
                 color: theme.textSecondary,
               ),
             ),
@@ -315,18 +316,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // PÁGINA 2: SELECCIÓN DE IDIOMA (SIN BANDERAS)
+  // PÁGINA 2: SELECCIÓN DE IDIOMA
   Widget _buildLanguageSelectionPage(AppLocalizations l10n, ThemeHelper theme) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
           Text(
             l10n.selectYourLanguage,
             style: TextStyle(
-              fontSize: 28.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: theme.textPrimary,
             ),
@@ -335,11 +335,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Text(
             l10n.preferences,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               color: theme.textSecondary,
             ),
           ),
-          SizedBox(height: 40.h),
+          SizedBox(height: 30.h),
 
           _buildLanguageOption('es', l10n.spanish, theme),
           SizedBox(height: 12.h),
@@ -356,15 +356,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // PÁGINA 3: INFORMACIÓN DEL NEGOCIO
   Widget _buildBusinessInfoPage(AppLocalizations l10n, ThemeHelper theme) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
           Text(
             l10n.businessInfo,
             style: TextStyle(
-              fontSize: 28.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: theme.textPrimary,
             ),
@@ -373,19 +372,42 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Text(
             l10n.setupYourBusiness,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               color: theme.textSecondary,
             ),
           ),
-          SizedBox(height: 40.h),
+          SizedBox(height: 30.h),
 
+          // NOMBRE DEL NEGOCIO (OBLIGATORIO)
           TextField(
             controller: _businessNameController,
             style: TextStyle(fontSize: 16.sp, color: theme.textPrimary),
             decoration: InputDecoration(
               labelText: l10n.enterBusinessName,
-              hintText: l10n.businessNameHint,
+              hintText: '',
               prefixIcon: Icon(Icons.business, color: theme.iconColor),
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: BorderSide(color: theme.borderColor),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: BorderSide(color: theme.primary, width: 2),
+              ),
+            ),
+          ),
+          SizedBox(height: 20.h),
+
+          // DIRECCIÓN (OPCIONAL)
+          TextField(
+            controller: _addressController,
+            style: TextStyle(fontSize: 16.sp, color: theme.textPrimary),
+            maxLines: 2,
+            decoration: InputDecoration(
+              labelText: '${l10n.address} ${l10n.optionalField}',
+              hintText: '',
+              prefixIcon: Icon(Icons.location_on, color: theme.iconColor),
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
@@ -409,35 +431,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
           SizedBox(height: 12.h),
 
-          InkWell(
-            onTap: _pickLogo,
-            child: Container(
-              height: 150.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: theme.surfaceColor,
-                borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(color: theme.borderColor, width: 2),
-              ),
-              child: _logoPath != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      child: Image.file(
-                        File(_logoPath!),
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add_photo_alternate, size: 48.sp, color: theme.iconColor),
-                        SizedBox(height: 8.h),
-                        Text(
-                          l10n.tapToAddLogo,
-                          style: TextStyle(fontSize: 14.sp, color: theme.textSecondary),
+          // ✅ LOGO CUADRADO CENTRADO
+          Center(
+            child: InkWell(
+              onTap: _pickLogo,
+              child: Container(
+                width: 180.w,
+                height: 180.w,
+                decoration: BoxDecoration(
+                  color: theme.surfaceColor,
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: theme.borderColor, width: 2),
+                ),
+                child: _logoPath != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r),
+                        child: Image.file(
+                          File(_logoPath!),
+                          fit: BoxFit.cover,
                         ),
-                      ],
-                    ),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_photo_alternate, size: 40.sp, color: theme.iconColor),
+                          SizedBox(height: 8.h),
+                          Text(
+                            l10n.tapToAddLogo,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 13.sp, color: theme.textSecondary),
+                          ),
+                        ],
+                      ),
+              ),
             ),
           ),
         ],
@@ -448,15 +474,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // PÁGINA 4: INFORMACIÓN DE CONTACTO
   Widget _buildContactInfoPage(AppLocalizations l10n, ThemeHelper theme) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
           Text(
             l10n.contactInfo,
             style: TextStyle(
-              fontSize: 28.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: theme.textPrimary,
             ),
@@ -465,11 +490,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Text(
             l10n.optionalField,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               color: theme.textSecondary,
             ),
           ),
-          SizedBox(height: 40.h),
+          SizedBox(height: 30.h),
 
           TextField(
             controller: _phoneController,
@@ -477,7 +502,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             style: TextStyle(fontSize: 16.sp, color: theme.textPrimary),
             decoration: InputDecoration(
               labelText: l10n.phoneNumber,
-              hintText: l10n.phoneHint,
+              hintText: '',
               prefixIcon: Icon(Icons.phone, color: theme.iconColor),
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
               enabledBorder: OutlineInputBorder(
@@ -521,15 +546,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final settingsProvider = Provider.of<SettingsProvider>(context);
     
     return SingleChildScrollView(
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
           Text(
             l10n.selectYourCurrency,
             style: TextStyle(
-              fontSize: 28.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: theme.textPrimary,
             ),
@@ -538,13 +562,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Text(
             l10n.preferences,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               color: theme.textSecondary,
             ),
           ),
-          SizedBox(height: 40.h),
+          SizedBox(height: 30.h),
 
-          // Todas las monedas
           ...SettingsProvider.supportedCurrencies.entries.map((entry) {
             final code = entry.key;
             final currencyData = entry.value;
@@ -569,15 +592,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // PÁGINA 6: SEGURIDAD
   Widget _buildSecurityPage(AppLocalizations l10n, ThemeHelper theme) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
           Text(
             l10n.security,
             style: TextStyle(
-              fontSize: 28.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: theme.textPrimary,
             ),
@@ -586,11 +608,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Text(
             l10n.adminPasswordInfo,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               color: theme.textSecondary,
             ),
           ),
-          SizedBox(height: 40.h),
+          SizedBox(height: 30.h),
 
           TextField(
             controller: _passwordController,
@@ -654,10 +676,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
           ),
-          SizedBox(height: 24.h),
+          SizedBox(height: 20.h),
           
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.all(14.w),
             decoration: BoxDecoration(
               color: theme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12.r),
@@ -665,13 +687,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             child: Row(
               children: [
-                Icon(Icons.info_outline, color: theme.primary, size: 24.sp),
+                Icon(Icons.info_outline, color: theme.primary, size: 22.sp),
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
                     l10n.passwordTooShort,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 13.sp,
                       color: theme.textPrimary,
                     ),
                   ),
@@ -684,7 +706,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // ✅ WIDGET DE IDIOMA SIN BANDERAS
   Widget _buildLanguageOption(String code, String name, ThemeHelper theme) {
     final isSelected = _selectedLanguage == code;
     return InkWell(
@@ -692,7 +713,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         await _changeLanguage(code);
       },
       child: Container(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         decoration: BoxDecoration(
           color: isSelected ? theme.primaryWithOpacity(0.1) : theme.surfaceColor,
           borderRadius: BorderRadius.circular(12.r),
@@ -703,10 +724,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
         child: Row(
           children: [
-            // Círculo con código de idioma
             Container(
-              width: 40.w,
-              height: 40.w,
+              width: 36.w,
+              height: 36.w,
               decoration: BoxDecoration(
                 color: theme.primary.withOpacity(0.2),
                 shape: BoxShape.circle,
@@ -715,7 +735,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Text(
                   code.toUpperCase(),
                   style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color: theme.primary,
                   ),
@@ -727,14 +747,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Text(
                 name,
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 15.sp,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   color: theme.textPrimary,
                 ),
               ),
             ),
             if (isSelected)
-              Icon(Icons.check_circle, color: theme.primary, size: 24.sp),
+              Icon(Icons.check_circle, color: theme.primary, size: 22.sp),
           ],
         ),
       ),
@@ -750,7 +770,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         });
       },
       child: Container(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         decoration: BoxDecoration(
           color: isSelected ? theme.primaryWithOpacity(0.1) : theme.surfaceColor,
           borderRadius: BorderRadius.circular(12.r),
@@ -761,11 +781,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
         child: Row(
           children: [
-            Text(flag, style: TextStyle(fontSize: 24.sp)),
+            Text(flag, style: TextStyle(fontSize: 22.sp)),
             SizedBox(width: 12.w),
             Container(
-              width: 40.w,
-              height: 40.w,
+              width: 36.w,
+              height: 36.w,
               decoration: BoxDecoration(
                 color: theme.primary.withOpacity(0.2),
                 shape: BoxShape.circle,
@@ -774,7 +794,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Text(
                   symbol,
                   style: TextStyle(
-                    fontSize: 16.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: theme.primary,
                   ),
@@ -789,7 +809,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Text(
                     code,
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
                       color: theme.textPrimary,
                     ),
@@ -797,7 +817,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Text(
                     name,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 13.sp,
                       color: theme.textSecondary,
                     ),
                   ),
@@ -805,7 +825,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             if (isSelected)
-              Icon(Icons.check_circle, color: theme.primary, size: 24.sp),
+              Icon(Icons.check_circle, color: theme.primary, size: 22.sp),
           ],
         ),
       ),
