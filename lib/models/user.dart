@@ -35,18 +35,19 @@ class User extends HiveObject {
   bool get esAdmin => rol == RolUsuario.admin;
   bool get esUsuario => rol == RolUsuario.usuario;
 
-  // Copiar con modificaciones
+  // Copiar con modificaciones - CORREGIDO
   User copyWith({
     String? nombre,
     RolUsuario? rol,
     String? contrasena,
     DateTime? ultimoAcceso,
+    bool actualizarContrasena = false, // Nueva bandera
   }) {
     return User(
       id: id,
       nombre: nombre ?? this.nombre,
       rol: rol ?? this.rol,
-      contrasena: contrasena ?? this.contrasena,
+      contrasena: actualizarContrasena ? contrasena : (contrasena ?? this.contrasena),
       fechaCreacion: fechaCreacion,
       ultimoAcceso: ultimoAcceso ?? this.ultimoAcceso,
     );

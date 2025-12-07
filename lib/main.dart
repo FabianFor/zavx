@@ -22,14 +22,19 @@ import 'models/user.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
+  debugPrint('🚀 Inicializando Hive...');
   await Hive.initFlutter();
   
+  // Registrar TODOS los adaptadores
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(OrderAdapter());
   Hive.registerAdapter(OrderItemAdapter());
   Hive.registerAdapter(InvoiceAdapter());
   Hive.registerAdapter(BusinessProfileAdapter());
   Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(RolUsuarioAdapter()); // ⚠️ ESTE FALTABA
+  
+  debugPrint('✅ Adaptadores registrados');
   
   runApp(const MyApp());
 }
@@ -43,7 +48,7 @@ class MyApp extends StatelessWidget {
       providers: [
         // Auth provider (primero)
         ChangeNotifierProvider(
-          create: (_) => AuthProvider()..initialize(),
+          create: (_) => AuthProvider(),
         ),
         
         // Settings provider
@@ -120,8 +125,16 @@ class _AppInitializerState extends State<_AppInitializer> {
   }
 
   Future<void> _initializeApp() async {
-    // Esperar a que todos los providers terminen de cargar
-    await Future.delayed(const Duration(milliseconds: 500));
+    debugPrint('🔧 Inicializando app...');
+    
+    // Obtener el AuthProvider y esperar a que inicialice
+    final authProvider = context.read<AuthProvider>();
+    await authProvider.initialize();
+    
+    debugPrint('✅ AuthProvider inicializado');
+    
+    // Pequeña pausa para asegurar
+    await Future.delayed(const Duration(milliseconds: 300));
     
     if (mounted) {
       setState(() {
@@ -134,15 +147,21 @@ class _AppInitializerState extends State<_AppInitializer> {
   Widget build(BuildContext context) {
     if (_isInitializing) {
       return Scaffold(
+        backgroundColor: Colors.black,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CircularProgressIndicator(),
-              const SizedBox(height: 16),
+            children: const [
+              CircularProgressIndicator(
+                color: Colors.white,
+              ),
+              SizedBox(height: 16),
               Text(
-                AppLocalizations.of(context)?.loadingData ?? 'Loading...',
-                style: const TextStyle(fontSize: 16),
+                'Inicializando...',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
