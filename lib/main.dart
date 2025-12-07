@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: (context, child) {
               return MaterialApp(
-                title: 'Proio',
+                title: 'Proïon',
                 debugShowCheckedModeBanner: false,
                 theme: settingsProvider.isDarkMode
                     ? AppTheme.darkTheme
