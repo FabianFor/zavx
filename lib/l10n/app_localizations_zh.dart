@@ -892,4 +892,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get savePasswordSecurely => '🔒 请将此密码保存在安全的地方';
+
+  @override
+  String get loading => '加载中...';
 }

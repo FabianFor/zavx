@@ -426,5 +426,7 @@
   "confirmPasswordLabel": "确认密码",
   "repeatPassword": "重复密码",
   "configureAndContinue": "配置并继续",
-  "savePasswordSecurely": "🔒 请将此密码保存在安全的地方"
+  "savePasswordSecurely": "🔒 请将此密码保存在安全的地方",
+  "loading": "加载中..."
+
 }

@@ -1793,6 +1793,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'🔒 Guarde esta contraseña en un lugar seguro'**
   String get savePasswordSecurely;
+
+  /// No description provided for @loading.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando...'**
+  String get loading;
 }
 
 class _AppLocalizationsDelegate

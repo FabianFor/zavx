@@ -904,4 +904,7 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get savePasswordSecurely =>
       '🔒 Guarde esta contraseña en un lugar seguro';
+
+  @override
+  String get loading => 'Cargando...';
 }

@@ -426,5 +426,7 @@
   "confirmPasswordLabel": "Confirmar Senha",
   "repeatPassword": "Repita a senha",
   "configureAndContinue": "Configurar e Continuar",
-  "savePasswordSecurely": "🔒 Guarde esta senha em um lugar seguro"
+  "savePasswordSecurely": "🔒 Guarde esta senha em um lugar seguro",
+  "loading": "Carregando..."
+
 }

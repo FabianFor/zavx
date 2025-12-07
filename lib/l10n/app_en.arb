@@ -426,5 +426,6 @@
   "confirmPasswordLabel": "Confirm Password",
   "repeatPassword": "Repeat password",
   "configureAndContinue": "Configure and Continue",
-  "savePasswordSecurely": "🔒 Save this password in a safe place"
+  "savePasswordSecurely": "🔒 Save this password in a safe place",
+  "loading": "Loading..."
 }

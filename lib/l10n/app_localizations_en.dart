@@ -898,4 +898,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get savePasswordSecurely => '🔒 Save this password in a safe place';
+
+  @override
+  String get loading => 'Loading...';
 }

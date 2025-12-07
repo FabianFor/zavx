@@ -138,7 +138,6 @@ class _AppInitializerState extends State<_AppInitializer> {
   @override
   void initState() {
     super.initState();
-    // ✅ Usar addPostFrameCallback para evitar el error de build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeApp();
     });
@@ -173,19 +172,22 @@ class _AppInitializerState extends State<_AppInitializer> {
   @override
   Widget build(BuildContext context) {
     if (_isInitializing) {
+      // ✅ OBTENER LOCALIZACIÓN ANTES DE BUILD
+      final l10n = AppLocalizations.of(context);
+      
       return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              CircularProgressIndicator(
+            children: [
+              const CircularProgressIndicator(
                 color: Colors.white,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
-                'Loading...',
-                style: TextStyle(
+                l10n?.loading ?? 'Loading...', // ✅ TRADUCIDO con fallback
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white,
                 ),
