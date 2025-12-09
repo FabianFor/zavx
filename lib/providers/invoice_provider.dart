@@ -289,66 +289,75 @@ class InvoiceProvider with ChangeNotifier {
     }).toList();
   }
 
-  // EXPORTACIÓN
-  Future<Map<String, dynamic>> exportInvoices() async {
-    try {
-      _isLoading = true;
-      _error = null;
-      notifyListeners();
+// EXPORTACIÓN
+Future<Map<String, dynamic>> exportInvoices() async {
+  try {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
 
-      final invoices = _box!.values.toList();
-      final List<Map<String, dynamic>> items = [];
-      
-      for (var invoice in invoices) {
-        items.add({
-          'invoiceNumber': invoice.invoiceNumber,
-          'createdAt': invoice.createdAt.toIso8601String(),
-          'customerName': invoice.customerName,
-          'customerPhone': invoice.customerPhone,
-          'items': invoice.items.map((item) => {
-            'productId': item.productId,
-            'productName': item.productName,
-            'quantity': item.quantity,
-            'price': item.price,
-            'total': item.total,
-          }).toList(),
-          'subtotal': invoice.subtotal,
-          'tax': invoice.tax,
-          'total': invoice.total,
-        });
-      }
-      
-      final backupData = {
-        'version': 1,
-        'backupType': 'invoices',
-        'exportedAt': DateTime.now().toIso8601String(),
-        'itemCount': items.length,
-        'items': items,
-      };
-      
-      final directory = await BackupService.getBackupDirectory();
-      final fileName = BackupService.generateBackupFileName('invoices');
-      final file = File('${directory.path}/$fileName');
-      
-      await file.writeAsString(jsonEncode(backupData), flush: true);
-      
-      _isLoading = false;
-      notifyListeners();
-      
-      return {
-        'success': true,
-        'file': file,
-        'count': items.length,
-        'size': await file.length(),
-        'path': file.path,
-      };
-    } catch (e) {
-      _error = 'Error al exportar facturas: $e';
-      _isLoading = false;
-      notifyListeners();
-      return {'success': false, 'error': e.toString()};
+    final invoices = _box!.values.toList();
+    final List<Map<String, dynamic>> items = [];
+    
+    for (var invoice in invoices) {
+      items.add({
+        'invoiceNumber': invoice.invoiceNumber,
+        'createdAt': invoice.createdAt.toIso8601String(),
+        'customerName': invoice.customerName,
+        'customerPhone': invoice.customerPhone,
+        'items': invoice.items.map((item) => {
+          'productId': item.productId,
+          'productName': item.productName,
+          'quantity': item.quantity,
+          'price': item.price,
+          'total': item.total,
+        }).toList(),
+        'subtotal': invoice.subtotal,
+        'tax': invoice.tax,
+        'total': invoice.total,
+      });
     }
+    
+    final backupData = {
+      'version': 1,
+      'backupType': 'invoices',
+      'exportedAt': DateTime.now().toIso8601String(),
+      'itemCount': items.length,
+      'items': items,
+    };
+    
+    final directory = await BackupService.getBackupDirectory();
+    
+    // ✅ VERIFICAR NULL
+    if (directory == null) {
+      _error = 'Permisos de almacenamiento denegados';
+      _isLoading = false;
+      notifyListeners();
+      return {'success': false, 'error': 'Permisos denegados'};
+    }
+    
+    final fileName = BackupService.generateBackupFileName('invoices');
+    final file = File('${directory.path}/$fileName');
+    
+    await file.writeAsString(jsonEncode(backupData), flush: true);
+    
+    _isLoading = false;
+    notifyListeners();
+    
+    return {
+      'success': true,
+      'file': file,
+      'count': items.length,
+      'size': await file.length(),
+      'path': file.path,
+    };
+  } catch (e) {
+    _error = 'Error al exportar facturas: $e';
+    _isLoading = false;
+    notifyListeners();
+    return {'success': false, 'error': e.toString()};
   }
+}
 
   // IMPORTACIÓN
   Future<Map<String, dynamic>> importInvoices(File file) async {

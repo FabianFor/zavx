@@ -361,7 +361,6 @@ class ProductProvider with ChangeNotifier {
           'descriptionTranslations': product.descriptionTranslations ?? {},
         };
         
-        // ✅ CORREGIDO: Verificar que imagePath no esté vacío
         if (includeImages && product.imagePath.isNotEmpty) {
           final imageBase64 = await BackupService.compressImageToBase64(product.imagePath);
           if (imageBase64 != null) {
@@ -381,6 +380,15 @@ class ProductProvider with ChangeNotifier {
       };
       
       final directory = await BackupService.getBackupDirectory();
+      
+      // ✅ VERIFICAR NULL
+      if (directory == null) {
+        _error = 'Permisos de almacenamiento denegados';
+        _isLoading = false;
+        notifyListeners();
+        return {'success': false, 'error': 'Permisos denegados'};
+      }
+      
       final fileName = BackupService.generateBackupFileName('products');
       final file = File('${directory.path}/$fileName');
       
@@ -439,7 +447,6 @@ class ProductProvider with ChangeNotifier {
           
           final newId = DateTime.now().millisecondsSinceEpoch.toString() + imported.toString();
           
-          // ✅ CORREGIDO: Manejar imagePath correctamente
           String imagePath = '';
           if (hasImages && item.containsKey('imageBase64')) {
             final savedPath = await BackupService.saveBase64ToImage(item['imageBase64'], newId);

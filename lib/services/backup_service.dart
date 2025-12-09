@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:image/image.dart' as img;
-import 'package:file_picker/file_picker.dart'; // ✅ NUEVO
-import '../models/product.dart'; // ✅ NUEVO
-import '../models/invoice.dart'; // ✅ NUEVO
+import 'package:file_picker/file_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:open_filex/open_filex.dart'; // ✅ NUEVO
+import '../models/product.dart';
+import '../models/invoice.dart';
 
 // ✅✅ CLASE PARA RESULTADOS DE BACKUP ✅✅
 class BackupResult<T> {
@@ -31,21 +33,76 @@ class BackupService {
   static const int _jpegQuality = 70;
   static const String _backupFolderName = 'Zavx_Backups';
 
+  /// Solicita permisos de almacenamiento
+  static Future<bool> requestStoragePermission() async {
+    if (!Platform.isAndroid) return true;
+
+    // Android 13+ (API 33+)
+    if (await Permission.photos.isGranted || await Permission.videos.isGranted) {
+      return true;
+    }
+
+    // Android 11-12 (API 30-32)
+    if (await Permission.storage.isGranted) {
+      return true;
+    }
+
+    // Android 11+ necesita MANAGE_EXTERNAL_STORAGE
+    if (await Permission.manageExternalStorage.isGranted) {
+      return true;
+    }
+
+    // Pedir permiso
+    final status = await Permission.manageExternalStorage.request();
+    
+    if (status.isGranted) {
+      return true;
+    }
+
+    // Si no otorga MANAGE_EXTERNAL_STORAGE, intentar con storage normal
+    final storageStatus = await Permission.storage.request();
+    return storageStatus.isGranted;
+  }
+
   /// Obtiene la carpeta de backups (Downloads/Zavx_Backups)
-  static Future<Directory> getBackupDirectory() async {
+  static Future<Directory?> getBackupDirectory() async {
+    // Verificar y pedir permisos primero
+    if (!await requestStoragePermission()) {
+      print('❌ Permisos de almacenamiento denegados');
+      return null;
+    }
+
     Directory? directory;
     
     if (Platform.isAndroid) {
-      directory = Directory('/storage/emulated/0/Download/$_backupFolderName');
+      // Intentar usar Downloads público
+      try {
+        directory = Directory('/storage/emulated/0/Download/$_backupFolderName');
+        
+        if (!await directory.exists()) {
+          await directory.create(recursive: true);
+        }
+        
+        print('✅ Carpeta de backups: ${directory.path}');
+      } catch (e) {
+        print('⚠️ Error creando carpeta en Downloads, usando carpeta de app: $e');
+        // Fallback a la carpeta de la app
+        final appDir = await getApplicationDocumentsDirectory();
+        directory = Directory('${appDir.path}/$_backupFolderName');
+        
+        if (!await directory.exists()) {
+          await directory.create(recursive: true);
+        }
+      }
     } else if (Platform.isIOS) {
-      directory = await getApplicationDocumentsDirectory();
-      directory = Directory('${directory.path}/$_backupFolderName');
+      final appDir = await getApplicationDocumentsDirectory();
+      directory = Directory('${appDir.path}/$_backupFolderName');
     } else {
-      directory = await getApplicationDocumentsDirectory();
-      directory = Directory('${directory.path}/$_backupFolderName');
+      final appDir = await getApplicationDocumentsDirectory();
+      directory = Directory('${appDir.path}/$_backupFolderName');
     }
     
-    if (!await directory.exists()) {
+    if (directory != null && !await directory.exists()) {
       await directory.create(recursive: true);
     }
     
@@ -130,12 +187,17 @@ class BackupService {
     return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 
-  // ✅✅✅ NUEVOS MÉTODOS PARA EXPORT/IMPORT ✅✅✅
+  // ✅✅✅ MÉTODOS PARA EXPORT/IMPORT ✅✅✅
 
   /// Exportar Productos
   static Future<BackupResult<List<Product>>> exportProducts(List<Product> products) async {
     try {
       final directory = await getBackupDirectory();
+      
+      if (directory == null) {
+        return BackupResult.error(error: 'Permisos de almacenamiento denegados');
+      }
+      
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final filePath = '${directory.path}/products_backup_$timestamp.json';
       
@@ -145,8 +207,11 @@ class BackupService {
       final file = File(filePath);
       await file.writeAsString(jsonString);
       
+      print('✅ Archivo guardado en: $filePath');
+      
       return BackupResult.success(data: products, filePath: filePath);
     } catch (e) {
+      print('❌ Error exportando: $e');
       return BackupResult.error(error: e.toString());
     }
   }
@@ -176,6 +241,7 @@ class BackupService {
       
       return BackupResult.success(data: products, filePath: filePath);
     } catch (e) {
+      print('❌ Error importando: $e');
       return BackupResult.error(error: e.toString());
     }
   }
@@ -184,6 +250,11 @@ class BackupService {
   static Future<BackupResult<List<Invoice>>> exportInvoices(List<Invoice> invoices) async {
     try {
       final directory = await getBackupDirectory();
+      
+      if (directory == null) {
+        return BackupResult.error(error: 'Permisos de almacenamiento denegados');
+      }
+      
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final filePath = '${directory.path}/invoices_backup_$timestamp.json';
       
@@ -193,8 +264,11 @@ class BackupService {
       final file = File(filePath);
       await file.writeAsString(jsonString);
       
+      print('✅ Archivo guardado en: $filePath');
+      
       return BackupResult.success(data: invoices, filePath: filePath);
     } catch (e) {
+      print('❌ Error exportando: $e');
       return BackupResult.error(error: e.toString());
     }
   }
@@ -224,27 +298,22 @@ class BackupService {
       
       return BackupResult.success(data: invoices, filePath: filePath);
     } catch (e) {
+      print('❌ Error importando: $e');
       return BackupResult.error(error: e.toString());
     }
   }
 
-  /// Abrir ubicación del archivo (Android File Manager)
+  /// ✅✅ ABRIR ARCHIVO CON EL VISOR DEL SISTEMA ✅✅
   static Future<void> openFileLocation(String filePath) async {
     try {
-      // Extraer el directorio
-      final directory = filePath.substring(0, filePath.lastIndexOf('/'));
+      final result = await OpenFilex.open(filePath);
+      print('📂 Resultado de abrir archivo: ${result.message}');
       
-      // En Android, intentar abrir el gestor de archivos
-      if (Platform.isAndroid) {
-        final dir = Directory(directory);
-        if (await dir.exists()) {
-          print('Archivo guardado en: $filePath');
-          // Nota: Para abrir realmente el gestor necesitarías un plugin como open_file
-          // Por ahora solo imprimimos la ruta
-        }
+      if (result.type != ResultType.done) {
+        print('⚠️ No se pudo abrir el archivo: ${result.message}');
       }
     } catch (e) {
-      print('Error al abrir ubicación: $e');
+      print('❌ Error al abrir archivo: $e');
     }
   }
 }
