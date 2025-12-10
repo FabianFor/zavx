@@ -527,4 +527,16 @@
   "openFolder": "Abrir pasta",
   "backupInProgress": "Fazendo backup...",
   "importInProgress": "Importando..."
+  ,
+  "logout": "Sair",
+  "logoutConfirmMessage": "Tem certeza que deseja sair?",
+  "logoutSubtitle": "Fechar sessão atual",
+  "admin": "Administrador",
+  "user": "Usuário",
+  "selectRole": "Selecionar Função",
+  "switchToUser": "Mudar para Usuário",
+  "switchToUserSubtitle": "Modo de acesso limitado",
+  "switchToAdmin": "Mudar para Administrador",
+  "switchToAdminSubtitle": "Requer senha"
+
 }

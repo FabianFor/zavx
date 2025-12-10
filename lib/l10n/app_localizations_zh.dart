@@ -575,7 +575,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fileNotSelected => '未选择文件';
 
   @override
-  String get logout => '退出';
+  String get logout => '登出';
 
   @override
   String get statistics => '统计';
@@ -1072,4 +1072,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get importInProgress => '正在导入...';
+
+  @override
+  String get logoutConfirmMessage => '确定要登出吗？';
+
+  @override
+  String get logoutSubtitle => '关闭当前会话';
+
+  @override
+  String get admin => '管理员';
+
+  @override
+  String get user => '用户';
+
+  @override
+  String get selectRole => '选择角色';
+
+  @override
+  String get switchToUser => '切换到用户';
+
+  @override
+  String get switchToUserSubtitle => '有限访问模式';
+
+  @override
+  String get switchToAdmin => '切换到管理员';
+
+  @override
+  String get switchToAdminSubtitle => '需要密码';
 }

@@ -1,20 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.example.mi_negocio_app">
+          package="com.proion.zavx">
     
-    <!-- ✅ PERMISOS -->
+    <!-- ✅ PERMISOS OPTIMIZADOS (SIN MANAGE_EXTERNAL_STORAGE) -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" android:minSdkVersion="33"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" tools:ignore="ScopedStorage"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage"/>
+    
+    <!-- Lectura de imágenes según versión de Android -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" 
+        android:minSdkVersion="33"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32"/>
 
     <application
         android:label="Proïon"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true">
+        android:enableOnBackInvokedCallback="true">
         
         <activity
             android:name=".MainActivity"
@@ -37,6 +38,7 @@
         
         <meta-data android:name="flutterEmbedding" android:value="2"/>
         
+        <!-- FileProvider para compartir archivos -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -52,10 +54,6 @@
         <intent>
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="content"/>
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.SEND"/>
-            <data android:mimeType="*/*"/>
         </intent>
         <intent>
             <action android:name="android.intent.action.PICK"/>

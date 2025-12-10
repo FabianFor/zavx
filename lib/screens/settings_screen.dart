@@ -5,9 +5,9 @@ import '../l10n/app_localizations.dart';
 import '../core/utils/theme_helper.dart';
 import '../providers/settings_provider.dart';
 import '../providers/auth_provider.dart';
-import '../providers/product_provider.dart';  // ✅ YA LO TIENES
-import '../providers/invoice_provider.dart';  // ✅ YA LO TIENES
-import '../services/backup_service.dart';     // ✅ YA LO TIENES
+import '../providers/product_provider.dart';
+import '../providers/invoice_provider.dart';
+import '../services/backup_service.dart';
 import 'profile_screen.dart';
 
 
@@ -64,7 +64,7 @@ class SettingsScreen extends StatelessWidget {
               
               SizedBox(height: isTablet ? 14.h : 16.h),
 
-              // ✅✅ PERFIL DEL NEGOCIO - SOLO ADMIN ✅✅
+              // PERFIL DEL NEGOCIO - SOLO ADMIN
               if (authProvider.esAdmin)
                 _buildSettingCard(
                   context: context,
@@ -83,7 +83,7 @@ class SettingsScreen extends StatelessWidget {
 
               if (authProvider.esAdmin) SizedBox(height: isTablet ? 14.h : 16.h),
 
-              // IDIOMA (TODOS PUEDEN CAMBIAR)
+              // IDIOMA
               _buildSettingCard(
                 context: context,
                 theme: theme,
@@ -98,7 +98,7 @@ class SettingsScreen extends StatelessWidget {
 
               SizedBox(height: isTablet ? 14.h : 16.h),
 
-              // ✅✅ MONEDA - SOLO ADMIN PUEDE CAMBIAR ✅✅
+              // MONEDA - SOLO ADMIN
               _buildSettingCard(
                 context: context,
                 theme: theme,
@@ -117,7 +117,7 @@ class SettingsScreen extends StatelessWidget {
 
               SizedBox(height: isTablet ? 14.h : 16.h),
 
-              // FORMATO DE DESCARGA (TODOS PUEDEN CAMBIAR)
+              // FORMATO DE DESCARGA
               _buildSettingCard(
                 context: context,
                 theme: theme,
@@ -132,7 +132,7 @@ class SettingsScreen extends StatelessWidget {
                 isTablet: isTablet,
               ),
 
-              // ✅✅✅ NUEVA SECCIÓN: RESPALDO Y RESTAURACIÓN ✅✅✅
+              // SECCIÓN: RESPALDO Y RESTAURACIÓN
               if (authProvider.esAdmin) ...[
                 SizedBox(height: isTablet ? 24.h : 28.h),
                 
@@ -244,7 +244,6 @@ class SettingsScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final productProvider = context.read<ProductProvider>();
     
-    // Mostrar loading
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -273,7 +272,7 @@ class SettingsScreen extends StatelessWidget {
     try {
       final result = await BackupService.exportProducts(productProvider.products);
       
-      if (context.mounted) Navigator.pop(context); // Cerrar loading
+      if (context.mounted) Navigator.pop(context);
       
       if (result.success && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -301,7 +300,7 @@ class SettingsScreen extends StatelessWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        Navigator.pop(context); // Cerrar loading
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${l10n.error}: $e'),
@@ -312,271 +311,420 @@ class SettingsScreen extends StatelessWidget {
     }
   }
 
-// ==================== IMPORTAR PRODUCTOS (CON DIÁLOGO DETALLADO) ====================
-Future<void> _importProducts(BuildContext context, ThemeHelper theme, bool isTablet) async {
-  final l10n = AppLocalizations.of(context)!;
-  final productProvider = context.read<ProductProvider>();
-  
-  try {
-    final result = await BackupService.importProducts();
+  // ==================== IMPORTAR PRODUCTOS (MEJORADO) ====================
+  Future<void> _importProducts(BuildContext context, ThemeHelper theme, bool isTablet) async {
+    final l10n = AppLocalizations.of(context)!;
+    final productProvider = context.read<ProductProvider>();
     
-    if (result.success && result.data != null && context.mounted) {
-      // Mostrar loading inicial
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (ctx) => Center(
-          child: Container(
-            padding: EdgeInsets.all(24.w),
-            decoration: BoxDecoration(
-              color: theme.cardBackground,
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(color: theme.primary),
-                SizedBox(height: 16.h),
-                Text(
-                  'Procesando productos...',
-                  style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
-                ),
-              ],
+    try {
+      final result = await BackupService.importProducts();
+      
+      if (result.success && result.data != null && context.mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (ctx) => Center(
+            child: Container(
+              padding: EdgeInsets.all(24.w),
+              decoration: BoxDecoration(
+                color: theme.cardBackground,
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(color: theme.primary),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'Procesando productos...',
+                    style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      int imported = 0;
-      int replaced = 0;
-      int skipped = 0;
+        int imported = 0;
+        int replaced = 0;
+        int skipped = 0;
 
-      for (var product in result.data!) {
-        // Buscar producto existente
-        final existingProduct = productProvider.products
-            .where((p) => p.name.toLowerCase() == product.name.toLowerCase())
-            .firstOrNull;
-        
-        if (existingProduct != null) {
-          // ✅ CERRAR LOADING Y MOSTRAR DIÁLOGO DE CONFIRMACIÓN
-          if (context.mounted) Navigator.pop(context);
+        for (var product in result.data!) {
+          final existingProduct = productProvider.products
+              .where((p) => p.name.toLowerCase() == product.name.toLowerCase())
+              .firstOrNull;
           
-          final action = await showDialog<String>(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              backgroundColor: theme.cardBackground,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-              title: Row(
-                children: [
-                  Icon(Icons.warning_amber_rounded, color: theme.warning, size: 28.sp),
-                  SizedBox(width: 12.w),
-                  Expanded(
+          if (existingProduct != null) {
+            if (context.mounted) Navigator.pop(context);
+            
+            final action = await showDialog<String>(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                backgroundColor: theme.cardBackground,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+                contentPadding: EdgeInsets.zero,
+                title: Container(
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    color: theme.warning.withOpacity(0.1),
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8.w),
+                        decoration: BoxDecoration(
+                          color: theme.warning.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Icon(
+                          Icons.warning_amber_rounded,
+                          color: theme.warning,
+                          size: 28.sp,
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Text(
+                          'Producto existente',
+                          style: TextStyle(
+                            color: theme.textPrimary,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                content: SingleChildScrollView(
+                  padding: EdgeInsets.all(20.w),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Ya existe un producto con este nombre:',
+                        style: TextStyle(
+                          color: theme.textSecondary,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                      
+                      // PRODUCTO ACTUAL (Rojo)
+                      Container(
+                        padding: EdgeInsets.all(16.w),
+                        decoration: BoxDecoration(
+                          color: theme.error.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                            color: theme.error.withOpacity(0.3),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                                  decoration: BoxDecoration(
+                                    color: theme.error,
+                                    borderRadius: BorderRadius.circular(6.r),
+                                  ),
+                                  child: Text(
+                                    'ACTUAL',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 8.w),
+                                Expanded(
+                                  child: Text(
+                                    'Se eliminará',
+                                    style: TextStyle(
+                                      color: theme.error,
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 12.h),
+                            Text(
+                              existingProduct.name,
+                              style: TextStyle(
+                                color: theme.textPrimary,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 8.h),
+                            _buildProductDetail(
+                              theme,
+                              'Precio',
+                              'S/ ${existingProduct.price.toStringAsFixed(2)}',
+                            ),
+                            SizedBox(height: 4.h),
+                            _buildProductDetail(
+                              theme,
+                              'Stock',
+                              '${existingProduct.stock} unidades',
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      SizedBox(height: 16.h),
+                      
+                      // FLECHA INDICADORA
+                      Center(
+                        child: Icon(
+                          Icons.arrow_downward_rounded,
+                          color: theme.textHint,
+                          size: 24.sp,
+                        ),
+                      ),
+                      
+                      SizedBox(height: 16.h),
+                      
+                      // PRODUCTO NUEVO (Verde)
+                      Container(
+                        padding: EdgeInsets.all(16.w),
+                        decoration: BoxDecoration(
+                          color: theme.success.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                            color: theme.success.withOpacity(0.3),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                                  decoration: BoxDecoration(
+                                    color: theme.success,
+                                    borderRadius: BorderRadius.circular(6.r),
+                                  ),
+                                  child: Text(
+                                    'NUEVO',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 8.w),
+                                Expanded(
+                                  child: Text(
+                                    'Se importará',
+                                    style: TextStyle(
+                                      color: theme.success,
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 12.h),
+                            Text(
+                              product.name,
+                              style: TextStyle(
+                                color: theme.textPrimary,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 8.h),
+                            _buildProductDetail(
+                              theme,
+                              'Precio',
+                              'S/ ${product.price.toStringAsFixed(2)}',
+                            ),
+                            SizedBox(height: 4.h),
+                            _buildProductDetail(
+                              theme,
+                              'Stock',
+                              '${product.stock} unidades',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                actionsPadding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx, 'skip'),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    ),
                     child: Text(
-                      'Producto existente',
+                      'Omitir',
                       style: TextStyle(
-                        color: theme.textPrimary,
-                        fontSize: 18.sp,
+                        color: theme.textHint,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  OutlinedButton(
+                    onPressed: () => Navigator.pop(ctx, 'keep'),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: theme.primary, width: 1.5),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                    child: Text(
+                      'Mantener actual',
+                      style: TextStyle(
+                        color: theme.primary,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  FilledButton(
+                    onPressed: () => Navigator.pop(ctx, 'replace'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: theme.error,
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                    child: Text(
+                      'Reemplazar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ],
               ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Ya existe un producto con este nombre:',
-                    style: TextStyle(color: theme.textSecondary, fontSize: 14.sp),
-                  ),
-                  SizedBox(height: 16.h),
-                  
-                  // PRODUCTO ACTUAL
-                  Container(
-                    padding: EdgeInsets.all(12.w),
+            );
+
+            if (action == 'replace') {
+              await productProvider.updateProduct(product.copyWith(id: existingProduct.id));
+              replaced++;
+            } else if (action == 'skip') {
+              skipped++;
+            } else {
+              skipped++;
+            }
+            
+            if (result.data!.indexOf(product) < result.data!.length - 1 && context.mounted) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (ctx) => Center(
+                  child: Container(
+                    padding: EdgeInsets.all(24.w),
                     decoration: BoxDecoration(
-                      color: theme.error.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: theme.error.withOpacity(0.3)),
+                      color: theme.cardBackground,
+                      borderRadius: BorderRadius.circular(16.r),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
+                        CircularProgressIndicator(color: theme.primary),
+                        SizedBox(height: 16.h),
                         Text(
-                          '❌ ACTUAL (se eliminará)',
-                          style: TextStyle(
-                            color: theme.error,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          existingProduct.name,
-                          style: TextStyle(
-                            color: theme.textPrimary,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          'Precio: S/ ${existingProduct.price.toStringAsFixed(2)}',
-                          style: TextStyle(color: theme.textSecondary, fontSize: 14.sp),
-                        ),
-                        Text(
-                          'Stock: ${existingProduct.stock} unidades',
-                          style: TextStyle(color: theme.textSecondary, fontSize: 14.sp),
+                          'Procesando productos...',
+                          style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
                         ),
                       ],
                     ),
                   ),
-                  
-                  SizedBox(height: 12.h),
-                  
-                  // PRODUCTO NUEVO
-                  Container(
-                    padding: EdgeInsets.all(12.w),
-                    decoration: BoxDecoration(
-                      color: theme.success.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: theme.success.withOpacity(0.3)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '✅ NUEVO (se importará)',
-                          style: TextStyle(
-                            color: theme.success,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          product.name,
-                          style: TextStyle(
-                            color: theme.textPrimary,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          'Precio: S/ ${product.price.toStringAsFixed(2)}',
-                          style: TextStyle(color: theme.textSecondary, fontSize: 14.sp),
-                        ),
-                        Text(
-                          'Stock: ${product.stock} unidades',
-                          style: TextStyle(color: theme.textSecondary, fontSize: 14.sp),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
+              );
+            }
+          } else {
+            await productProvider.addProduct(product);
+            imported++;
+          }
+        }
+
+        if (context.mounted) Navigator.pop(context);
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '✅ Importados: $imported | 🔄 Reemplazados: $replaced | ⏭️ Omitidos: $skipped',
               ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(ctx, 'skip'),
-                  child: Text('Omitir', style: TextStyle(color: theme.textHint)),
-                ),
-                OutlinedButton(
-                  onPressed: () => Navigator.pop(ctx, 'keep'),
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: theme.primary),
-                  ),
-                  child: Text('Mantener actual'),
-                ),
-                FilledButton(
-                  onPressed: () => Navigator.pop(ctx, 'replace'),
-                  style: FilledButton.styleFrom(backgroundColor: theme.error),
-                  child: Text('Reemplazar'),
-                ),
-              ],
+              backgroundColor: theme.success,
+              duration: const Duration(seconds: 4),
             ),
           );
-
-          // PROCESAR DECISIÓN
-          if (action == 'replace') {
-            await productProvider.updateProduct(product.copyWith(id: existingProduct.id));
-            replaced++;
-          } else if (action == 'skip') {
-            skipped++;
-          } else {
-            // 'keep' - no hace nada
-            skipped++;
-          }
-          
-          // VOLVER A MOSTRAR LOADING SI HAY MÁS PRODUCTOS
-          if (result.data!.indexOf(product) < result.data!.length - 1 && context.mounted) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (ctx) => Center(
-                child: Container(
-                  padding: EdgeInsets.all(24.w),
-                  decoration: BoxDecoration(
-                    color: theme.cardBackground,
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircularProgressIndicator(color: theme.primary),
-                      SizedBox(height: 16.h),
-                      Text(
-                        'Procesando productos...',
-                        style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }
-        } else {
-          // NO EXISTE - AGREGAR DIRECTAMENTE
-          await productProvider.addProduct(product);
-          imported++;
         }
-      }
-
-      // CERRAR LOADING FINAL
-      if (context.mounted) Navigator.pop(context);
-
-      // MOSTRAR RESULTADO
-      if (context.mounted) {
+      } else if (result.error != null && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              '✅ Importados: $imported | 🔄 Reemplazados: $replaced | ⏭️ Omitidos: $skipped',
-            ),
-            backgroundColor: theme.success,
-            duration: const Duration(seconds: 4),
+            content: Text('${l10n.importFailed}: ${result.error}'),
+            backgroundColor: theme.error,
           ),
         );
       }
-    } else if (result.error != null && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${l10n.importFailed}: ${result.error}'),
-          backgroundColor: theme.error,
-        ),
-      );
-    }
-  } catch (e) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${l10n.error}: $e'),
-          backgroundColor: theme.error,
-        ),
-      );
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n.error}: $e'),
+            backgroundColor: theme.error,
+          ),
+        );
+      }
     }
   }
-}
+
+  // ==================== WIDGET AUXILIAR ====================
+  Widget _buildProductDetail(ThemeHelper theme, String label, String value) {
+    return Row(
+      children: [
+        Text(
+          '$label: ',
+          style: TextStyle(
+            color: theme.textSecondary,
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            color: theme.textPrimary,
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
 
   // ==================== EXPORTAR RECIBOS ====================
   Future<void> _exportInvoices(BuildContext context, ThemeHelper theme, bool isTablet) async {
@@ -753,7 +901,7 @@ Future<void> _importProducts(BuildContext context, ThemeHelper theme, bool isTab
     }
   }
 
-  // ==================== WIDGETS Y DIÁLOGOS EXISTENTES ====================
+  // ==================== WIDGETS AUXILIARES ====================
   Widget _buildSettingCard({
     required BuildContext context,
     required ThemeHelper theme,
@@ -864,8 +1012,6 @@ Future<void> _importProducts(BuildContext context, ThemeHelper theme, bool isTab
     );
   }
 
-  // (Los demás diálogos _showLanguageDialog, _showCurrencyDialog y _showDownloadFormatDialog se mantienen IGUAL)
-  // ... [TU CÓDIGO EXISTENTE] ...
   void _showLanguageDialog(BuildContext context, bool isTablet, ThemeHelper theme) {
     final l10n = AppLocalizations.of(context)!;
     final settingsProvider = context.read<SettingsProvider>();

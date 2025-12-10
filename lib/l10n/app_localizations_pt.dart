@@ -1083,4 +1083,31 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get importInProgress => 'Importando...';
+
+  @override
+  String get logoutConfirmMessage => 'Tem certeza que deseja sair?';
+
+  @override
+  String get logoutSubtitle => 'Fechar sessão atual';
+
+  @override
+  String get admin => 'Administrador';
+
+  @override
+  String get user => 'Usuário';
+
+  @override
+  String get selectRole => 'Selecionar Função';
+
+  @override
+  String get switchToUser => 'Mudar para Usuário';
+
+  @override
+  String get switchToUserSubtitle => 'Modo de acesso limitado';
+
+  @override
+  String get switchToAdmin => 'Mudar para Administrador';
+
+  @override
+  String get switchToAdminSubtitle => 'Requer senha';
 }

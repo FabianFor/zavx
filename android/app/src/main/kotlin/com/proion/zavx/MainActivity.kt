@@ -1,4 +1,4 @@
-package com.example.mi_negocio_app
+package com.proion.zavx
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

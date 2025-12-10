@@ -1086,4 +1086,32 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get importInProgress => 'Importando...';
+
+  @override
+  String get logoutConfirmMessage =>
+      '¿Estás seguro de que quieres cerrar sesión?';
+
+  @override
+  String get logoutSubtitle => 'Cerrar sesión actual';
+
+  @override
+  String get admin => 'Administrador';
+
+  @override
+  String get user => 'Usuario';
+
+  @override
+  String get selectRole => 'Seleccionar Rol';
+
+  @override
+  String get switchToUser => 'Cambiar a Usuario';
+
+  @override
+  String get switchToUserSubtitle => 'Modo de acceso limitado';
+
+  @override
+  String get switchToAdmin => 'Cambiar a Administrador';
+
+  @override
+  String get switchToAdminSubtitle => 'Requiere contraseña';
 }

@@ -1,4 +1,4 @@
-package com.example.mi_negocio_app
+package com.proion.zavx
 
 import android.content.ContentValues
 import android.content.Context
@@ -12,7 +12,7 @@ import java.io.FileOutputStream
 
 class MediaStorePlugin {
     companion object {
-        private const val CHANNEL = "com.example.mi_negocio_app/media_store"
+        private const val CHANNEL = "com.proion.zavx/media_store"
 
         fun registerWith(flutterEngine: FlutterEngine, context: Context) {
             val channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
@@ -51,9 +51,9 @@ class MediaStorePlugin {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     // Android 10+
                     val relativePath = if (isPdf) {
-                        Environment.DIRECTORY_DOCUMENTS + "/MiNegocio"
+                        Environment.DIRECTORY_DOCUMENTS + "/Proion"
                     } else {
-                        Environment.DIRECTORY_DCIM + "/MiNegocio"
+                        Environment.DIRECTORY_DCIM + "/Proion"
                     }
                     put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath)
                     put(MediaStore.MediaColumns.IS_PENDING, 1)

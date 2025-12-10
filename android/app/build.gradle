@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mi_negocio_app"
+    namespace = "com.proion.zavx"
     compileSdk = 35  // ✅ IMPORTANTE: 35 para printing 5.14.0
 
     compileOptions {
@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.mi_negocio_app"
+        applicationId = "com.proion.zavx"
         minSdk = 23
         targetSdk = 35
         versionCode = 1

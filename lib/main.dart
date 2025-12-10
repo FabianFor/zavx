@@ -20,6 +20,7 @@ import 'models/order.dart';
 import 'models/invoice.dart';
 import 'models/business_profile.dart';
 import 'models/user.dart';
+import 'services/storage_service.dart';  // ✅ NUEVO
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -145,6 +146,9 @@ class _AppInitializerState extends State<_AppInitializer> {
 
   Future<void> _initializeApp() async {
     debugPrint('🔧 Inicializando app...');
+    
+    // ✅ INICIALIZAR STORAGE PRIMERO
+    await StorageService.initializeStorage();
     
     try {
       // Cargar todos los providers en paralelo

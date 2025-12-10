@@ -6,11 +6,13 @@ import '../l10n/app_localizations.dart';
 import '../core/utils/theme_helper.dart';
 import '../providers/business_provider.dart';
 import '../providers/product_provider.dart';
-import '../providers/auth_provider.dart'; // ✅ NUEVO
+import '../providers/auth_provider.dart';
+import '../widgets/logout_button.dart';  // ✅ NUEVO
+import '../widgets/role_selector.dart';  // ✅ NUEVO
 import 'products_screen.dart';
 import 'orders_screen.dart';
 import 'invoices_screen.dart';
-import 'reports_screen.dart'; // ✅ NUEVO
+import 'reports_screen.dart';
 import 'settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -27,7 +29,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final theme = ThemeHelper(context);
     final businessProvider = context.watch<BusinessProvider>();
     final productProvider = context.watch<ProductProvider>();
-    final authProvider = context.watch<AuthProvider>(); // ✅ NUEVO
+    final authProvider = context.watch<AuthProvider>();
     
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth >= 600;
@@ -38,7 +40,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       backgroundColor: theme.scaffoldBackground,
       body: Column(
         children: [
-          // HEADER
+          // ✅✅ HEADER MODIFICADO CON LOGOUT Y SELECTOR DE ROL ✅✅
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -132,6 +134,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ],
                       ),
                     ),
+
+                    // ✅ NUEVO: SELECTOR DE ROL
+                    const RoleSelector(),
+                    
+                    SizedBox(width: 12.w),
+
+                    // ✅ NUEVO: BOTÓN DE LOGOUT
+                    const LogoutButton(),
                   ],
                 ),
               ),
@@ -206,23 +216,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                   SizedBox(height: verticalSpacing),
 
-                  // ✅✅ ESTADÍSTICAS - SOLO VISIBLE PARA ADMIN ✅✅
-if (authProvider.esAdmin) ...[
-  _QuickAccessTile(
-    label: l10n.statistics,  // ✅ CAMBIADO de '📊 Estadísticas' a l10n.statistics
-    icon: Icons.analytics,
-    color: const Color(0xFF9C27B0), // Morado
-    isTablet: isTablet,
-    theme: theme,
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const ReportsScreen()),
-      );
-    },
-  ),
-  SizedBox(height: verticalSpacing),
-],
+                  // ESTADÍSTICAS - SOLO VISIBLE PARA ADMIN
+                  if (authProvider.esAdmin) ...[
+                    _QuickAccessTile(
+                      label: l10n.statistics,
+                      icon: Icons.analytics,
+                      color: const Color(0xFF9C27B0), // Morado
+                      isTablet: isTablet,
+                      theme: theme,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const ReportsScreen()),
+                        );
+                      },
+                    ),
+                    SizedBox(height: verticalSpacing),
+                  ],
 
                   // CONFIGURACIÓN
                   _QuickAccessTile(

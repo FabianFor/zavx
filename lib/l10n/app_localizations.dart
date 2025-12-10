@@ -2129,6 +2129,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Importando...'**
   String get importInProgress;
+
+  /// No description provided for @logoutConfirmMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Estás seguro de que quieres cerrar sesión?'**
+  String get logoutConfirmMessage;
+
+  /// No description provided for @logoutSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión actual'**
+  String get logoutSubtitle;
+
+  /// No description provided for @admin.
+  ///
+  /// In es, this message translates to:
+  /// **'Administrador'**
+  String get admin;
+
+  /// No description provided for @user.
+  ///
+  /// In es, this message translates to:
+  /// **'Usuario'**
+  String get user;
+
+  /// No description provided for @selectRole.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionar Rol'**
+  String get selectRole;
+
+  /// No description provided for @switchToUser.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar a Usuario'**
+  String get switchToUser;
+
+  /// No description provided for @switchToUserSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Modo de acceso limitado'**
+  String get switchToUserSubtitle;
+
+  /// No description provided for @switchToAdmin.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar a Administrador'**
+  String get switchToAdmin;
+
+  /// No description provided for @switchToAdminSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Requiere contraseña'**
+  String get switchToAdminSubtitle;
 }
 
 class _AppLocalizationsDelegate

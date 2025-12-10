@@ -526,5 +526,16 @@
   "restoreNow": "Restaurar ahora",
   "openFolder": "Abrir carpeta",
   "backupInProgress": "Respaldando...",
-  "importInProgress": "Importando..."
+  "importInProgress": "Importando...",
+  "logout": "Cerrar Sesión",
+  "logoutConfirmMessage": "¿Estás seguro de que quieres cerrar sesión?",
+  "logoutSubtitle": "Cerrar sesión actual",
+  "admin": "Administrador",
+  "user": "Usuario",
+  "selectRole": "Seleccionar Rol",
+  "switchToUser": "Cambiar a Usuario",
+  "switchToUserSubtitle": "Modo de acceso limitado",
+  "switchToAdmin": "Cambiar a Administrador",
+  "switchToAdminSubtitle": "Requiere contraseña"
+
 }

@@ -526,5 +526,16 @@
   "restoreNow": "Restore now",
   "openFolder": "Open folder",
   "backupInProgress": "Backing up...",
-  "importInProgress": "Importing..."
+  "importInProgress": "Importing...",
+  "logout": "Logout",
+  "logoutConfirmMessage": "Are you sure you want to logout?",
+  "logoutSubtitle": "Close current session",
+  "admin": "Admin",
+  "user": "User",
+  "selectRole": "Select Role",
+  "switchToUser": "Switch to User",
+  "switchToUserSubtitle": "Limited access mode",
+  "switchToAdmin": "Switch to Admin",
+  "switchToAdminSubtitle": "Requires password"
+
 }
