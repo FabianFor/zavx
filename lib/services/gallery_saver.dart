@@ -1,214 +1,240 @@
 import 'dart:io';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-/// 🎯 Guarda archivos en DCIM/MiNegocio usando MediaStore (Android 10+)
+/// 🎯 Servicio para guardar archivos en almacenamiento público
+/// - Imágenes de recibos → Galería (Pictures/Proion/Receipts)
+/// - PDFs y backups → Documentos (Documents/Proion)
 class GallerySaver {
-  static const platform = MethodChannel('com.example.mi_negocio_app/media_store');
+  static const platform = MethodChannel('com.proion.zavx/media_store');
 
-  /// 📥 GUARDAR ARCHIVO EN DCIM (Compatible con TODAS las versiones)
-  static Future<String> saveFileToGallery({
-    required String tempFilePath,
+  /// 📥 Guardar archivo en almacenamiento público
+  static Future<String> _saveFile({
+    required File file,
     required String fileName,
+    required String subfolder,
+    required String mimeType,
   }) async {
     try {
       if (kDebugMode) {
-        print('💾 [1/5] Iniciando guardado: $fileName');
+        print('💾 Guardando: $fileName en $subfolder');
       }
+
+      if (!await file.exists()) {
+        throw Exception('Archivo no existe: ${file.path}');
+      }
+
+      final bytes = await file.readAsBytes();
       
-      final tempFile = File(tempFilePath);
-      if (!await tempFile.exists()) {
-        throw Exception('❌ Archivo temporal no existe: $tempFilePath');
+      if (bytes.isEmpty) {
+        throw Exception('Archivo vacío');
       }
 
-      if (Platform.isAndroid) {
-        final androidInfo = await DeviceInfoPlugin().androidInfo;
-        final sdkInt = androidInfo.version.sdkInt;
-        
-        if (kDebugMode) {
-          print('📱 [2/5] Android SDK: $sdkInt');
-        }
-
-        // ✅ ANDROID 10+ (API 29+): Usar MediaStore
-        if (sdkInt >= 29) {
-          return await _saveUsingMediaStore(tempFilePath, fileName);
-        }
-        // ✅ ANDROID 9 y anteriores: Copiar directamente
-        else {
-          return await _saveUsingDirectCopy(tempFilePath, fileName);
-        }
-        
-      } else {
-        // iOS u otras plataformas
-        final directory = await getApplicationDocumentsDirectory();
-        final finalPath = '${directory.path}/$fileName';
-        await tempFile.copy(finalPath);
-        return finalPath;
-      }
-    } catch (e, stackTrace) {
-      if (kDebugMode) {
-        print('❌ Error al guardar en galería: $e');
-        print('Stack trace: $stackTrace');
-      }
-      rethrow;
-    }
-  }
-
-  /// 📱 ANDROID 10+ - Usar MediaStore API
-  static Future<String> _saveUsingMediaStore(String tempFilePath, String fileName) async {
-    try {
-      if (kDebugMode) {
-        print('📱 [3/5] Usando MediaStore API (Android 10+)');
-      }
-
-      final tempFile = File(tempFilePath);
-      final bytes = await tempFile.readAsBytes();
-      
-      final isPdf = fileName.toLowerCase().endsWith('.pdf');
-      final mimeType = isPdf ? 'application/pdf' : 'image/png';
-      
-      // Llamar al método nativo de Android
-      final String? savedPath = await platform.invokeMethod('saveToMediaStore', {
+      // Llamar al plugin nativo
+      final String? savedPath = await platform.invokeMethod('saveToPublicStorage', {
         'fileName': fileName,
+        'subfolder': subfolder,
         'mimeType': mimeType,
         'bytes': bytes,
       });
 
       if (savedPath == null || savedPath.isEmpty) {
-        throw Exception('MediaStore devolvió ruta vacía');
+        throw Exception('Error al guardar');
       }
 
       if (kDebugMode) {
-        print('✅ [5/5] Guardado exitoso con MediaStore: $savedPath');
+        print('✅ Guardado: $savedPath');
       }
 
       return savedPath;
       
-    } catch (e) {
+    } catch (e, stackTrace) {
       if (kDebugMode) {
-        print('❌ Error en MediaStore: $e');
+        print('❌ Error: $e');
+        print('Stack: $stackTrace');
       }
       rethrow;
     }
   }
 
-  /// 📁 ANDROID 6-9 - Copiar directamente a DCIM
-  static Future<String> _saveUsingDirectCopy(String tempFilePath, String fileName) async {
-    try {
-      if (kDebugMode) {
-        print('📁 [3/5] Usando copia directa (Android 6-9)');
-      }
-
-      final Directory? externalDir = await getExternalStorageDirectory();
-      
-      if (externalDir == null) {
-        throw Exception('❌ No se pudo acceder al almacenamiento externo');
-      }
-
-      final String basePath = externalDir.path.split('/Android')[0];
-      final String dcimFolderPath = '$basePath/DCIM/MiNegocio';
-      
-      if (kDebugMode) {
-        print('📁 [4/5] Carpeta destino: $dcimFolderPath');
-      }
-      
-      final Directory dcimFolder = Directory(dcimFolderPath);
-      if (!await dcimFolder.exists()) {
-        await dcimFolder.create(recursive: true);
-      }
-
-      final String finalFilePath = '$dcimFolderPath/$fileName';
-      final tempFile = File(tempFilePath);
-      
-      await tempFile.copy(finalFilePath);
-      
-      if (kDebugMode) {
-        print('✅ [5/5] Guardado exitoso en DCIM');
-      }
-      
-      // Notificar al Media Scanner
-      await _notifyMediaScanner(finalFilePath, dcimFolderPath);
-      
-      return finalFilePath;
-      
-    } catch (e) {
-      if (kDebugMode) {
-        print('❌ Error en copia directa: $e');
-      }
-      rethrow;
-    }
-  }
-
-  /// 📢 Notificar al Media Scanner (solo Android 6-9)
-  static Future<void> _notifyMediaScanner(String filePath, String folderPath) async {
-    try {
-      if (!Platform.isAndroid) return;
-      
-      if (kDebugMode) {
-        print('📷 Notificando al Media Scanner...');
-      }
-      
-      await Process.run('am', [
-        'broadcast',
-        '-a',
-        'android.intent.action.MEDIA_SCANNER_SCAN_FILE',
-        '-d',
-        'file://$filePath'
-      ]);
-      
-    } catch (e) {
-      // No crítico si falla
-      if (kDebugMode) {
-        print('⚠️ Media Scanner falló (no crítico): $e');
-      }
-    }
-  }
-
-  /// 🏷️ Generar nombre de archivo único
-  static String generateFileName(int invoiceNumber, {bool isPdf = false}) {
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final extension = isPdf ? 'pdf' : 'png';
-    return 'Boleta_${invoiceNumber}_$timestamp.$extension';
-  }
-
-  /// 💾 MÉTODO PRINCIPAL
-  static Future<String> saveInvoiceToGallery({
+  /// 🖼️ Guardar IMAGEN de RECIBO
+  /// Ruta: Pictures/Proion/Receipts/Recibo_XXX.png
+  /// ✅ APARECE EN GALERÍA
+  static Future<String> saveReceiptImage({
     required String tempFilePath,
-    required int invoiceNumber,
-    bool isPdf = false,
+    required int receiptNumber,
   }) async {
     try {
       if (kDebugMode) {
-        print('📥 Guardando boleta $invoiceNumber (${isPdf ? "PDF" : "PNG"})');
+        print('🖼️ Guardando imagen de recibo #$receiptNumber');
       }
+
+      final tempFile = File(tempFilePath);
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = 'Recibo_${receiptNumber}_$timestamp.png';
       
-      final fileName = generateFileName(invoiceNumber, isPdf: isPdf);
-      
-      final savedPath = await saveFileToGallery(
-        tempFilePath: tempFilePath,
+      final savedPath = await _saveFile(
+        file: tempFile,
         fileName: fileName,
+        subfolder: 'Receipts', // ← Carpeta para recibos en Galería
+        mimeType: 'image/png',
       );
-      
+
       // Borrar archivo temporal
       try {
-        await File(tempFilePath).delete();
+        await tempFile.delete();
         if (kDebugMode) {
           print('🗑️ Temporal eliminado');
         }
       } catch (e) {
         // No crítico
       }
-      
+
       return savedPath;
       
     } catch (e, stackTrace) {
       if (kDebugMode) {
-        print('❌ Error en saveInvoiceToGallery: $e');
+        print('❌ Error guardando imagen de recibo: $e');
         print('Stack: $stackTrace');
       }
       rethrow;
+    }
+  }
+
+  /// 📄 Guardar PDF de RECIBO
+  /// Ruta: Documents/Proion/Documents/Recibo_XXX.pdf
+  /// ✅ SOLO EN APP ARCHIVOS
+  static Future<String> saveReceiptPDF({
+    required String tempFilePath,
+    required int receiptNumber,
+  }) async {
+    try {
+      if (kDebugMode) {
+        print('📄 Guardando PDF de recibo #$receiptNumber');
+      }
+
+      final tempFile = File(tempFilePath);
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = 'Recibo_${receiptNumber}_$timestamp.pdf';
+      
+      final savedPath = await _saveFile(
+        file: tempFile,
+        fileName: fileName,
+        subfolder: 'Documents', // ← Carpeta para PDFs
+        mimeType: 'application/pdf',
+      );
+
+      // Borrar archivo temporal
+      try {
+        await tempFile.delete();
+        if (kDebugMode) {
+          print('🗑️ Temporal eliminado');
+        }
+      } catch (e) {
+        // No crítico
+      }
+
+      return savedPath;
+      
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        print('❌ Error guardando PDF: $e');
+        print('Stack: $stackTrace');
+      }
+      rethrow;
+    }
+  }
+
+  /// 💾 Guardar BACKUP de base de datos
+  /// Ruta: Documents/Proion/Backups/Backup_YYYY-MM-DD.db
+  /// ✅ SOLO EN APP ARCHIVOS
+  static Future<String> saveBackup(File dbFile) async {
+    try {
+      if (kDebugMode) {
+        print('💾 Guardando backup');
+      }
+
+      final now = DateTime.now();
+      final dateStr = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}';
+      final fileName = 'Backup_$dateStr.db';
+      
+      return await _saveFile(
+        file: dbFile,
+        fileName: fileName,
+        subfolder: 'Backups', // ← Carpeta para backups
+        mimeType: 'application/octet-stream',
+      );
+      
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        print('❌ Error guardando backup: $e');
+        print('Stack: $stackTrace');
+      }
+      rethrow;
+    }
+  }
+
+  /// 📷 Guardar FOTO de PRODUCTO
+  /// Ruta: Pictures/Proion/Products/Producto_XXX.png
+  /// ✅ APARECE EN GALERÍA
+  static Future<String> saveProductImage({
+    required File imageFile,
+    required String productName,
+  }) async {
+    try {
+      if (kDebugMode) {
+        print('📷 Guardando foto de producto: $productName');
+      }
+
+      final cleanName = productName
+          .replaceAll(RegExp(r'[^\w\s-]'), '')
+          .replaceAll(' ', '_')
+          .substring(0, productName.length > 30 ? 30 : productName.length);
+      
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = 'Producto_${cleanName}_$timestamp.png';
+      
+      return await _saveFile(
+        file: imageFile,
+        fileName: fileName,
+        subfolder: 'Products', // ← Carpeta para productos en Galería
+        mimeType: 'image/png',
+      );
+      
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        print('❌ Error guardando foto de producto: $e');
+        print('Stack: $stackTrace');
+      }
+      rethrow;
+    }
+  }
+
+  /// 🏷️ Generar nombre de archivo (compatible con código viejo)
+  @Deprecated('Usa saveReceiptImage() o saveReceiptPDF() directamente')
+  static String generateFileName(int receiptNumber, {bool isPdf = false}) {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final extension = isPdf ? 'pdf' : 'png';
+    return 'Recibo_${receiptNumber}_$timestamp.$extension';
+  }
+
+  /// 💾 MÉTODO PRINCIPAL (compatible con código viejo)
+  @Deprecated('Usa saveReceiptImage() para PNG o saveReceiptPDF() para PDF')
+  static Future<String> saveInvoiceToGallery({
+    required String tempFilePath,
+    required int invoiceNumber,
+    bool isPdf = false,
+  }) async {
+    if (isPdf) {
+      return await saveReceiptPDF(
+        tempFilePath: tempFilePath,
+        receiptNumber: invoiceNumber,
+      );
+    } else {
+      return await saveReceiptImage(
+        tempFilePath: tempFilePath,
+        receiptNumber: invoiceNumber,
+      );
     }
   }
 }
