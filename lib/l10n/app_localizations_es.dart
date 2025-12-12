@@ -1155,4 +1155,44 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get loadingMoreProducts => 'Cargando más productos...';
+
+  @override
+  String get previousPage => 'Página anterior';
+
+  @override
+  String get nextPage => 'Página siguiente';
+
+  @override
+  String get myBackups => 'Mis Backups';
+
+  @override
+  String get myBackupsSubtitle => 'Administrar backups de productos y facturas';
+
+  @override
+  String invoiceCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count boletas',
+      one: '1 boleta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get loadingMoreInvoices => 'Cargando más facturas...';
+
+  @override
+  String confirmDeleteInvoice(String receipt, int number) {
+    return '¿Estás seguro de eliminar $receipt #$number?\n\nEsta acción no se puede deshacer.';
+  }
+
+  @override
+  String get savedSuccessfully => '✅ Archivo guardado exitosamente';
+
+  @override
+  String get view => 'Ver';
+
+  @override
+  String get couldNotOpenFile => 'No se pudo abrir el archivo';
 }

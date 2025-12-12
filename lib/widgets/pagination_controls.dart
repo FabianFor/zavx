@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 
 class PaginationControls extends StatelessWidget {
   final int currentPage;
@@ -16,6 +17,8 @@ class PaginationControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     if (totalPages <= 1) return const SizedBox.shrink();
 
     return Container(
@@ -39,7 +42,7 @@ class PaginationControls extends StatelessWidget {
                 ? () => onPageChanged(currentPage - 1)
                 : null,
             icon: const Icon(Icons.chevron_left),
-            tooltip: 'Página anterior',
+            tooltip: l10n.previousPage,
           ),
           
           const SizedBox(width: 8),
@@ -55,7 +58,7 @@ class PaginationControls extends StatelessWidget {
                 ? () => onPageChanged(currentPage + 1)
                 : null,
             icon: const Icon(Icons.chevron_right),
-            tooltip: 'Página siguiente',
+            tooltip: l10n.nextPage,
           ),
         ],
       ),

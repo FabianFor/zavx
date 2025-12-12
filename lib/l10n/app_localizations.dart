@@ -2261,6 +2261,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cargando más productos...'**
   String get loadingMoreProducts;
+
+  /// No description provided for @previousPage.
+  ///
+  /// In es, this message translates to:
+  /// **'Página anterior'**
+  String get previousPage;
+
+  /// No description provided for @nextPage.
+  ///
+  /// In es, this message translates to:
+  /// **'Página siguiente'**
+  String get nextPage;
+
+  /// No description provided for @myBackups.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis Backups'**
+  String get myBackups;
+
+  /// No description provided for @myBackupsSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Administrar backups de productos y facturas'**
+  String get myBackupsSubtitle;
+
+  /// No description provided for @invoiceCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 boleta} other{{count} boletas}}'**
+  String invoiceCount(int count);
+
+  /// No description provided for @loadingMoreInvoices.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando más facturas...'**
+  String get loadingMoreInvoices;
+
+  /// No description provided for @confirmDeleteInvoice.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Estás seguro de eliminar {receipt} #{number}?\n\nEsta acción no se puede deshacer.'**
+  String confirmDeleteInvoice(String receipt, int number);
+
+  /// No description provided for @savedSuccessfully.
+  ///
+  /// In es, this message translates to:
+  /// **'✅ Archivo guardado exitosamente'**
+  String get savedSuccessfully;
+
+  /// No description provided for @view.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver'**
+  String get view;
+
+  /// No description provided for @couldNotOpenFile.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir el archivo'**
+  String get couldNotOpenFile;
 }
 
 class _AppLocalizationsDelegate

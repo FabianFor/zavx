@@ -1138,4 +1138,38 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get loadingMoreProducts => '正在加载更多产品...';
+
+  @override
+  String get previousPage => '上一页';
+
+  @override
+  String get nextPage => '下一页';
+
+  @override
+  String get myBackups => '我的备份';
+
+  @override
+  String get myBackupsSubtitle => '管理产品和发票备份';
+
+  @override
+  String invoiceCount(int count) {
+    return '$count 张收据';
+  }
+
+  @override
+  String get loadingMoreInvoices => '加载更多发票...';
+
+  @override
+  String confirmDeleteInvoice(String receipt, int number) {
+    return '您确定要删除$receipt #$number吗？\n\n此操作无法撤消。';
+  }
+
+  @override
+  String get savedSuccessfully => '✅ 文件保存成功';
+
+  @override
+  String get view => '查看';
+
+  @override
+  String get couldNotOpenFile => '无法打开文件';
 }

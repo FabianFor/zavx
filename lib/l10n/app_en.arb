@@ -541,5 +541,25 @@
   "goToPage": "Go to page...",
   "totalProducts": "total products",
   "page": "Page",
-  "loadingMoreProducts": "Loading more products..."
+  "loadingMoreProducts": "Loading more products...",
+  "previousPage": "Previous page",
+  "nextPage": "Next page",
+  "myBackups": "My Backups",
+  "myBackupsSubtitle": "Manage product and invoice backups",
+  "invoiceCount": "{count, plural, =1{1 receipt} other{{count} receipts}}",
+  "@invoiceCount": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "loadingMoreInvoices": "Loading more invoices...",
+  "confirmDeleteInvoice": "Are you sure you want to delete {receipt} #{number}?\n\nThis action cannot be undone.",
+  "@confirmDeleteInvoice": {
+    "placeholders": {
+      "receipt": {"type": "String"},
+      "number": {"type": "int"}
+    }
+  },
+  "savedSuccessfully": "✅ File saved successfully",
+  "view": "View",
+  "couldNotOpenFile": "Could not open file"
+
 }

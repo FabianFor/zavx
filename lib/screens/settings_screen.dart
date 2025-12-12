@@ -129,7 +129,7 @@ class SettingsScreen extends StatelessWidget {
                 isTablet: isTablet,
               ),
 
-              // SECCIÓN: RESPALDO Y RESTAURACIÓN (SOLO 1 BOTÓN)
+              // SECCIÓN: RESPALDO Y RESTAURACIÓN
               if (authProvider.esAdmin) ...[
                 SizedBox(height: isTablet ? 24.h : 28.h),
                 
@@ -145,14 +145,14 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
 
-                // ✅ SOLO ESTE BOTÓN: MIS BACKUPS
+                // MIS BACKUPS
                 _buildSettingCard(
                   context: context,
                   theme: theme,
                   icon: Icons.backup,
                   iconColor: const Color(0xFF9C27B0),
-                  title: 'Mis Backups',
-                  subtitle: 'Administrar backups de productos y facturas',
+                  title: l10n.myBackups,
+                  subtitle: l10n.myBackupsSubtitle,
                   trailing: Icon(Icons.chevron_right, color: theme.iconColor),
                   onTap: () => Navigator.push(
                     context,

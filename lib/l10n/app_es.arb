@@ -541,5 +541,25 @@
   "goToPage": "Ir a página...",
   "totalProducts": "productos totales",
   "page": "Página",
-  "loadingMoreProducts": "Cargando más productos..."
+  "loadingMoreProducts": "Cargando más productos...",
+  "previousPage": "Página anterior",
+  "nextPage": "Página siguiente",
+  "myBackups": "Mis Backups",
+  "myBackupsSubtitle": "Administrar backups de productos y facturas",
+  "invoiceCount": "{count, plural, =1{1 boleta} other{{count} boletas}}",
+  "@invoiceCount": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "loadingMoreInvoices": "Cargando más facturas...",
+  "confirmDeleteInvoice": "¿Estás seguro de eliminar {receipt} #{number}?\n\nEsta acción no se puede deshacer.",
+  "@confirmDeleteInvoice": {
+    "placeholders": {
+      "receipt": {"type": "String"},
+      "number": {"type": "int"}
+    }
+  },
+  "savedSuccessfully": "✅ Archivo guardado exitosamente",
+  "view": "Ver",
+  "couldNotOpenFile": "No se pudo abrir el archivo"
+
 }
