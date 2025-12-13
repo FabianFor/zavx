@@ -560,6 +560,22 @@
   },
   "savedSuccessfully": "✅ File saved successfully",
   "view": "View",
-  "couldNotOpenFile": "Could not open file"
+  "couldNotOpenFile": "Could not open file",
+  "photosAccessTitle": "Photos Access",
+  "photosAccessMessage": "To select images, you need to enable the permission.\n\nGo to:\nSettings → Apps → Proïon → Permissions → Photos and videos",
+  
+  "galleryAccessTitle": "📸 Gallery Access",
+  "galleryAccessRationale": "To select images from your gallery, we need your permission.\n\nWe will only access the photos you select.",
+  
+  "storageAccessTitle": "💾 Storage Access",
+  "storageAccessMessage": "To save files, you need to enable the permission.\n\nGo to:\nSettings → Apps → Proïon → Permissions → Storage",
+  "storageAccessRationale": "To save receipts and images, we need storage access.\n\nWe will only access our app's folders.",
+  
+  "permissionDeniedTitle": "Permission Denied",
+  "permissionDeniedMessage": "You must enable the permission manually in Settings.",
+  
+  "noThanks": "No, thanks",
+  "understood": "Understood",
+  "openSettings": "Open Settings"
 
 }

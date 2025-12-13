@@ -484,59 +484,61 @@ class _AddProductDialogState extends State<AddProductDialog> {
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
-    final l10n = AppLocalizations.of(context)!;
+ Future<void> _pickImage() async {
+  final l10n = AppLocalizations.of(context)!;
+  
+  try {
+    // ✅ CORREGIDO: Usar permiso de LECTURA de media
+    final hasPermission = await AppPermissionHandler.requestMediaReadPermission(context);
     
-    try {
-      final hasPermission = await AppPermissionHandler.requestStoragePermission(context);
-      
-      if (!hasPermission) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.permissionsDenied),
-              backgroundColor: Colors.orange,
-            ),
-          );
-        }
-        return;
-      }
-
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 1024,
-        maxHeight: 1024,
-        imageQuality: 85,
-      );
-
-      if (image != null) {
-        if (mounted) {
-          setState(() {
-            _imagePath = image.path;
-          });
-          
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.imageSelectedSuccess),
-              backgroundColor: Colors.green,
-              duration: const Duration(seconds: 1),
-            ),
-          );
-        }
-      }
-    } catch (e) {
+    if (!hasPermission) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${l10n.error}: ${e.toString()}'),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 3),
+            content: Text(l10n.permissionsDenied),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+      return;
+    }
+
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageQuality: 85,
+    );
+
+    if (image != null) {
+      if (mounted) {
+        setState(() {
+          _imagePath = image.path;
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.imageSelectedSuccess),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 1),
           ),
         );
       }
     }
+  } catch (e) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${l10n.error}: ${e.toString()}'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
   }
+}
+
 
   Future<void> _saveProduct() async {
     final l10n = AppLocalizations.of(context)!;

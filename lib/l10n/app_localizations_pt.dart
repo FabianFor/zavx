@@ -1191,4 +1191,39 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get couldNotOpenFile => 'Não foi possível abrir o arquivo';
+
+  @override
+  String get photosAccessTitle => 'Acesso a Fotos';
+
+  @override
+  String get photosAccessMessage =>
+      'Para selecionar imagens, você precisa habilitar a permissão.\n\nVá para:\nConfigurações → Apps → Proïon → Permissões → Fotos e vídeos';
+
+  @override
+  String get galleryAccessTitle => '📸 Acesso à Galeria';
+
+  @override
+  String get galleryAccessRationale =>
+      'Para selecionar imagens da sua galeria, precisamos da sua permissão.\n\nAcessaremos apenas as fotos que você selecionar.';
+
+  @override
+  String get storageAccessTitle => '💾 Acesso ao Armazenamento';
+
+  @override
+  String get storageAccessMessage =>
+      'Para salvar arquivos, você precisa habilitar a permissão.\n\nVá para:\nConfigurações → Apps → Proïon → Permissões → Armazenamento';
+
+  @override
+  String get storageAccessRationale =>
+      'Para salvar recibos e imagens, precisamos de acesso ao armazenamento.\n\nAcessaremos apenas as pastas do nosso aplicativo.';
+
+  @override
+  String get permissionDeniedTitle => 'Permissão Negada';
+
+  @override
+  String get permissionDeniedMessage =>
+      'Você deve habilitar a permissão manualmente nas Configurações.';
+
+  @override
+  String get noThanks => 'Não, obrigado';
 }

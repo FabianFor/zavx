@@ -560,7 +560,24 @@
   },
   "savedSuccessfully": "✅ Arquivo salvo com sucesso",
   "view": "Ver",
-  "couldNotOpenFile": "Não foi possível abrir o arquivo"
+  "couldNotOpenFile": "Não foi possível abrir o arquivo",
+  "photosAccessTitle": "Acesso a Fotos",
+  "photosAccessMessage": "Para selecionar imagens, você precisa habilitar a permissão.\n\nVá para:\nConfigurações → Apps → Proïon → Permissões → Fotos e vídeos",
+  
+  "galleryAccessTitle": "📸 Acesso à Galeria",
+  "galleryAccessRationale": "Para selecionar imagens da sua galeria, precisamos da sua permissão.\n\nAcessaremos apenas as fotos que você selecionar.",
+  
+  "storageAccessTitle": "💾 Acesso ao Armazenamento",
+  "storageAccessMessage": "Para salvar arquivos, você precisa habilitar a permissão.\n\nVá para:\nConfigurações → Apps → Proïon → Permissões → Armazenamento",
+  "storageAccessRationale": "Para salvar recibos e imagens, precisamos de acesso ao armazenamento.\n\nAcessaremos apenas as pastas do nosso aplicativo.",
+  
+  "permissionDeniedTitle": "Permissão Negada",
+  "permissionDeniedMessage": "Você deve habilitar a permissão manualmente nas Configurações.",
+  
+  "noThanks": "Não, obrigado",
+  "understood": "Entendido",
+  "openSettings": "Abrir Configurações"
+
 
 
 }

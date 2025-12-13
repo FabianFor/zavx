@@ -24,7 +24,6 @@ dependencies:
 
   # UI & Responsive
   flutter_screenutil: ^5.9.3
-  responsive_framework: ^1.4.0
 
   # Images
   image_picker: ^1.1.2
@@ -42,12 +41,6 @@ dependencies:
   # Utils
   uuid: ^4.4.0
   intl: ^0.20.2
-
-  # Logger
-  logger: ^2.3.0
-
-  # Network
-  connectivity_plus: ^6.0.5
 
   # PDF & File handling
   pdf: ^3.10.4

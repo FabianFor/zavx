@@ -53,7 +53,7 @@ enum DateFilter { today, thisWeek, thisMonth, all, custom }
 
 class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
   final _searchController = TextEditingController();
-  final _scrollController = ScrollController(); // ✅ NUEVO
+  final _scrollController = ScrollController();
   String _searchQuery = '';
   DateFilter _selectedFilter = DateFilter.today;
   DateTime? _customStartDate;
@@ -62,18 +62,16 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
   @override
   void initState() {
     super.initState();
-    // ✅ NUEVO: Detectar scroll para cargar más
     _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    _scrollController.dispose(); // ✅ NUEVO
+    _scrollController.dispose();
     super.dispose();
   }
 
-  // ✅ NUEVO: Función para scroll infinito
   void _onScroll() {
     if (_scrollController.position.pixels >= 
         _scrollController.position.maxScrollExtent * 0.8) {
@@ -221,7 +219,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                 ),
               ),
               SizedBox(height: 12.h),
-
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -241,7 +238,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
             ],
           ),
         ),
-
         Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           color: theme.primaryWithOpacity(0.1),
@@ -269,7 +265,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
             ],
           ),
         ),
-
         if (filteredInvoices.isNotEmpty)
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -296,7 +291,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
               ],
             ),
           ),
-
         Expanded(
           child: filteredInvoices.isEmpty
               ? Center(
@@ -304,17 +298,13 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        _searchQuery.isNotEmpty
-                            ? Icons.search_off
-                            : Icons.receipt_long_outlined,
+                        _searchQuery.isNotEmpty ? Icons.search_off : Icons.receipt_long_outlined,
                         size: isTablet ? 70.sp : 80.sp,
                         color: theme.iconColorLight,
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        _searchQuery.isNotEmpty
-                            ? l10n.noReceiptsFound
-                            : l10n.noBilletsInPeriod,
+                        _searchQuery.isNotEmpty ? l10n.noReceiptsFound : l10n.noBilletsInPeriod,
                         style: TextStyle(
                           fontSize: isTablet ? 16.sp : 18.sp,
                           color: theme.textSecondary,
@@ -339,16 +329,14 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                   ),
                 )
               : ListView.builder(
-                  controller: _scrollController, // ✅ AGREGADO
+                  controller: _scrollController,
                   padding: EdgeInsets.all(16.w),
-                  itemCount: filteredInvoices.length + 
-                      (invoiceProvider.isLoadingMore ? 1 : 0), // ✅ +1 para indicador
+                  itemCount: filteredInvoices.length + (invoiceProvider.isLoadingMore ? 1 : 0),
                   cacheExtent: 500,
                   addAutomaticKeepAlives: false,
                   addRepaintBoundaries: true,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    // ✅ NUEVO: Indicador de carga al final
                     if (index == filteredInvoices.length) {
                       return Center(
                         child: Padding(
@@ -359,26 +347,20 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                               SizedBox(height: 8.h),
                               Text(
                                 'Cargando más facturas...',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: theme.textSecondary,
-                                ),
+                                style: TextStyle(fontSize: 12.sp, color: theme.textSecondary),
                               ),
                             ],
                           ),
                         ),
                       );
                     }
-                    
                     final invoice = filteredInvoices[index];
                     return Card(
                       margin: EdgeInsets.only(bottom: 16.h),
                       color: theme.cardBackground,
                       elevation: theme.isDark ? 4 : 2,
                       shadowColor: Colors.black.withOpacity(theme.isDark ? 0.3 : 0.1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                       child: InkWell(
                         onTap: () => _showInvoiceDetails(context, invoice),
                         borderRadius: BorderRadius.circular(12.r),
@@ -506,7 +488,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
       ),
       onPressed: () async {
         final isDark = theme.isDark;
-
         final picked = await showDateRangePicker(
           context: context,
           firstDate: DateTime(2020),
@@ -546,7 +527,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
             );
           },
         );
-
         if (picked != null) {
           setState(() {
             _selectedFilter = DateFilter.custom;
@@ -595,9 +575,8 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
               ),
             ),
             SizedBox(height: 20.h),
-
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: isTablet ? 20.w : 20.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -616,17 +595,14 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                 ],
               ),
             ),
-
             Divider(color: theme.dividerColor, thickness: 1),
-
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: isTablet ? 20.w : 20.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 12.h),
-
                     Row(
                       children: [
                         Icon(Icons.calendar_today, size: 16.sp, color: theme.iconColor),
@@ -638,7 +614,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                       ],
                     ),
                     SizedBox(height: 16.h),
-
                     Container(
                       padding: EdgeInsets.all(isTablet ? 14.w : 16.w),
                       decoration: BoxDecoration(
@@ -681,7 +656,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                       ),
                     ),
                     SizedBox(height: 20.h),
-
                     Text(
                       '${l10n.products}:',
                       style: TextStyle(
@@ -691,7 +665,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                       ),
                     ),
                     SizedBox(height: 12.h),
-
                     ...invoice.items.map<Widget>((item) {
                       return Container(
                         margin: EdgeInsets.only(bottom: 12.h),
@@ -719,10 +692,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                                   SizedBox(height: 4.h),
                                   Text(
                                     '${settingsProvider.formatPrice(item.price)} x ${item.quantity}',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: theme.textSecondary,
-                                    ),
+                                    style: TextStyle(fontSize: 14.sp, color: theme.textSecondary),
                                   ),
                                 ],
                               ),
@@ -739,11 +709,9 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                         ),
                       );
                     }).toList(),
-
                     SizedBox(height: 20.h),
                     Divider(color: theme.dividerColor, thickness: 2),
                     SizedBox(height: 12.h),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -770,10 +738,9 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                 ),
               ),
             ),
-
             SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(isTablet ? 20.w : 20.w),
+                padding: EdgeInsets.all(20.w),
                 child: Row(
                   children: [
                     Expanded(
@@ -871,9 +838,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
           ElevatedButton(
             onPressed: () async {
               final invoiceProvider = Provider.of<InvoiceProvider>(context, listen: false);
-
               await invoiceProvider.deleteInvoice(invoice.id);
-
               if (context.mounted) {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -902,6 +867,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
     );
   }
 
+  // ✅ COMPARTIR - SIN PERMISOS
   Future<void> _handleShareInvoice(
     BuildContext context,
     dynamic invoice,
@@ -909,23 +875,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
     SettingsProvider settingsProvider,
   ) async {
     final l10n = AppLocalizations.of(context)!;
-
-    final hasPermission = await AppPermissionHandler.requestStoragePermission(context);
-
-    if (!hasPermission) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '⚠️ ${l10n.needPermissionsToShare}',
-              style: TextStyle(fontSize: 14.sp),
-            ),
-            backgroundColor: Colors.orange,
-          ),
-        );
-      }
-      return;
-    }
 
     if (!context.mounted) return;
 
@@ -996,6 +945,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
     }
   }
 
+  // ✅ DESCARGAR - SÍ PIDE PERMISOS
   Future<void> _handleDownloadInvoice(
     BuildContext context,
     dynamic invoice,
@@ -1079,7 +1029,6 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
 
       if (context.mounted) {
         Navigator.pop(context);
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
@@ -1088,7 +1037,7 @@ class _InvoicesScreenContentState extends State<InvoicesScreenContent> {
                 SizedBox(width: 8.w),
                 Expanded(
                   child: Text(
-                    '✅ Guardado en Galería → Álbum "MiNegocio"',
+                    '✅ Guardado en Galería → Álbum "Proïon"',
                     style: TextStyle(fontSize: 14.sp),
                   ),
                 ),

@@ -2321,6 +2321,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo abrir el archivo'**
   String get couldNotOpenFile;
+
+  /// No description provided for @photosAccessTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Acceso a Fotos'**
+  String get photosAccessTitle;
+
+  /// No description provided for @photosAccessMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Para seleccionar imágenes, necesitas habilitar el permiso.\n\nVe a:\nConfiguración → Apps → Proïon → Permisos → Fotos y videos'**
+  String get photosAccessMessage;
+
+  /// No description provided for @galleryAccessTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'📸 Acceso a Galería'**
+  String get galleryAccessTitle;
+
+  /// No description provided for @galleryAccessRationale.
+  ///
+  /// In es, this message translates to:
+  /// **'Para seleccionar imágenes de tu galería, necesitamos tu permiso.\n\nSolo accederemos a las fotos que selecciones.'**
+  String get galleryAccessRationale;
+
+  /// No description provided for @storageAccessTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'💾 Acceso a Almacenamiento'**
+  String get storageAccessTitle;
+
+  /// No description provided for @storageAccessMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Para guardar archivos, necesitas habilitar el permiso.\n\nVe a:\nConfiguración → Apps → Proïon → Permisos → Almacenamiento'**
+  String get storageAccessMessage;
+
+  /// No description provided for @storageAccessRationale.
+  ///
+  /// In es, this message translates to:
+  /// **'Para guardar boletas e imágenes, necesitamos acceso al almacenamiento.\n\nSolo accederemos a las carpetas de nuestra app.'**
+  String get storageAccessRationale;
+
+  /// No description provided for @permissionDeniedTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Permiso Denegado'**
+  String get permissionDeniedTitle;
+
+  /// No description provided for @permissionDeniedMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Debes habilitar el permiso manualmente en Configuración.'**
+  String get permissionDeniedMessage;
+
+  /// No description provided for @noThanks.
+  ///
+  /// In es, this message translates to:
+  /// **'No, gracias'**
+  String get noThanks;
 }
 
 class _AppLocalizationsDelegate

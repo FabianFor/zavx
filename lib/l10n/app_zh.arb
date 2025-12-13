@@ -560,7 +560,23 @@
   },
   "savedSuccessfully": "✅ 文件保存成功",
   "view": "查看",
-  "couldNotOpenFile": "无法打开文件"
+  "couldNotOpenFile": "无法打开文件",
+  "photosAccessTitle": "访问照片",
+  "photosAccessMessage": "要选择图片，您需要启用权限。\n\n前往：\n设置 → 应用 → Proïon → 权限 → 照片和视频",
+  
+  "galleryAccessTitle": "📸 访问图库",
+  "galleryAccessRationale": "要从您的图库中选择图片，我们需要您的许可。\n\n我们只会访问您选择的照片。",
+  
+  "storageAccessTitle": "💾 访问存储",
+  "storageAccessMessage": "要保存文件，您需要启用权限。\n\n前往：\n设置 → 应用 → Proïon → 权限 → 存储",
+  "storageAccessRationale": "要保存收据和图片，我们需要访问存储。\n\n我们只会访问我们应用的文件夹。",
+  
+  "permissionDeniedTitle": "权限被拒绝",
+  "permissionDeniedMessage": "您必须在设置中手动启用权限。",
+  
+  "noThanks": "不用了，谢谢",
+  "understood": "明白了",
+  "openSettings": "打开设置"
 
 
 }

@@ -10,6 +10,7 @@ import '../providers/business_provider.dart';
 import '../providers/auth_provider.dart';
 import '../models/business_profile.dart';
 import 'login_screen.dart';
+import '../services/permission_handler.dart';  // ✅ AGREGADO
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -49,13 +50,46 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
+  // ✅ FUNCIÓN CORREGIDA - PIDE PERMISOS ANTES DE ABRIR GALERÍA
   Future<void> _pickLogo() async {
-    final picker = ImagePicker();
-    final image = await picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        _logoPath = image.path;
-      });
+    // ✅ PRIMERO: Pedir permiso para leer fotos
+    final hasPermission = await AppPermissionHandler.requestMediaReadPermission(context);
+    
+    if (!hasPermission) {
+      // Usuario denegó el permiso
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.galleryAccessRationale),
+            backgroundColor: Colors.orange,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+      return;
+    }
+    
+    // ✅ SEGUNDO: Abrir galería SOLO si tiene permiso
+    try {
+      final picker = ImagePicker();
+      final image = await picker.pickImage(source: ImageSource.gallery);
+      
+      if (image != null) {
+        setState(() {
+          _logoPath = image.path;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('⚠️ Error al seleccionar imagen: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
     }
   }
 

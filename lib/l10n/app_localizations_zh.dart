@@ -1172,4 +1172,36 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get couldNotOpenFile => '无法打开文件';
+
+  @override
+  String get photosAccessTitle => '访问照片';
+
+  @override
+  String get photosAccessMessage =>
+      '要选择图片，您需要启用权限。\n\n前往：\n设置 → 应用 → Proïon → 权限 → 照片和视频';
+
+  @override
+  String get galleryAccessTitle => '📸 访问图库';
+
+  @override
+  String get galleryAccessRationale => '要从您的图库中选择图片，我们需要您的许可。\n\n我们只会访问您选择的照片。';
+
+  @override
+  String get storageAccessTitle => '💾 访问存储';
+
+  @override
+  String get storageAccessMessage =>
+      '要保存文件，您需要启用权限。\n\n前往：\n设置 → 应用 → Proïon → 权限 → 存储';
+
+  @override
+  String get storageAccessRationale => '要保存收据和图片，我们需要访问存储。\n\n我们只会访问我们应用的文件夹。';
+
+  @override
+  String get permissionDeniedTitle => '权限被拒绝';
+
+  @override
+  String get permissionDeniedMessage => '您必须在设置中手动启用权限。';
+
+  @override
+  String get noThanks => '不用了，谢谢';
 }
