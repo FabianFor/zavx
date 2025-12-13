@@ -1204,4 +1204,109 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get noThanks => '不用了，谢谢';
+
+  @override
+  String get refresh => '刷新';
+
+  @override
+  String get quickActions => '快速操作';
+
+  @override
+  String get exportingProducts => '正在导出产品...';
+
+  @override
+  String get exportingInvoices => '正在导出发票...';
+
+  @override
+  String get processingProducts => '正在处理产品...';
+
+  @override
+  String get importingInvoices => '正在导入发票...';
+
+  @override
+  String get restoring => '正在恢复...';
+
+  @override
+  String productsExported(int count) {
+    return '✅ 已导出 $count 个产品';
+  }
+
+  @override
+  String invoicesExported(int count) {
+    return '✅ 已导出 $count 张发票';
+  }
+
+  @override
+  String importSummary(int imported, int replaced, int skipped) {
+    return '✅ 已导入: $imported | 🔄 已替换: $replaced | ⏭️ 已跳过: $skipped';
+  }
+
+  @override
+  String get invoicesRestoredSuccess => '✅ 发票恢复成功';
+
+  @override
+  String get backupDeleted => '✅ 备份已删除';
+
+  @override
+  String get confirmRestore => '确认恢复';
+
+  @override
+  String get confirmRestoreMessage => '恢复此备份？产品将逐个审查。';
+
+  @override
+  String get existingProduct => '现有产品';
+
+  @override
+  String get productAlreadyExists => '已存在同名产品';
+
+  @override
+  String get current => '当前';
+
+  @override
+  String get willBeDeleted => '将被删除';
+
+  @override
+  String get newLabel => '新';
+
+  @override
+  String get willBeImported => '将被导入';
+
+  @override
+  String get keepCurrent => '保持当前';
+
+  @override
+  String get replace => '替换';
+
+  @override
+  String get deleteBackup => '删除备份';
+
+  @override
+  String get confirmDeleteBackup => '永久删除此备份？';
+
+  @override
+  String get noProductBackups => '没有产品备份';
+
+  @override
+  String get noInvoiceBackups => '没有发票备份';
+
+  @override
+  String get restore => '恢复';
+
+  @override
+  String get continueAction => '继续';
+
+  @override
+  String get productBackups => '📦 产品';
+
+  @override
+  String get invoiceBackups => '🧾 发票';
+
+  @override
+  String get priceLabel => '价格';
+
+  @override
+  String get stockLabel => '库存';
+
+  @override
+  String get unitsLabel => '单位';
 }

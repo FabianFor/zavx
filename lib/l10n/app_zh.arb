@@ -563,20 +563,62 @@
   "couldNotOpenFile": "无法打开文件",
   "photosAccessTitle": "访问照片",
   "photosAccessMessage": "要选择图片，您需要启用权限。\n\n前往：\n设置 → 应用 → Proïon → 权限 → 照片和视频",
-  
   "galleryAccessTitle": "📸 访问图库",
   "galleryAccessRationale": "要从您的图库中选择图片，我们需要您的许可。\n\n我们只会访问您选择的照片。",
-  
   "storageAccessTitle": "💾 访问存储",
   "storageAccessMessage": "要保存文件，您需要启用权限。\n\n前往：\n设置 → 应用 → Proïon → 权限 → 存储",
   "storageAccessRationale": "要保存收据和图片，我们需要访问存储。\n\n我们只会访问我们应用的文件夹。",
-  
   "permissionDeniedTitle": "权限被拒绝",
   "permissionDeniedMessage": "您必须在设置中手动启用权限。",
-  
   "noThanks": "不用了，谢谢",
-  "understood": "明白了",
-  "openSettings": "打开设置"
-
-
+  "refresh": "刷新",
+  "quickActions": "快速操作",
+  "exportingProducts": "正在导出产品...",
+  "exportingInvoices": "正在导出发票...",
+  "processingProducts": "正在处理产品...",
+  "importingInvoices": "正在导入发票...",
+  "restoring": "正在恢复...",
+  "productsExported": "✅ 已导出 {count} 个产品",
+  "@productsExported": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "invoicesExported": "✅ 已导出 {count} 张发票",
+  "@invoicesExported": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "importSummary": "✅ 已导入: {imported} | 🔄 已替换: {replaced} | ⏭️ 已跳过: {skipped}",
+  "@importSummary": {
+    "placeholders": {
+      "imported": {"type": "int"},
+      "replaced": {"type": "int"},
+      "skipped": {"type": "int"}
+    }
+  },
+  "invoicesRestoredSuccess": "✅ 发票恢复成功",
+  "backupDeleted": "✅ 备份已删除",
+  "confirmRestore": "确认恢复",
+  "confirmRestoreMessage": "恢复此备份？产品将逐个审查。",
+  "existingProduct": "现有产品",
+  "productAlreadyExists": "已存在同名产品",
+  "current": "当前",
+  "willBeDeleted": "将被删除",
+  "newLabel": "新",
+  "willBeImported": "将被导入",
+  "keepCurrent": "保持当前",
+  "replace": "替换",
+  "deleteBackup": "删除备份",
+  "confirmDeleteBackup": "永久删除此备份？",
+  "noProductBackups": "没有产品备份",
+  "noInvoiceBackups": "没有发票备份",
+  "restore": "恢复",
+  "continueAction": "继续",
+  "productBackups": "📦 产品",
+  "invoiceBackups": "🧾 发票",
+  "priceLabel": "价格",
+  "stockLabel": "库存",
+  "unitsLabel": "单位"
 }

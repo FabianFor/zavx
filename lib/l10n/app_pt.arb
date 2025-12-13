@@ -563,21 +563,62 @@
   "couldNotOpenFile": "Não foi possível abrir o arquivo",
   "photosAccessTitle": "Acesso a Fotos",
   "photosAccessMessage": "Para selecionar imagens, você precisa habilitar a permissão.\n\nVá para:\nConfigurações → Apps → Proïon → Permissões → Fotos e vídeos",
-  
   "galleryAccessTitle": "📸 Acesso à Galeria",
   "galleryAccessRationale": "Para selecionar imagens da sua galeria, precisamos da sua permissão.\n\nAcessaremos apenas as fotos que você selecionar.",
-  
   "storageAccessTitle": "💾 Acesso ao Armazenamento",
   "storageAccessMessage": "Para salvar arquivos, você precisa habilitar a permissão.\n\nVá para:\nConfigurações → Apps → Proïon → Permissões → Armazenamento",
   "storageAccessRationale": "Para salvar recibos e imagens, precisamos de acesso ao armazenamento.\n\nAcessaremos apenas as pastas do nosso aplicativo.",
-  
   "permissionDeniedTitle": "Permissão Negada",
   "permissionDeniedMessage": "Você deve habilitar a permissão manualmente nas Configurações.",
-  
   "noThanks": "Não, obrigado",
-  "understood": "Entendido",
-  "openSettings": "Abrir Configurações"
-
-
-
+  "refresh": "Atualizar",
+  "quickActions": "Ações Rápidas",
+  "exportingProducts": "Exportando produtos...",
+  "exportingInvoices": "Exportando faturas...",
+  "processingProducts": "Processando produtos...",
+  "importingInvoices": "Importando faturas...",
+  "restoring": "Restaurando...",
+  "productsExported": "✅ {count} produtos exportados",
+  "@productsExported": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "invoicesExported": "✅ {count} faturas exportadas",
+  "@invoicesExported": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "importSummary": "✅ Importados: {imported} | 🔄 Substituídos: {replaced} | ⏭️ Ignorados: {skipped}",
+  "@importSummary": {
+    "placeholders": {
+      "imported": {"type": "int"},
+      "replaced": {"type": "int"},
+      "skipped": {"type": "int"}
+    }
+  },
+  "invoicesRestoredSuccess": "✅ Faturas restauradas com sucesso",
+  "backupDeleted": "✅ Backup excluído",
+  "confirmRestore": "Confirmar restauração",
+  "confirmRestoreMessage": "Restaurar este backup? Os produtos serão revisados um por um.",
+  "existingProduct": "Produto existente",
+  "productAlreadyExists": "Já existe um produto com este nome",
+  "current": "ATUAL",
+  "willBeDeleted": "Será excluído",
+  "newLabel": "NOVO",
+  "willBeImported": "Será importado",
+  "keepCurrent": "Manter atual",
+  "replace": "Substituir",
+  "deleteBackup": "Excluir backup",
+  "confirmDeleteBackup": "Excluir este backup permanentemente?",
+  "noProductBackups": "Nenhum backup de produtos",
+  "noInvoiceBackups": "Nenhum backup de faturas",
+  "restore": "Restaurar",
+  "continueAction": "Continuar",
+  "productBackups": "📦 Produtos",
+  "invoiceBackups": "🧾 Faturas",
+  "priceLabel": "Preço",
+  "stockLabel": "Estoque",
+  "unitsLabel": "unidades"
 }

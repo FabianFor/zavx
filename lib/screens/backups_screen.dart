@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../core/utils/theme_helper.dart';
 import '../providers/product_provider.dart';
 import '../providers/invoice_provider.dart';
@@ -43,6 +43,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = ThemeHelper(context);
+    final l10n = AppLocalizations.of(context)!;
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth > 600;
 
@@ -50,7 +51,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
       backgroundColor: theme.scaffoldBackground,
       appBar: AppBar(
         title: Text(
-          'Mis Backups',
+          l10n.myBackups,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
@@ -62,7 +63,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadBackups,
-            tooltip: 'Actualizar',
+            tooltip: l10n.refresh,
           ),
         ],
       ),
@@ -75,14 +76,14 @@ class _BackupsScreenState extends State<BackupsScreen> {
                 padding: EdgeInsets.all(isTablet ? 20.w : 16.w),
                 children: [
                   // BOTONES DE ACCIÓN RÁPIDA (4 BOTONES EN GRID)
-                  _buildQuickActions(theme, isTablet),
+                  _buildQuickActions(theme, isTablet, l10n),
 
                   SizedBox(height: isTablet ? 28.h : 24.h),
 
                   // PRODUCTOS
                   _buildSectionHeader(
                     theme,
-                    '📦 Productos',
+                    l10n.productBackups,
                     Icons.inventory_2,
                     const Color(0xFF4CAF50),
                     isTablet,
@@ -91,13 +92,14 @@ class _BackupsScreenState extends State<BackupsScreen> {
                   SizedBox(height: 12.h),
                   
                   if (_productBackups.isEmpty)
-                    _buildEmptyState(theme, 'No hay backups de productos', isTablet)
+                    _buildEmptyState(theme, l10n.noProductBackups, isTablet)
                   else
                     ..._productBackups.map((backup) => _buildBackupCard(
                           theme,
                           backup,
                           'product',
                           isTablet,
+                          l10n,
                         )),
                   
                   SizedBox(height: isTablet ? 32.h : 28.h),
@@ -105,7 +107,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                   // FACTURAS/RECIBOS
                   _buildSectionHeader(
                     theme,
-                    '🧾 Facturas',
+                    l10n.invoiceBackups,
                     Icons.receipt_long,
                     const Color(0xFFFF9800),
                     isTablet,
@@ -114,13 +116,14 @@ class _BackupsScreenState extends State<BackupsScreen> {
                   SizedBox(height: 12.h),
                   
                   if (_invoiceBackups.isEmpty)
-                    _buildEmptyState(theme, 'No hay backups de facturas', isTablet)
+                    _buildEmptyState(theme, l10n.noInvoiceBackups, isTablet)
                   else
                     ..._invoiceBackups.map((backup) => _buildBackupCard(
                           theme,
                           backup,
                           'invoice',
                           isTablet,
+                          l10n,
                         )),
                 ],
               ),
@@ -129,12 +132,12 @@ class _BackupsScreenState extends State<BackupsScreen> {
   }
 
   // ==================== BOTONES DE ACCIÓN RÁPIDA ====================
-  Widget _buildQuickActions(ThemeHelper theme, bool isTablet) {
+  Widget _buildQuickActions(ThemeHelper theme, bool isTablet, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Acciones Rápidas',
+          l10n.quickActions,
           style: TextStyle(
             fontSize: isTablet ? 17.sp : 18.sp,
             fontWeight: FontWeight.bold,
@@ -148,7 +151,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
             Expanded(
               child: _buildActionButton(
                 icon: Icons.upload_file,
-                label: 'Exportar\nProductos',
+                label: l10n.exportProducts,
                 color: const Color(0xFF4CAF50),
                 onTap: () => _exportProducts(),
                 isTablet: isTablet,
@@ -159,7 +162,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
             Expanded(
               child: _buildActionButton(
                 icon: Icons.file_download,
-                label: 'Importar\nProductos',
+                label: l10n.importProducts,
                 color: const Color(0xFF2196F3),
                 onTap: () => _importExternalProducts(),
                 isTablet: isTablet,
@@ -174,7 +177,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
             Expanded(
               child: _buildActionButton(
                 icon: Icons.receipt_long,
-                label: 'Exportar\nFacturas',
+                label: l10n.exportInvoices,
                 color: const Color(0xFFFF9800),
                 onTap: () => _exportInvoices(),
                 isTablet: isTablet,
@@ -185,7 +188,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
             Expanded(
               child: _buildActionButton(
                 icon: Icons.cloud_download,
-                label: 'Importar\nFacturas',
+                label: l10n.importInvoices,
                 color: const Color(0xFF9C27B0),
                 onTap: () => _importExternalInvoices(),
                 isTablet: isTablet,
@@ -241,6 +244,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
   // ==================== EXPORTAR PRODUCTOS ====================
   Future<void> _exportProducts() async {
     final theme = ThemeHelper(context);
+    final l10n = AppLocalizations.of(context)!;
     final productProvider = context.read<ProductProvider>();
     
     showDialog(
@@ -259,7 +263,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
               CircularProgressIndicator(color: theme.primary),
               SizedBox(height: 16.h),
               Text(
-                'Exportando productos...',
+                l10n.exportingProducts,
                 style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
               ),
             ],
@@ -277,7 +281,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
         await _loadBackups();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('✅ ${productProvider.products.length} productos exportados'),
+            content: Text(l10n.productsExported(productProvider.products.length)),
             backgroundColor: theme.success,
           ),
         );
@@ -287,7 +291,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text('${l10n.error}: $e'),
             backgroundColor: theme.error,
           ),
         );
@@ -298,6 +302,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
   // ==================== EXPORTAR FACTURAS ====================
   Future<void> _exportInvoices() async {
     final theme = ThemeHelper(context);
+    final l10n = AppLocalizations.of(context)!;
     final invoiceProvider = context.read<InvoiceProvider>();
     
     showDialog(
@@ -316,7 +321,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
               CircularProgressIndicator(color: theme.primary),
               SizedBox(height: 16.h),
               Text(
-                'Exportando facturas...',
+                l10n.exportingInvoices,
                 style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
               ),
             ],
@@ -334,7 +339,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
         await _loadBackups();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('✅ ${invoiceProvider.invoices.length} facturas exportadas'),
+            content: Text(l10n.invoicesExported(invoiceProvider.invoices.length)),
             backgroundColor: theme.success,
           ),
         );
@@ -344,7 +349,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text('${l10n.error}: $e'),
             backgroundColor: theme.error,
           ),
         );
@@ -355,6 +360,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
   // ==================== IMPORTAR PRODUCTOS EXTERNOS (CON DIÁLOGO BONITO) ====================
   Future<void> _importExternalProducts() async {
     final theme = ThemeHelper(context);
+    final l10n = AppLocalizations.of(context)!;
     final productProvider = context.read<ProductProvider>();
 
     try {
@@ -377,7 +383,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                   CircularProgressIndicator(color: theme.primary),
                   SizedBox(height: 16.h),
                   Text(
-                    'Procesando productos...',
+                    l10n.processingProducts,
                     style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
                   ),
                 ],
@@ -403,6 +409,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
               theme,
               existingProduct,
               product,
+              l10n,
             );
 
             if (action == 'replace') {
@@ -431,7 +438,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                         CircularProgressIndicator(color: theme.primary),
                         SizedBox(height: 16.h),
                         Text(
-                          'Procesando productos...',
+                          l10n.processingProducts,
                           style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
                         ),
                       ],
@@ -453,7 +460,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                '✅ Importados: $imported | 🔄 Reemplazados: $replaced | ⏭️ Omitidos: $skipped',
+                l10n.importSummary(imported, replaced, skipped),
               ),
               backgroundColor: theme.success,
               duration: const Duration(seconds: 4),
@@ -465,7 +472,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text('${l10n.error}: $e'),
             backgroundColor: theme.error,
           ),
         );
@@ -476,6 +483,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
   // ==================== IMPORTAR FACTURAS EXTERNAS ====================
   Future<void> _importExternalInvoices() async {
     final theme = ThemeHelper(context);
+    final l10n = AppLocalizations.of(context)!;
     final invoiceProvider = context.read<InvoiceProvider>();
 
     try {
@@ -498,7 +506,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                   CircularProgressIndicator(color: theme.primary),
                   SizedBox(height: 16.h),
                   Text(
-                    'Importando facturas...',
+                    l10n.importingInvoices,
                     style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
                   ),
                 ],
@@ -526,7 +534,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
           await _loadBackups();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('✅ Importados: $imported | 🔄 Reemplazados: $replaced'),
+              content: Text(l10n.importSummary(imported, replaced, 0)),
               backgroundColor: theme.success,
             ),
           );
@@ -536,7 +544,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text('${l10n.error}: $e'),
             backgroundColor: theme.error,
           ),
         );
@@ -547,6 +555,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
   // ==================== RESTAURAR BACKUP (CON DIÁLOGO DE COMPARACIÓN) ====================
   Future<void> _restoreBackup(BackupFile backup, String type) async {
     final theme = ThemeHelper(context);
+    final l10n = AppLocalizations.of(context)!;
 
     final confirm = await showDialog<bool>(
       context: context,
@@ -559,25 +568,25 @@ class _BackupsScreenState extends State<BackupsScreen> {
             SizedBox(width: 12.w),
             Expanded(
               child: Text(
-                'Confirmar restauración',
+                l10n.confirmRestore,
                 style: TextStyle(color: theme.textPrimary, fontSize: 18.sp),
               ),
             ),
           ],
         ),
         content: Text(
-          '¿Restaurar este backup? Se revisarán los productos uno por uno.',
+          l10n.confirmRestoreMessage,
           style: TextStyle(color: theme.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancelar'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: FilledButton.styleFrom(backgroundColor: theme.primary),
-            child: const Text('Continuar'),
+            child: Text(l10n.continueAction),
           ),
         ],
       ),
@@ -601,7 +610,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
               CircularProgressIndicator(color: theme.primary),
               SizedBox(height: 16.h),
               Text(
-                'Restaurando...',
+                l10n.restoring,
                 style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
               ),
             ],
@@ -632,6 +641,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                 theme,
                 existingProduct,
                 product,
+                l10n,
               );
 
               if (action == 'replace') {
@@ -661,7 +671,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                           CircularProgressIndicator(color: theme.primary),
                           SizedBox(height: 16.h),
                           Text(
-                            'Procesando productos...',
+                            l10n.processingProducts,
                             style: TextStyle(color: theme.textPrimary, fontSize: 16.sp),
                           ),
                         ],
@@ -680,7 +690,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  '✅ Importados: $imported | 🔄 Reemplazados: $replaced | ⏭️ Omitidos: $skipped',
+                  l10n.importSummary(imported, replaced, skipped),
                 ),
                 backgroundColor: theme.success,
                 duration: const Duration(seconds: 4),
@@ -706,7 +716,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: const Text('✅ Facturas restauradas exitosamente'),
+                content: Text(l10n.invoicesRestoredSuccess),
                 backgroundColor: theme.success,
               ),
             );
@@ -718,7 +728,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text('${l10n.error}: $e'),
             backgroundColor: theme.error,
           ),
         );
@@ -731,6 +741,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
     ThemeHelper theme,
     Product existingProduct,
     Product newProduct,
+    AppLocalizations l10n,
   ) async {
     return await showDialog<String>(
       context: context,
@@ -761,7 +772,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
               SizedBox(width: 12.w),
               Expanded(
                 child: Text(
-                  'Producto existente',
+                  l10n.existingProduct,
                   style: TextStyle(
                     color: theme.textPrimary,
                     fontSize: 18.sp,
@@ -779,7 +790,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ya existe un producto con este nombre',
+                l10n.productAlreadyExists,
                 style: TextStyle(
                   color: theme.textSecondary,
                   fontSize: 14.sp,
@@ -811,7 +822,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                             borderRadius: BorderRadius.circular(6.r),
                           ),
                           child: Text(
-                            'ACTUAL',
+                            l10n.current,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 11.sp,
@@ -823,7 +834,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
-                            'Se eliminará',
+                            l10n.willBeDeleted,
                             style: TextStyle(
                               color: theme.error,
                               fontSize: 11.sp,
@@ -847,14 +858,14 @@ class _BackupsScreenState extends State<BackupsScreen> {
                     SizedBox(height: 8.h),
                     _buildProductDetail(
                       theme,
-                      'Precio',
+                      l10n.priceLabel,
                       '\$ ${existingProduct.price.toStringAsFixed(2)}',
                     ),
                     SizedBox(height: 4.h),
                     _buildProductDetail(
                       theme,
-                      'Stock',
-                      '${existingProduct.stock} unidades',
+                      l10n.stockLabel,
+                      '${existingProduct.stock} ${l10n.unitsLabel}',
                     ),
                   ],
                 ),
@@ -896,7 +907,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                             borderRadius: BorderRadius.circular(6.r),
                           ),
                           child: Text(
-                            'NUEVO',
+                            l10n.newLabel,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 11.sp,
@@ -908,7 +919,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
-                            'Se importará',
+                            l10n.willBeImported,
                             style: TextStyle(
                               color: theme.success,
                               fontSize: 11.sp,
@@ -932,14 +943,14 @@ class _BackupsScreenState extends State<BackupsScreen> {
                     SizedBox(height: 8.h),
                     _buildProductDetail(
                       theme,
-                      'Precio',
+                      l10n.priceLabel,
                       '\$ ${newProduct.price.toStringAsFixed(2)}',
                     ),
                     SizedBox(height: 4.h),
                     _buildProductDetail(
                       theme,
-                      'Stock',
-                      '${newProduct.stock} unidades',
+                      l10n.stockLabel,
+                      '${newProduct.stock} ${l10n.unitsLabel}',
                     ),
                   ],
                 ),
@@ -955,7 +966,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             ),
             child: Text(
-              'Omitir',
+              l10n.skip,
               style: TextStyle(
                 color: theme.textHint,
                 fontSize: 14.sp,
@@ -973,7 +984,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
               ),
             ),
             child: Text(
-              'Mantener actual',
+              l10n.keepCurrent,
               style: TextStyle(
                 color: theme.primary,
                 fontSize: 14.sp,
@@ -991,7 +1002,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
               ),
             ),
             child: Text(
-              'Reemplazar',
+              l10n.replace,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14.sp,
@@ -1034,6 +1045,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
 
   Future<void> _deleteBackup(BackupFile backup, String type) async {
     final theme = ThemeHelper(context);
+    final l10n = AppLocalizations.of(context)!;
 
     final confirm = await showDialog<bool>(
       context: context,
@@ -1046,25 +1058,25 @@ class _BackupsScreenState extends State<BackupsScreen> {
             SizedBox(width: 12.w),
             Expanded(
               child: Text(
-                'Eliminar backup',
+                l10n.deleteBackup,
                 style: TextStyle(color: theme.textPrimary, fontSize: 18.sp),
               ),
             ),
           ],
         ),
         content: Text(
-          '¿Eliminar este backup permanentemente?',
+          l10n.confirmDeleteBackup,
           style: TextStyle(color: theme.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancelar'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: FilledButton.styleFrom(backgroundColor: theme.error),
-            child: const Text('Eliminar'),
+            child: Text(l10n.delete),
           ),
         ],
       ),
@@ -1079,7 +1091,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('✅ Backup eliminado'),
+            content: Text(l10n.backupDeleted),
             backgroundColor: theme.success,
           ),
         );
@@ -1088,7 +1100,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text('${l10n.error}: $e'),
             backgroundColor: theme.error,
           ),
         );
@@ -1162,6 +1174,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
     BackupFile backup,
     String type,
     bool isTablet,
+    AppLocalizations l10n,
   ) {
     final dateFormat = DateFormat('dd MMM yyyy, HH:mm', 'es');
 
@@ -1221,7 +1234,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                     onPressed: () => _restoreBackup(backup, type),
                     icon: Icon(Icons.restore, size: isTablet ? 18.sp : 18.sp),
                     label: Text(
-                      'Restaurar',
+                      l10n.restore,
                       style: TextStyle(fontSize: isTablet ? 13.sp : 13.sp),
                     ),
                     style: OutlinedButton.styleFrom(
@@ -1242,7 +1255,7 @@ class _BackupsScreenState extends State<BackupsScreen> {
                     onPressed: () => _shareBackup(backup),
                     icon: Icon(Icons.share, size: isTablet ? 18.sp : 18.sp),
                     label: Text(
-                      'Compartir',
+                      l10n.share,
                       style: TextStyle(fontSize: isTablet ? 13.sp : 13.sp),
                     ),
                     style: OutlinedButton.styleFrom(

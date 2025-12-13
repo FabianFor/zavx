@@ -2381,6 +2381,204 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No, gracias'**
   String get noThanks;
+
+  /// No description provided for @refresh.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar'**
+  String get refresh;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In es, this message translates to:
+  /// **'Acciones Rápidas'**
+  String get quickActions;
+
+  /// No description provided for @exportingProducts.
+  ///
+  /// In es, this message translates to:
+  /// **'Exportando productos...'**
+  String get exportingProducts;
+
+  /// No description provided for @exportingInvoices.
+  ///
+  /// In es, this message translates to:
+  /// **'Exportando facturas...'**
+  String get exportingInvoices;
+
+  /// No description provided for @processingProducts.
+  ///
+  /// In es, this message translates to:
+  /// **'Procesando productos...'**
+  String get processingProducts;
+
+  /// No description provided for @importingInvoices.
+  ///
+  /// In es, this message translates to:
+  /// **'Importando facturas...'**
+  String get importingInvoices;
+
+  /// No description provided for @restoring.
+  ///
+  /// In es, this message translates to:
+  /// **'Restaurando...'**
+  String get restoring;
+
+  /// No description provided for @productsExported.
+  ///
+  /// In es, this message translates to:
+  /// **'✅ {count} productos exportados'**
+  String productsExported(int count);
+
+  /// No description provided for @invoicesExported.
+  ///
+  /// In es, this message translates to:
+  /// **'✅ {count} facturas exportadas'**
+  String invoicesExported(int count);
+
+  /// No description provided for @importSummary.
+  ///
+  /// In es, this message translates to:
+  /// **'✅ Importados: {imported} | 🔄 Reemplazados: {replaced} | ⏭️ Omitidos: {skipped}'**
+  String importSummary(int imported, int replaced, int skipped);
+
+  /// No description provided for @invoicesRestoredSuccess.
+  ///
+  /// In es, this message translates to:
+  /// **'✅ Facturas restauradas exitosamente'**
+  String get invoicesRestoredSuccess;
+
+  /// No description provided for @backupDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'✅ Backup eliminado'**
+  String get backupDeleted;
+
+  /// No description provided for @confirmRestore.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar restauración'**
+  String get confirmRestore;
+
+  /// No description provided for @confirmRestoreMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Restaurar este backup? Se revisarán los productos uno por uno.'**
+  String get confirmRestoreMessage;
+
+  /// No description provided for @existingProduct.
+  ///
+  /// In es, this message translates to:
+  /// **'Producto existente'**
+  String get existingProduct;
+
+  /// No description provided for @productAlreadyExists.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya existe un producto con este nombre'**
+  String get productAlreadyExists;
+
+  /// No description provided for @current.
+  ///
+  /// In es, this message translates to:
+  /// **'ACTUAL'**
+  String get current;
+
+  /// No description provided for @willBeDeleted.
+  ///
+  /// In es, this message translates to:
+  /// **'Se eliminará'**
+  String get willBeDeleted;
+
+  /// No description provided for @newLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'NUEVO'**
+  String get newLabel;
+
+  /// No description provided for @willBeImported.
+  ///
+  /// In es, this message translates to:
+  /// **'Se importará'**
+  String get willBeImported;
+
+  /// No description provided for @keepCurrent.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantener actual'**
+  String get keepCurrent;
+
+  /// No description provided for @replace.
+  ///
+  /// In es, this message translates to:
+  /// **'Reemplazar'**
+  String get replace;
+
+  /// No description provided for @deleteBackup.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar backup'**
+  String get deleteBackup;
+
+  /// No description provided for @confirmDeleteBackup.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Eliminar este backup permanentemente?'**
+  String get confirmDeleteBackup;
+
+  /// No description provided for @noProductBackups.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay backups de productos'**
+  String get noProductBackups;
+
+  /// No description provided for @noInvoiceBackups.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay backups de facturas'**
+  String get noInvoiceBackups;
+
+  /// No description provided for @restore.
+  ///
+  /// In es, this message translates to:
+  /// **'Restaurar'**
+  String get restore;
+
+  /// No description provided for @continueAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Continuar'**
+  String get continueAction;
+
+  /// No description provided for @productBackups.
+  ///
+  /// In es, this message translates to:
+  /// **'📦 Productos'**
+  String get productBackups;
+
+  /// No description provided for @invoiceBackups.
+  ///
+  /// In es, this message translates to:
+  /// **'🧾 Facturas'**
+  String get invoiceBackups;
+
+  /// No description provided for @priceLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Precio'**
+  String get priceLabel;
+
+  /// No description provided for @stockLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Stock'**
+  String get stockLabel;
+
+  /// No description provided for @unitsLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'unidades'**
+  String get unitsLabel;
 }
 
 class _AppLocalizationsDelegate

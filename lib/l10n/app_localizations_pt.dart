@@ -1226,4 +1226,110 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get noThanks => 'Não, obrigado';
+
+  @override
+  String get refresh => 'Atualizar';
+
+  @override
+  String get quickActions => 'Ações Rápidas';
+
+  @override
+  String get exportingProducts => 'Exportando produtos...';
+
+  @override
+  String get exportingInvoices => 'Exportando faturas...';
+
+  @override
+  String get processingProducts => 'Processando produtos...';
+
+  @override
+  String get importingInvoices => 'Importando faturas...';
+
+  @override
+  String get restoring => 'Restaurando...';
+
+  @override
+  String productsExported(int count) {
+    return '✅ $count produtos exportados';
+  }
+
+  @override
+  String invoicesExported(int count) {
+    return '✅ $count faturas exportadas';
+  }
+
+  @override
+  String importSummary(int imported, int replaced, int skipped) {
+    return '✅ Importados: $imported | 🔄 Substituídos: $replaced | ⏭️ Ignorados: $skipped';
+  }
+
+  @override
+  String get invoicesRestoredSuccess => '✅ Faturas restauradas com sucesso';
+
+  @override
+  String get backupDeleted => '✅ Backup excluído';
+
+  @override
+  String get confirmRestore => 'Confirmar restauração';
+
+  @override
+  String get confirmRestoreMessage =>
+      'Restaurar este backup? Os produtos serão revisados um por um.';
+
+  @override
+  String get existingProduct => 'Produto existente';
+
+  @override
+  String get productAlreadyExists => 'Já existe um produto com este nome';
+
+  @override
+  String get current => 'ATUAL';
+
+  @override
+  String get willBeDeleted => 'Será excluído';
+
+  @override
+  String get newLabel => 'NOVO';
+
+  @override
+  String get willBeImported => 'Será importado';
+
+  @override
+  String get keepCurrent => 'Manter atual';
+
+  @override
+  String get replace => 'Substituir';
+
+  @override
+  String get deleteBackup => 'Excluir backup';
+
+  @override
+  String get confirmDeleteBackup => 'Excluir este backup permanentemente?';
+
+  @override
+  String get noProductBackups => 'Nenhum backup de produtos';
+
+  @override
+  String get noInvoiceBackups => 'Nenhum backup de faturas';
+
+  @override
+  String get restore => 'Restaurar';
+
+  @override
+  String get continueAction => 'Continuar';
+
+  @override
+  String get productBackups => '📦 Produtos';
+
+  @override
+  String get invoiceBackups => '🧾 Faturas';
+
+  @override
+  String get priceLabel => 'Preço';
+
+  @override
+  String get stockLabel => 'Estoque';
+
+  @override
+  String get unitsLabel => 'unidades';
 }

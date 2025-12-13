@@ -563,19 +563,62 @@
   "couldNotOpenFile": "Could not open file",
   "photosAccessTitle": "Photos Access",
   "photosAccessMessage": "To select images, you need to enable the permission.\n\nGo to:\nSettings → Apps → Proïon → Permissions → Photos and videos",
-  
   "galleryAccessTitle": "📸 Gallery Access",
   "galleryAccessRationale": "To select images from your gallery, we need your permission.\n\nWe will only access the photos you select.",
-  
   "storageAccessTitle": "💾 Storage Access",
   "storageAccessMessage": "To save files, you need to enable the permission.\n\nGo to:\nSettings → Apps → Proïon → Permissions → Storage",
   "storageAccessRationale": "To save receipts and images, we need storage access.\n\nWe will only access our app's folders.",
-  
   "permissionDeniedTitle": "Permission Denied",
   "permissionDeniedMessage": "You must enable the permission manually in Settings.",
-  
   "noThanks": "No, thanks",
-  "understood": "Understood",
-  "openSettings": "Open Settings"
-
+  "refresh": "Refresh",
+  "quickActions": "Quick Actions",
+  "exportingProducts": "Exporting products...",
+  "exportingInvoices": "Exporting invoices...",
+  "processingProducts": "Processing products...",
+  "importingInvoices": "Importing invoices...",
+  "restoring": "Restoring...",
+  "productsExported": "✅ {count} products exported",
+  "@productsExported": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "invoicesExported": "✅ {count} invoices exported",
+  "@invoicesExported": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "importSummary": "✅ Imported: {imported} | 🔄 Replaced: {replaced} | ⏭️ Skipped: {skipped}",
+  "@importSummary": {
+    "placeholders": {
+      "imported": {"type": "int"},
+      "replaced": {"type": "int"},
+      "skipped": {"type": "int"}
+    }
+  },
+  "invoicesRestoredSuccess": "✅ Invoices restored successfully",
+  "backupDeleted": "✅ Backup deleted",
+  "confirmRestore": "Confirm restore",
+  "confirmRestoreMessage": "Restore this backup? Products will be reviewed one by one.",
+  "existingProduct": "Existing product",
+  "productAlreadyExists": "A product with this name already exists",
+  "current": "CURRENT",
+  "willBeDeleted": "Will be deleted",
+  "newLabel": "NEW",
+  "willBeImported": "Will be imported",
+  "keepCurrent": "Keep current",
+  "replace": "Replace",
+  "deleteBackup": "Delete backup",
+  "confirmDeleteBackup": "Delete this backup permanently?",
+  "noProductBackups": "No product backups",
+  "noInvoiceBackups": "No invoice backups",
+  "restore": "Restore",
+  "continueAction": "Continue",
+  "productBackups": "📦 Products",
+  "invoiceBackups": "🧾 Invoices",
+  "priceLabel": "Price",
+  "stockLabel": "Stock",
+  "unitsLabel": "units"
 }
